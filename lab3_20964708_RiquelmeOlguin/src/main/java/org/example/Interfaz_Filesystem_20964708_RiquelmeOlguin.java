@@ -17,6 +17,8 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     void swithDrive(String Letra);
 
+    void mkdir(String Nombre);
+
 
 }
 

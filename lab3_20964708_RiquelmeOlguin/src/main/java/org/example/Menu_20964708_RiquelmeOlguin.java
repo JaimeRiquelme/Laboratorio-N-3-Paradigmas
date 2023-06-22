@@ -1,6 +1,7 @@
 package org.example;
 
 
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -52,6 +53,7 @@ public class Menu_20964708_RiquelmeOlguin {
                             ", usuarios=" + Sistema.getUsuarios() +
                             ", usuarioActual='" + Sistema.getUsuarioActual() + '\'' +
                             ", DriveActual='" + Sistema.getDriveActual() + '\'' +
+                            ", Contenido=" + Sistema.getContenido() +
                             '}');
                     break;
 
@@ -89,8 +91,9 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("2. Registrar un usuario");
         System.out.println("3. Logear un usuario");
         System.out.println("4. Deslogeo de un usuario");
-        System.out.println("5. Deslogeo de un usuario");
-        System.out.println("6. Salir");
+        System.out.println("5. Switch Drive");
+        System.out.println("6. Crear un folder");
+        System.out.println("7. Salir");
         System.out.println();
         System.out.println();
 
@@ -144,6 +147,20 @@ public class Menu_20964708_RiquelmeOlguin {
                     Sistema.swithDrive(DriveSwitch.toUpperCase());
                     break;
                 case 6:
+                    System.out.println("----CREANDO UN FOLDER------ \n");
+                    String Nombre;
+                    System.out.printf("Ingrese el NOMBRE del nuevo folder. \n");
+                    Nombre = entrada.nextLine();
+                    Sistema.mkdir(Nombre);
+
+
+                    break;
+
+
+
+
+
+                case 7:
                     System.out.println("\nPrograma finalizado.");
                     salirMenu = true;
                     break;

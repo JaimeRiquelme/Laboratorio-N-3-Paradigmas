@@ -3,6 +3,7 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_20964708_RiquelmeOlguin{
@@ -19,6 +20,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
 
     String DriveActual;
 
+    List<Folder_20964708_RiquelmeOlguin> Contenido;
+
     public Filesystem_20964708_RiquelmeOlguin(String nombre) {
         this.nombre = nombre;
         this.fechaCreacion = new Date();
@@ -26,6 +29,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
         this.usuarios = new ArrayList<>();
         this.usuarioActual = null;
         this.DriveActual = null;
+        this.Contenido = new ArrayList<>();
     }
 
     public void addDrive(String letra, String nombre, int capacidad){
@@ -88,6 +92,60 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
 
     }
 
+    @Override
+    public void mkdir(String Nombre) {
+        Scanner entrada = new Scanner(System.in);
+
+        if (getUsuarioActual() != null) {
+            Date Fecha_creacion;
+            Date Fecha_modif;
+            String Creador;
+            boolean Lectura = false;
+            boolean Oculto = false;
+            int Valor1;
+            int Valor2;
+            AtributosSeguridad_20964708_RiquelmeOlguin Atributos;
+
+            System.out.println("Ingrese Los atributos de seguridad");
+            System.out.printf("###ATRIBUTO SOLO LECTURA### \n");
+            System.out.println("1.SI");
+            System.out.println("2.NO");
+            Valor1 = entrada.nextInt();
+            entrada.nextLine();
+            if (Valor1 == 1) {
+                Lectura = true;
+            }
+            System.out.println("###ATRIBUTO OCULTO### \n");
+            System.out.println("1.SI");
+            System.out.println("2.NO");
+            Valor2 = entrada.nextInt();
+            entrada.nextLine();
+            if (Valor2 == 1) {
+                Oculto = true;
+            }
+            Fecha_modif = new Date();
+            Fecha_creacion = new Date();
+            Creador = getUsuarioActual();
+            Atributos = new AtributosSeguridad_20964708_RiquelmeOlguin(Lectura, Oculto);
+
+            Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos);
+
+            var listaFolders= Contenido.stream().map(Folder_20964708_RiquelmeOlguin::getNombre)
+                    .collect(Collectors.toList());
+
+            if (!listaFolders.contains(Nombre)){
+                Contenido.add(NewFolder);
+            }else{
+                System.out.println("Nombre ya existente, pruebe otro.");
+            }
+
+
+        }else{
+            System.out.println("No hay ningun usuario logeado, porfavor realize logeo.");
+        }
+
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -119,6 +177,16 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
         return usuarioActual;
     }
 
+
+
+    public String getDriveActual() {
+        return DriveActual;
+    }
+
+    public void setDriveActual(String driveActual) {
+        this.DriveActual = driveActual;
+    }
+
     @Override
     public String toString() {
         return "Filesystem_20964708_RiquelmeOlguin{" +
@@ -128,14 +196,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
                 ", usuarios=" + usuarios +
                 ", usuarioActual='" + usuarioActual + '\'' +
                 ", DriveActual='" + DriveActual + '\'' +
+                ", Contenido=" + Contenido +
                 '}';
     }
 
-    public String getDriveActual() {
-        return DriveActual;
-    }
-
-    public void setDriveActual(String driveActual) {
-        this.DriveActual = driveActual;
+    public List<Folder_20964708_RiquelmeOlguin> getContenido() {
+        return Contenido;
     }
 }
