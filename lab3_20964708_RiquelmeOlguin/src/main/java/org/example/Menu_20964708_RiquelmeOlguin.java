@@ -51,6 +51,7 @@ public class Menu_20964708_RiquelmeOlguin {
                             ", drives=" + Sistema.getDrives() +
                             ", usuarios=" + Sistema.getUsuarios() +
                             ", usuarioActual='" + Sistema.getUsuarioActual() + '\'' +
+                            ", DriveActual='" + Sistema.getDriveActual() + '\'' +
                             '}');
                     break;
 
@@ -88,7 +89,8 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("2. Registrar un usuario");
         System.out.println("3. Logear un usuario");
         System.out.println("4. Deslogeo de un usuario");
-        System.out.println("5. Salir");
+        System.out.println("5. Deslogeo de un usuario");
+        System.out.println("6. Salir");
         System.out.println();
         System.out.println();
 
@@ -136,6 +138,12 @@ public class Menu_20964708_RiquelmeOlguin {
                     Sistema.logout();
                     break;
                 case 5:
+                    String DriveSwitch;
+                    System.out.println("Ingrese LETRA del drive a cambiar.");
+                    DriveSwitch = entrada.nextLine();
+                    Sistema.swithDrive(DriveSwitch.toUpperCase());
+                    break;
+                case 6:
                     System.out.println("\nPrograma finalizado.");
                     salirMenu = true;
                     break;

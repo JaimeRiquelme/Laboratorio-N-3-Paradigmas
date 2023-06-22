@@ -17,12 +17,15 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
 
     String usuarioActual;
 
+    String DriveActual;
+
     public Filesystem_20964708_RiquelmeOlguin(String nombre) {
         this.nombre = nombre;
         this.fechaCreacion = new Date();
         this.drives = new ArrayList<>();
         this.usuarios = new ArrayList<>();
         this.usuarioActual = null;
+        this.DriveActual = null;
     }
 
     public void addDrive(String letra, String nombre, int capacidad){
@@ -68,6 +71,23 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
         }
     }
 
+    @Override
+    public void swithDrive(String Letra) {
+        var listaLetras = drives.stream().map(Drive_20964708_RiquelmeOlguin::getLetra)
+                .collect(Collectors.toList());
+
+        if(getUsuarioActual() != null){
+            if (listaLetras.contains(Letra.toUpperCase())){
+                setDriveActual(Letra.toUpperCase());
+            }else{
+                System.out.println("Drive no existente");
+            }
+        }else {
+            System.out.println("No hay ningun usuario logeado, porfavor realize logeo.");
+        }
+
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -93,6 +113,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
         this.usuarioActual = usuarioActual;
     }
 
+
+
+    public String getUsuarioActual() {
+        return usuarioActual;
+    }
+
     @Override
     public String toString() {
         return "Filesystem_20964708_RiquelmeOlguin{" +
@@ -101,10 +127,15 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
                 ", drives=" + drives +
                 ", usuarios=" + usuarios +
                 ", usuarioActual='" + usuarioActual + '\'' +
+                ", DriveActual='" + DriveActual + '\'' +
                 '}';
     }
 
-    public String getUsuarioActual() {
-        return usuarioActual;
+    public String getDriveActual() {
+        return DriveActual;
+    }
+
+    public void setDriveActual(String driveActual) {
+        this.DriveActual = driveActual;
     }
 }

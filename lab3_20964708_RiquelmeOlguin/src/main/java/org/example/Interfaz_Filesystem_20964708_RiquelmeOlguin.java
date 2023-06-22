@@ -15,6 +15,8 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     void logout();
 
+    void swithDrive(String Letra);
+
 
 }
 
