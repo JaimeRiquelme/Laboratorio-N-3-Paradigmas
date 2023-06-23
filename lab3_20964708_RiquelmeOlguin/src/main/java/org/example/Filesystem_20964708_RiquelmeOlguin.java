@@ -1,9 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_20964708_RiquelmeOlguin {
@@ -106,10 +103,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             boolean Oculto = false;
             int Valor1;
             int Valor2;
-            Drive_20964708_RiquelmeOlguin DriveActual = null;
+            Drive_20964708_RiquelmeOlguin DriveActual;
             AtributosSeguridad_20964708_RiquelmeOlguin Atributos;
             System.out.println("Ingrese Los atributos de seguridad");
-            System.out.printf("###ATRIBUTO SOLO LECTURA### \n");
+            System.out.println("###ATRIBUTO SOLO LECTURA### \n");
             System.out.println("1.SI");
             System.out.println("2.NO");
             Valor1 = entrada.nextInt();
@@ -132,26 +129,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos);
             String Ruta = getRutaActual();
             String[] RutaSplit = Ruta.split("/");
-            for (Drive_20964708_RiquelmeOlguin Drive : drives) {  //ENCUENTRO DRIVE ACTUAL DADO EL CURRENT DRIVE
-                if (Drive.getLetra().equals(getDriveActual())) {
-                    DriveActual = Drive;
-                }
-            }
+            DriveActual = buscarDriveActual();
             if (RutaSplit.length == 1) {
                 DriveActual.Contenido.add(NewFolder);
             } else {
-                Folder_20964708_RiquelmeOlguin actual = null;
-                if (DriveActual != null) {
-                    actual = DriveActual.buscarFolder(RutaSplit[1]);
-                    for (int i = 2; i < RutaSplit.length && actual != null; i++) {
-                        Folder_20964708_RiquelmeOlguin Encontrado = actual.buscarFolder(RutaSplit[i]);
-                        if (Encontrado != null) {
-                            actual = Encontrado;
-                        } else {
-                            break;
-                        }
-                    }
-                }
+                Folder_20964708_RiquelmeOlguin actual = buscarContenido(RutaSplit, DriveActual);
                 if (actual != null) {
                     actual.Contenido.add(NewFolder);
                 }
@@ -159,20 +141,46 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         } else {
             System.out.println("No hay ningun usuario logeado, porfavor realize logeo.");
         }
-
     }
+
 
     @Override
     public void cd(String Nombre) {
         String RutaActual = getRutaActual();
-        if (RutaActual == getDriveActual().concat(":/")) {
+        String[] RutaSplit = RutaActual.split("/");
+        Drive_20964708_RiquelmeOlguin Driveactual = buscarDriveActual();
+        List<String> NombresContenido;
 
-            setRutaActual(RutaActual.concat(Nombre));
-        }else{
-            setRutaActual(RutaActual.concat(Nombre));
+        if (Driveactual == null) {
+            System.out.println("Drive actual no encontrado.");
+            return;
+        }
 
+        if (getDriveActual().concat(":/").equals(getRutaActual())) {
+            NombresContenido = getContenidoNombres(Driveactual.Contenido);
+        }else {
+            Folder_20964708_RiquelmeOlguin Folderactual = buscarContenido(RutaSplit, Driveactual);
+            NombresContenido = getContenidoNombres(Folderactual.Contenido);
+        }
+        /*if (Folderactual == null || Folderactual.Contenido == null) {
+            System.out.println("Contenido de la carpeta actual no encontrado.");
+            return;
+        }
+
+
+         */
+
+        if(NombresContenido.contains(Nombre)) {
+            if (RutaActual.equals(getDriveActual().concat(":/"))) {
+                setRutaActual(RutaActual.concat(Nombre));
+            } else {
+                setRutaActual(RutaActual.concat("/").concat(Nombre));
+            }
+        } else {
+            System.out.println("El nombre del archivo no existe en la ruta actual.");
         }
     }
+
 
 
     public String getNombre() {
@@ -232,4 +240,46 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     public String getRutaActual() {
         return RutaActual;
     }
+
+    public Drive_20964708_RiquelmeOlguin buscarDriveActual() {
+        Drive_20964708_RiquelmeOlguin DriveActual = null;
+        for (Drive_20964708_RiquelmeOlguin Drive : drives) {
+            if (Drive.getLetra().equals(getDriveActual())) {
+                DriveActual = Drive;
+
+                break;
+            }
+        }
+        return DriveActual;
+    }
+
+
+    public Folder_20964708_RiquelmeOlguin buscarContenido(String[] RutaSplit, Drive_20964708_RiquelmeOlguin DriveActual) {
+        Folder_20964708_RiquelmeOlguin actual = null;
+        if (DriveActual != null) {
+            actual = DriveActual.buscarFolder(RutaSplit[1]);
+            for (int i = 2; i < RutaSplit.length && actual != null; i++) {
+                Folder_20964708_RiquelmeOlguin Encontrado = actual.buscarFolder(RutaSplit[i]);
+                if (Encontrado != null) {
+                    actual = Encontrado;
+                } else {
+                    break;
+                }
+            }
+        }
+        return actual;
+    }
+
+    public List<String> getContenidoNombres(List<FileFolderSystem_20964708_RiquelmeOlguin> contenido) {
+        List<String> nombres = new ArrayList<>();
+
+        for (FileFolderSystem_20964708_RiquelmeOlguin objeto : contenido) {
+            nombres.add(objeto.getNombre());
+        }
+
+        return nombres;
+    }
 }
+
+
+

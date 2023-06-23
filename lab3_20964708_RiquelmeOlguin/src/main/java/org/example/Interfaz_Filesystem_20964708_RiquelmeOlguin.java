@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.List;
+
 public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     /**
@@ -20,6 +22,11 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
     void mkdir(String Nombre);
 
     void cd(String Nombre);
+
+    Folder_20964708_RiquelmeOlguin buscarContenido(String[] RutaSplit, Drive_20964708_RiquelmeOlguin DriveActual);
+    Drive_20964708_RiquelmeOlguin buscarDriveActual();
+
+    List<String> getContenidoNombres(List<FileFolderSystem_20964708_RiquelmeOlguin> contenido);
 
 
 }

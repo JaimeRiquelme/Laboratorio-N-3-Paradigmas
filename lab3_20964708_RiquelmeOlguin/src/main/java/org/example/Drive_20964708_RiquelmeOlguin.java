@@ -9,7 +9,7 @@ public class Drive_20964708_RiquelmeOlguin {
     String nombre;
     int capacidad;
 
-    List<Folder_20964708_RiquelmeOlguin> Contenido;
+    List<FileFolderSystem_20964708_RiquelmeOlguin> Contenido;
 
     public Drive_20964708_RiquelmeOlguin(String letra, String nombre, int capacidad) {
         this.letra = letra;
@@ -41,7 +41,7 @@ public class Drive_20964708_RiquelmeOlguin {
         return capacidad;
     }
 
-    public List<Folder_20964708_RiquelmeOlguin> getContenido() {
+    public List<FileFolderSystem_20964708_RiquelmeOlguin> getContenido() {
         return Contenido;
     }
 
