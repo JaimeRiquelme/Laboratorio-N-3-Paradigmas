@@ -1,51 +1,34 @@
 package org.example;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Folder_20964708_RiquelmeOlguin {
-    String Nombre;
-    Date Fecha_creacion;
-    Date Fecha_modificacion;
-    String CreadorUser;
-    AtributosSeguridad_20964708_RiquelmeOlguin AtributoSeguridad;
+public class Folder_20964708_RiquelmeOlguin extends FileFolderSystem_20964708_RiquelmeOlguin {
+    List<FileFolderSystem_20964708_RiquelmeOlguin> Contenido;
 
-
-    public String getNombre() {
-        return Nombre;
+    public Folder_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad) {
+        super(nombre, fechaCreacion, fechaModificacion, creadorUser, atributoSeguridad);
+        Contenido = new ArrayList<>();
     }
 
-    public Date getFecha_creacion() {
-        return Fecha_creacion;
+    public Folder_20964708_RiquelmeOlguin buscarFolder(String nombre) {
+        for (FileFolderSystem_20964708_RiquelmeOlguin objeto : this.Contenido) {
+            if (objeto instanceof Folder_20964708_RiquelmeOlguin && objeto.getNombre().equals(nombre)) {
+                return (Folder_20964708_RiquelmeOlguin)objeto;
+            }
+        }
+        return null;
     }
-
-    public Date getFecha_modificacion() {
-        return Fecha_modificacion;
-    }
-
-    public String getCreadorUser() {
-        return CreadorUser;
-    }
-
-    public AtributosSeguridad_20964708_RiquelmeOlguin getAtributoSeguridad() {
-        return AtributoSeguridad;
-    }
-
-    public Folder_20964708_RiquelmeOlguin(String nombre, Date fecha_creacion, Date fecha_modificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad) {
-        this.Nombre = nombre;
-        this.Fecha_creacion = fecha_creacion;
-        this.Fecha_modificacion = fecha_modificacion;
-        this.CreadorUser = creadorUser;
-        this.AtributoSeguridad = atributoSeguridad;
-    }
-
 
     @Override
     public String toString() {
         return "Folder_20964708_RiquelmeOlguin{" +
-                "Nombre='" + Nombre + '\'' +
-                ", Fecha_creacion=" + Fecha_creacion +
-                ", Fecha_modificacion=" + Fecha_modificacion +
-                ", CreadorUser='" + CreadorUser + '\'' +
-                ", AtributoSeguridad=" + AtributoSeguridad +
+                "Nombre='" + getNombre() + '\'' +
+                ", Fecha_creacion=" + getFechaCreacion() +
+                ", Fecha_modificacion=" + getFechaModificacion() +
+                ", CreadorUser='" + getCreadorUser() + '\'' +
+                ", AtributoSeguridad=" + getAtributoSeguridad() +
+                ",Contenido="+ Contenido +
                 '}';
     }
 }

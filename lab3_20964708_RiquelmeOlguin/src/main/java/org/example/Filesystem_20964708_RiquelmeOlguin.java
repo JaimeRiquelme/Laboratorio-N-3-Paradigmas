@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_20964708_RiquelmeOlguin{
+public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     String nombre;
 
@@ -20,7 +20,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
 
     String DriveActual;
 
-    List<Folder_20964708_RiquelmeOlguin> Contenido;
+    String RutaActual;
 
     public Filesystem_20964708_RiquelmeOlguin(String nombre) {
         this.nombre = nombre;
@@ -29,37 +29,38 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
         this.usuarios = new ArrayList<>();
         this.usuarioActual = null;
         this.DriveActual = null;
-        this.Contenido = new ArrayList<>();
+        this.RutaActual = null;
+
     }
 
-    public void addDrive(String letra, String nombre, int capacidad){
-        var nd = new Drive_20964708_RiquelmeOlguin(letra,nombre,capacidad);
+    public void addDrive(String letra, String nombre, int capacidad) {
+        var nd = new Drive_20964708_RiquelmeOlguin(letra, nombre, capacidad);
         var listaLetras = drives.stream().map(Drive_20964708_RiquelmeOlguin::getLetra)
                 .collect(Collectors.toList());
-        if (!listaLetras.contains(letra)){
+        if (!listaLetras.contains(letra)) {
             drives.add(nd);
-        }else{
+        } else {
             System.out.println("Letra de drive ya existe.");
         }
     }
 
-    public void register(String NombreUsuario){
-        if (!usuarios.contains(NombreUsuario.toUpperCase())){
+    public void register(String NombreUsuario) {
+        if (!usuarios.contains(NombreUsuario.toUpperCase())) {
             usuarios.add(NombreUsuario.toUpperCase());
-        }else{
-            System.out.println("El usuario " + NombreUsuario +" ya se encuentra registrado");
+        } else {
+            System.out.println("El usuario " + NombreUsuario + " ya se encuentra registrado");
         }
 
     }
 
     @Override
     public void login(String usuario) {
-        if(getUsuarioActual() != null){
+        if (getUsuarioActual() != null) {
             System.out.println("Ya se encuentra un usuario registrado.");
-        }else{
-            if (usuarios.contains(usuario.toUpperCase())){
+        } else {
+            if (usuarios.contains(usuario.toUpperCase())) {
                 setUsuarioActual(usuario.toUpperCase());
-            }else{
+            } else {
                 System.out.println("Usuario no registrado.");
             }
 
@@ -68,9 +69,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
 
     @Override
     public void logout() {
-        if (getUsuarioActual() == null){
+        if (getUsuarioActual() == null) {
             System.out.println("No se encuentra ningún usuario logeado.");
-        }else{
+        } else {
             setUsuarioActual(null);
         }
     }
@@ -80,13 +81,14 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
         var listaLetras = drives.stream().map(Drive_20964708_RiquelmeOlguin::getLetra)
                 .collect(Collectors.toList());
 
-        if(getUsuarioActual() != null){
-            if (listaLetras.contains(Letra.toUpperCase())){
+        if (getUsuarioActual() != null) {
+            if (listaLetras.contains(Letra.toUpperCase())) {
                 setDriveActual(Letra.toUpperCase());
-            }else{
+                setRutaActual(Letra.toUpperCase().concat(":/"));
+            } else {
                 System.out.println("Drive no existente");
             }
-        }else {
+        } else {
             System.out.println("No hay ningun usuario logeado, porfavor realize logeo.");
         }
 
@@ -104,8 +106,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
             boolean Oculto = false;
             int Valor1;
             int Valor2;
+            Drive_20964708_RiquelmeOlguin DriveActual = null;
             AtributosSeguridad_20964708_RiquelmeOlguin Atributos;
-
             System.out.println("Ingrese Los atributos de seguridad");
             System.out.printf("###ATRIBUTO SOLO LECTURA### \n");
             System.out.println("1.SI");
@@ -127,24 +129,51 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
             Fecha_creacion = new Date();
             Creador = getUsuarioActual();
             Atributos = new AtributosSeguridad_20964708_RiquelmeOlguin(Lectura, Oculto);
-
             Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos);
-
-            var listaFolders= Contenido.stream().map(Folder_20964708_RiquelmeOlguin::getNombre)
-                    .collect(Collectors.toList());
-
-            if (!listaFolders.contains(Nombre)){
-                Contenido.add(NewFolder);
-            }else{
-                System.out.println("Nombre ya existente, pruebe otro.");
+            String Ruta = getRutaActual();
+            String[] RutaSplit = Ruta.split("/");
+            for (Drive_20964708_RiquelmeOlguin Drive : drives) {  //ENCUENTRO DRIVE ACTUAL DADO EL CURRENT DRIVE
+                if (Drive.getLetra().equals(getDriveActual())) {
+                    DriveActual = Drive;
+                }
             }
-
-
-        }else{
+            if (RutaSplit.length == 1) {
+                DriveActual.Contenido.add(NewFolder);
+            } else {
+                Folder_20964708_RiquelmeOlguin actual = null;
+                if (DriveActual != null) {
+                    actual = DriveActual.buscarFolder(RutaSplit[1]);
+                    for (int i = 2; i < RutaSplit.length && actual != null; i++) {
+                        Folder_20964708_RiquelmeOlguin Encontrado = actual.buscarFolder(RutaSplit[i]);
+                        if (Encontrado != null) {
+                            actual = Encontrado;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                if (actual != null) {
+                    actual.Contenido.add(NewFolder);
+                }
+            }
+        } else {
             System.out.println("No hay ningun usuario logeado, porfavor realize logeo.");
         }
 
     }
+
+    @Override
+    public void cd(String Nombre) {
+        String RutaActual = getRutaActual();
+        if (RutaActual == getDriveActual().concat(":/")) {
+
+            setRutaActual(RutaActual.concat(Nombre));
+        }else{
+            setRutaActual(RutaActual.concat(Nombre));
+
+        }
+    }
+
 
     public String getNombre() {
         return nombre;
@@ -155,12 +184,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
     }
 
 
-
-
     public List<Drive_20964708_RiquelmeOlguin> getDrives() {
         return drives;
     }
-
 
 
     public List<String> getUsuarios() {
@@ -172,11 +198,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
     }
 
 
-
     public String getUsuarioActual() {
         return usuarioActual;
     }
-
 
 
     public String getDriveActual() {
@@ -185,6 +209,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
 
     public void setDriveActual(String driveActual) {
         this.DriveActual = driveActual;
+    }
+
+
+    public void setRutaActual(String rutaActual) {
+        RutaActual = rutaActual;
     }
 
     @Override
@@ -196,11 +225,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements  Interfaz_Filesystem_
                 ", usuarios=" + usuarios +
                 ", usuarioActual='" + usuarioActual + '\'' +
                 ", DriveActual='" + DriveActual + '\'' +
-                ", Contenido=" + Contenido +
+                ", RutaActual='" + RutaActual + '\'' +
                 '}';
     }
 
-    public List<Folder_20964708_RiquelmeOlguin> getContenido() {
-        return Contenido;
+    public String getRutaActual() {
+        return RutaActual;
     }
 }

@@ -19,6 +19,8 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     void mkdir(String Nombre);
 
+    void cd(String Nombre);
+
 
 }
 

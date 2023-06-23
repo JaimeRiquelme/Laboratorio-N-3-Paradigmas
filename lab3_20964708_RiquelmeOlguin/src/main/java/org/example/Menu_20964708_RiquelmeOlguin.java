@@ -1,6 +1,7 @@
 package org.example;
 
 
+import javax.swing.*;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -53,7 +54,7 @@ public class Menu_20964708_RiquelmeOlguin {
                             ", usuarios=" + Sistema.getUsuarios() +
                             ", usuarioActual='" + Sistema.getUsuarioActual() + '\'' +
                             ", DriveActual='" + Sistema.getDriveActual() + '\'' +
-                            ", Contenido=" + Sistema.getContenido() +
+                            ", RutaActual='" + Sistema.getRutaActual() + '\'' +
                             '}');
                     break;
 
@@ -93,7 +94,8 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("4. Deslogeo de un usuario");
         System.out.println("5. Switch Drive");
         System.out.println("6. Crear un folder");
-        System.out.println("7. Salir");
+        System.out.println("7. Acceder a carpeta");
+        System.out.println("8. Salir");
         System.out.println();
         System.out.println();
 
@@ -155,12 +157,13 @@ public class Menu_20964708_RiquelmeOlguin {
 
 
                     break;
-
-
-
-
-
                 case 7:
+                    String nombreRuta;
+                    System.out.println("Ingrese el nombre de la carpeta");
+                    nombreRuta = entrada.nextLine();
+                    Sistema.cd(nombreRuta);
+                    break;
+                case 8:
                     System.out.println("\nPrograma finalizado.");
                     salirMenu = true;
                     break;

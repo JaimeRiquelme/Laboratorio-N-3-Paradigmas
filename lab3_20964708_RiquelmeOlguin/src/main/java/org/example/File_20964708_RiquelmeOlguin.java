@@ -1,14 +1,11 @@
 package org.example;
 import java.util.Date;
 
-
-
 public class File_20964708_RiquelmeOlguin extends Folder_20964708_RiquelmeOlguin {
-    String contenido;
-    String formato;
-    long tamano;  // Tamaño en bytes
+    private String contenido;
+    private String formato;
+    private long tamano;  // Tamaño en bytes
 
-    // Constructor, getters y setters
     public File_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String usuarioCreador, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad, String contenido, String formato, long tamano) {
         super(nombre, fechaCreacion, fechaModificacion, usuarioCreador, atributoSeguridad);
         this.contenido = contenido;
