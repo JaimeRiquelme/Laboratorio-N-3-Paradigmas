@@ -3,7 +3,7 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Drive_20964708_RiquelmeOlguin {
+public class Drive_20964708_RiquelmeOlguin implements  Interfaz_Drive_20964708_RiquelmeOlguin{
 
     String letra;
     String nombre;

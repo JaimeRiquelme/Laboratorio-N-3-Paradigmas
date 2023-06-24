@@ -1,8 +1,4 @@
 package org.example;
-
-
-import javax.swing.*;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -151,9 +147,9 @@ public class Menu_20964708_RiquelmeOlguin {
                 case 6:
                     System.out.println("----CREANDO UN FOLDER------ \n");
                     String Nombre;
-                    System.out.printf("Ingrese el NOMBRE del nuevo folder. \n");
+                    System.out.println("Ingrese el NOMBRE del nuevo folder. \n");
                     Nombre = entrada.nextLine();
-                    Sistema.mkdir(Nombre);
+                    Sistema.mkdir(Nombre.toUpperCase());
 
 
                     break;

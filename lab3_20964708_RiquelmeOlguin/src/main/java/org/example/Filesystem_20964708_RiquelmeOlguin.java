@@ -130,12 +130,21 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             String Ruta = getRutaActual();
             String[] RutaSplit = Ruta.split("/");
             DriveActual = buscarDriveActual();
+            List<String> NombresUsados;
             if (RutaSplit.length == 1) {
-                DriveActual.Contenido.add(NewFolder);
+                NombresUsados = getContenidoNombres(DriveActual.Contenido);
+                if (!NombresUsados.contains(Nombre)){
+                    DriveActual.Contenido.add(NewFolder);
+                }else{
+                    System.out.println("Este nombre ya existe!, Prueba otro.");
+                }
             } else {
                 Folder_20964708_RiquelmeOlguin actual = buscarContenido(RutaSplit, DriveActual);
-                if (actual != null) {
-                    actual.Contenido.add(NewFolder);
+                NombresUsados = getContenidoNombres(actual.Contenido);
+                if (!NombresUsados.contains(Nombre)) {
+                        actual.Contenido.add(NewFolder);
+                }else {
+                    System.out.println("Este nombre ya existe!, Prueba otro.");
                 }
             }
         } else {
@@ -149,37 +158,43 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         String RutaActual = getRutaActual();
         String[] RutaSplit = RutaActual.split("/");
         Drive_20964708_RiquelmeOlguin Driveactual = buscarDriveActual();
-        List<String> NombresContenido;
 
         if (Driveactual == null) {
             System.out.println("Drive actual no encontrado.");
             return;
         }
 
-        if (getDriveActual().concat(":/").equals(getRutaActual())) {
-            NombresContenido = getContenidoNombres(Driveactual.Contenido);
-        }else {
-            Folder_20964708_RiquelmeOlguin Folderactual = buscarContenido(RutaSplit, Driveactual);
-            NombresContenido = getContenidoNombres(Folderactual.Contenido);
-        }
-        /*if (Folderactual == null || Folderactual.Contenido == null) {
-            System.out.println("Contenido de la carpeta actual no encontrado.");
-            return;
-        }
-
-
-         */
-
-        if(NombresContenido.contains(Nombre)) {
-            if (RutaActual.equals(getDriveActual().concat(":/"))) {
-                setRutaActual(RutaActual.concat(Nombre));
-            } else {
-                setRutaActual(RutaActual.concat("/").concat(Nombre));
+        if ("..".equals(Nombre)) {
+            if(RutaSplit.length <= 2){
+                setRutaActual(getDriveActual().concat(":/"));
             }
+            else {
+                String NuevaRuta = RutaActual.substring(0, RutaActual.lastIndexOf("/"));
+                setRutaActual(NuevaRuta);
+            }
+        } else if ("/".equals(Nombre)) {
+            setRutaActual(getDriveActual().concat(":/"));
         } else {
-            System.out.println("El nombre del archivo no existe en la ruta actual.");
+            List<String> NombresContenido;
+            if (getDriveActual().concat(":/").equals(getRutaActual())) {
+                NombresContenido = getContenidoNombres(Driveactual.Contenido);
+            } else {
+                Folder_20964708_RiquelmeOlguin Folderactual = buscarContenido(RutaSplit, Driveactual);
+                NombresContenido = getContenidoNombres(Folderactual.Contenido);
+            }
+
+            if(NombresContenido.contains(Nombre)) {
+                if (RutaActual.equals(getDriveActual().concat(":/"))) {
+                    setRutaActual(RutaActual.concat(Nombre));
+                } else {
+                    setRutaActual(RutaActual.concat("/").concat(Nombre));
+                }
+            } else {
+                System.out.println("El nombre del archivo no existe en la ruta actual.");
+            }
         }
     }
+
 
 
 

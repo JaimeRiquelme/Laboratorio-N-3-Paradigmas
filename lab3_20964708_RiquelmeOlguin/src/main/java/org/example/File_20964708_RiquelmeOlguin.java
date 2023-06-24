@@ -1,7 +1,8 @@
 package org.example;
+import java.io.File;
 import java.util.Date;
 
-public class File_20964708_RiquelmeOlguin extends Folder_20964708_RiquelmeOlguin {
+public class File_20964708_RiquelmeOlguin extends FileFolderSystem_20964708_RiquelmeOlguin implements Interfaz_File_20964708_RiquelmeOlguin {
     private String contenido;
     private String formato;
     private long tamano;  // Tamaño en bytes
