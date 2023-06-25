@@ -143,6 +143,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 NombresUsados = getContenidoNombres(actual.Contenido);
                 if (!NombresUsados.contains(Nombre)) {
                         actual.Contenido.add(NewFolder);
+                        actual.setFechaModificacion(Fecha_modif); //Cada ves que se inserta algo en el folder, se actualiza la fecha modif
                 }else {
                     System.out.println("Este nombre ya existe!, Prueba otro.");
                 }
@@ -174,6 +175,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         } else if ("/".equals(Nombre)) {
             setRutaActual(getDriveActual().concat(":/"));
+        }else if (Character.toString(Nombre.charAt(0)).equals(".") && (Nombre != "..")) {
+            return;
         } else {
             List<String> NombresContenido;
             if (getDriveActual().concat(":/").equals(getRutaActual())) {
@@ -285,10 +288,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return actual;
     }
 
-    public List<String> getContenidoNombres(List<FileFolderSystem_20964708_RiquelmeOlguin> contenido) {
+    public List<String> getContenidoNombres(List<Contenido_20964708_RiquelmeOlguin> contenido) {
         List<String> nombres = new ArrayList<>();
 
-        for (FileFolderSystem_20964708_RiquelmeOlguin objeto : contenido) {
+        for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
             nombres.add(objeto.getNombre());
         }
 

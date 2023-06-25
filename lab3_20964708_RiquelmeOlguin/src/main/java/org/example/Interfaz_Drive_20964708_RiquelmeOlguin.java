@@ -10,7 +10,7 @@ public interface Interfaz_Drive_20964708_RiquelmeOlguin {
 
     int getCapacidad();
 
-    List<FileFolderSystem_20964708_RiquelmeOlguin> getContenido();
+    List<Contenido_20964708_RiquelmeOlguin> getContenido();
 
     Folder_20964708_RiquelmeOlguin buscarFolder(String nombre);
 

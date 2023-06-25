@@ -1,14 +1,14 @@
 package org.example;
 import java.util.Date;
 
-public abstract class FileFolderSystem_20964708_RiquelmeOlguin {
+public abstract class Contenido_20964708_RiquelmeOlguin {
     private String nombre;
     private Date fechaCreacion;
     private Date fechaModificacion;
     private String creadorUser;
     private AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad;
 
-    public FileFolderSystem_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad) {
+    public Contenido_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad) {
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
@@ -45,5 +45,9 @@ public abstract class FileFolderSystem_20964708_RiquelmeOlguin {
                 ", creadorUser='" + creadorUser + '\'' +
                 ", atributoSeguridad=" + atributoSeguridad +
                 '}';
+    }
+
+    public void setFechaModificacion(Date fechaModificacion) {
+        this.fechaModificacion = fechaModificacion;
     }
 }

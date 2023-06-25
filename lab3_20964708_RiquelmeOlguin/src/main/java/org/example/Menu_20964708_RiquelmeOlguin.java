@@ -157,12 +157,12 @@ public class Menu_20964708_RiquelmeOlguin {
                     String nombreRuta;
                     System.out.println("Ingrese el nombre de la carpeta");
                     nombreRuta = entrada.nextLine();
-                    Sistema.cd(nombreRuta);
+                    Sistema.cd(nombreRuta.toUpperCase());
                     break;
                 case 8:
-                    System.out.println("\nPrograma finalizado.");
-                    salirMenu = true;
-                    break;
+                    System.out.printf("Volver al menú principal.");
+                    MenuPrincipal();
+                    scannerOpcion();
                 default:
                     System.out.println("\nEsa opción no existe");
                     break;
