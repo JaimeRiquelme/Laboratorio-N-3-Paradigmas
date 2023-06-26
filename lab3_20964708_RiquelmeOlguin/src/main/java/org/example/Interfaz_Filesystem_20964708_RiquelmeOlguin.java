@@ -23,10 +23,13 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     void cd(String Nombre);
 
+    void addFile(File_20964708_RiquelmeOlguin file);
+
     Folder_20964708_RiquelmeOlguin buscarContenido(String[] RutaSplit, Drive_20964708_RiquelmeOlguin DriveActual);
     Drive_20964708_RiquelmeOlguin buscarDriveActual();
-
     List<String> getContenidoNombres(List<Contenido_20964708_RiquelmeOlguin> contenido);
+
+    void crearFile(String Nombre);
 
 
 }

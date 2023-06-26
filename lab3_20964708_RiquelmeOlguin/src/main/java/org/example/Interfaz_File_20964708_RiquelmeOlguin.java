@@ -13,4 +13,6 @@ public interface Interfaz_File_20964708_RiquelmeOlguin {
     long getTamano();
 
     void setTamano(long tamano);
+
+
 }

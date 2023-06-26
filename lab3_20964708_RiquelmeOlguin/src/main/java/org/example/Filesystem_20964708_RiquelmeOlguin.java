@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.Random;
 
 public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
@@ -93,45 +94,22 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     @Override
     public void mkdir(String Nombre) {
-        Scanner entrada = new Scanner(System.in);
-
         if (getUsuarioActual() != null) {
             Date Fecha_creacion;
             Date Fecha_modif;
             String Creador;
-            boolean Lectura = false;
-            boolean Oculto = false;
-            int Valor1;
-            int Valor2;
             Drive_20964708_RiquelmeOlguin DriveActual;
             AtributosSeguridad_20964708_RiquelmeOlguin Atributos;
-            System.out.println("Ingrese Los atributos de seguridad");
-            System.out.println("###ATRIBUTO SOLO LECTURA### \n");
-            System.out.println("1.SI");
-            System.out.println("2.NO");
-            Valor1 = entrada.nextInt();
-            entrada.nextLine();
-            if (Valor1 == 1) {
-                Lectura = true;
-            }
-            System.out.println("###ATRIBUTO OCULTO### \n");
-            System.out.println("1.SI");
-            System.out.println("2.NO");
-            Valor2 = entrada.nextInt();
-            entrada.nextLine();
-            if (Valor2 == 1) {
-                Oculto = true;
-            }
             Fecha_modif = new Date();
             Fecha_creacion = new Date();
             Creador = getUsuarioActual();
-            Atributos = new AtributosSeguridad_20964708_RiquelmeOlguin(Lectura, Oculto);
+            Atributos = crearSeguridad();
             Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos);
             String Ruta = getRutaActual();
             String[] RutaSplit = Ruta.split("/");
             DriveActual = buscarDriveActual();
             List<String> NombresUsados;
-            if (RutaSplit.length == 1) {
+            if (RutaSplit.length == 1) { // C:/Folder1/Folder2/folder3/folder4
                 NombresUsados = getContenidoNombres(DriveActual.Contenido);
                 if (!NombresUsados.contains(Nombre)){
                     DriveActual.Contenido.add(NewFolder);
@@ -158,6 +136,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     public void cd(String Nombre) {
         String RutaActual = getRutaActual();
         String[] RutaSplit = RutaActual.split("/");
+
         Drive_20964708_RiquelmeOlguin Driveactual = buscarDriveActual();
 
         if (Driveactual == null) {
@@ -198,7 +177,18 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
-
+    @Override
+    public void addFile(File_20964708_RiquelmeOlguin file) {
+        String Ruta = getRutaActual();
+        String[] RutaSplit = Ruta.split("/");
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        if (RutaSplit.length == 1){
+            DriveActual.Contenido.add(file);
+        }else {
+            Folder_20964708_RiquelmeOlguin actual = buscarContenido(RutaSplit,DriveActual);
+            actual.Contenido.add(file);
+        }
+    }
 
 
     public String getNombre() {
@@ -294,8 +284,174 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
             nombres.add(objeto.getNombre());
         }
-
         return nombres;
+    }
+
+    @Override
+    public void crearFile(String Nombre) {
+        Random random = new Random();
+        Scanner entrada = new Scanner(System.in);
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        String RutaActual = getRutaActual();
+        String[] RutaActualSplit = RutaActual.split("/");
+        List<String> NombresUsados;
+
+        //SI ESTE IF SE CUMPLE SIGNIFICA QUE YA EXISTE EL NOMBRE EN LA RUTA ACTUAL, sale del metodo.
+        if (RutaActualSplit.length == 1){
+            NombresUsados = getContenidoNombres(DriveActual.Contenido);
+            if (NombresUsados.contains(Nombre)){
+                System.out.println("Ese nombre ya existe!, Prueba otro.");
+                return;
+            }
+
+        }else{
+            Folder_20964708_RiquelmeOlguin nf = buscarContenido(RutaActualSplit,DriveActual);
+            NombresUsados = getContenidoNombres(nf.Contenido);
+            if (NombresUsados.contains(Nombre)){
+                System.out.println("Ese nombre ya existe!, Prueba otro.");
+                return;
+            }
+        }
+
+        System.out.println("CREANDO UN FILE");
+        System.out.println("INGRESE EL TIPO DE ARCHIVO A CREAR:");
+        System.out.println("1.- Tipo Text.(.txt / .md)");
+        System.out.println("2.- Tipo Documento. (.docx / .pdf)");
+        System.out.println("3.- Tipo Codigo. (.java / .py / .rkt)");
+        int eleccion = entrada.nextInt();
+        entrada.nextLine();
+        Date fechaCreacion = new Date();
+        Date fechaModif = new Date();
+        String UserActual = getUsuarioActual();
+        AtributosSeguridad_20964708_RiquelmeOlguin seguridad;
+        String contenido;
+        String formato;
+        long tamano = random.nextInt(10000); //genera un numero random del 0 al 9999 para el tamaño
+
+        switch(eleccion) {
+            case 1:
+                System.out.println("TIPO DE Extensión");
+                System.out.println("1.- .txt");
+                System.out.println("2.- .md");
+                int eleccion2 = entrada.nextInt();
+                entrada.nextLine();
+
+                seguridad = crearSeguridad();
+                switch (eleccion2){
+                    case 1:
+                        formato = ".txt";
+                        System.out.println("Ingrese el Conteido texto del archivo.");
+                        contenido = entrada.nextLine();
+                        TextFile_20964708_RiquelmeOlguin newfile = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        addFile(newfile);
+                        break;
+
+                    case 2:
+                        formato = ".md";
+                        System.out.println("Ingrese el Contenido texto del archivo.");
+                        contenido = entrada.nextLine();
+                        TextFile_20964708_RiquelmeOlguin newfile2 = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        addFile(newfile2);
+                        break;
+                }
+                break;
+            case 2:
+
+                System.out.println("TIPO DE Extensión");
+                System.out.println("1.- .docx");
+                System.out.println("2.- .pdf");
+                int eleccion3 = entrada.nextInt();
+                entrada.nextLine();
+
+                seguridad = crearSeguridad();
+                switch (eleccion3){
+                    case 1:
+                        formato = ".docx";
+                        System.out.println("Ingrese el contenido del DOCUMENTO");
+                        contenido = entrada.nextLine();
+                        DocumentFile_20964708_RiquelmeOlguin newfile3 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        addFile(newfile3);
+                        break;
+
+                    case 2:
+                        formato = ".pdf";
+                        System.out.println("Ingrese el contenido del DOCUMENTO");
+                        contenido = entrada.nextLine();
+                        DocumentFile_20964708_RiquelmeOlguin newfile4 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        addFile(newfile4);
+                        break;
+                }
+                break;
+            case 3:
+                System.out.println("TIPO DE Extensión");
+                System.out.println("1.- .java");
+                System.out.println("2.- .py");
+                System.out.println("3.- .rkt");
+                int eleccion4 = entrada.nextInt();
+                entrada.nextLine();
+
+                seguridad = crearSeguridad();
+                switch (eleccion4){
+                    case 1:
+                        formato = ".java";
+                        System.out.println("Ingrese CODIGO del archivo");
+                        contenido = entrada.nextLine();
+                        DocumentFile_20964708_RiquelmeOlguin newfile5 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        addFile(newfile5);
+                        break;
+
+                    case 2:
+                        formato = ".py";
+                        System.out.println("Ingrese CODIGO del archivo");
+                        contenido = entrada.nextLine();
+                        DocumentFile_20964708_RiquelmeOlguin newfile6 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        addFile(newfile6);
+                        break;
+                    case 3:
+                        formato = ".rkt";
+                        System.out.println("Ingrese CODIGO del archivo");
+                        contenido = entrada.nextLine();
+                        DocumentFile_20964708_RiquelmeOlguin newfile7 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        addFile(newfile7);
+                        break;
+                }
+                break;
+            default:
+                System.out.println("La elección no es válida.");
+                break;
+        }
+
+
+        return;
+    }
+
+    public AtributosSeguridad_20964708_RiquelmeOlguin crearSeguridad(){
+        Scanner entrada = new Scanner(System.in);
+        int Valor1;
+        int Valor2;
+        boolean Lectura = false;
+        boolean Oculto = false;
+        System.out.println("Ingrese Los atributos de seguridad");
+        System.out.println("###ATRIBUTO SOLO LECTURA### \n");
+        System.out.println("1.SI");
+        System.out.println("2.NO");
+        Valor1 = entrada.nextInt();
+        entrada.nextLine();
+        if (Valor1 == 1) {
+            Lectura = true;
+        }
+        System.out.println("###ATRIBUTO OCULTO### \n");
+        System.out.println("1.SI");
+        System.out.println("2.NO");
+        Valor2 = entrada.nextInt();
+        entrada.nextLine();
+        if (Valor2 == 1) {
+            Oculto = true;
+        }
+        AtributosSeguridad_20964708_RiquelmeOlguin seguridad = new AtributosSeguridad_20964708_RiquelmeOlguin(Lectura,Oculto);
+
+        return seguridad;
+
     }
 }
 

@@ -1,4 +1,5 @@
 package org.example;
+import javax.swing.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -89,9 +90,10 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("3. Logear un usuario");
         System.out.println("4. Deslogeo de un usuario");
         System.out.println("5. Switch Drive");
-        System.out.println("6. Crear un folder");
-        System.out.println("7. Acceder a carpeta");
-        System.out.println("8. Salir");
+        System.out.println("6. Crear un FOLDER");
+        System.out.println("7. Crear FILE");
+        System.out.println("8. Acceder a carpeta");
+        System.out.println("9. Salir");
         System.out.println();
         System.out.println();
 
@@ -150,16 +152,20 @@ public class Menu_20964708_RiquelmeOlguin {
                     System.out.println("Ingrese el NOMBRE del nuevo folder. \n");
                     Nombre = entrada.nextLine();
                     Sistema.mkdir(Nombre.toUpperCase());
-
-
                     break;
                 case 7:
+                    String NombreFile;
+                    System.out.println("Ingrese el nombre del file a crear");
+                    NombreFile = entrada.nextLine();
+                    Sistema.crearFile(NombreFile.toUpperCase());
+                    break;
+                case 8:
                     String nombreRuta;
                     System.out.println("Ingrese el nombre de la carpeta");
                     nombreRuta = entrada.nextLine();
                     Sistema.cd(nombreRuta.toUpperCase());
                     break;
-                case 8:
+                case 9:
                     System.out.printf("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();

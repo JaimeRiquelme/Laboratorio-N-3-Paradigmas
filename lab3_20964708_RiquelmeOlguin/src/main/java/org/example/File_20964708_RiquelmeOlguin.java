@@ -1,7 +1,7 @@
 package org.example;
 import java.util.Date;
 
-public class File_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeOlguin implements Interfaz_File_20964708_RiquelmeOlguin {
+public abstract class File_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeOlguin implements Interfaz_File_20964708_RiquelmeOlguin {
     private String contenido;
     private String formato;
     private long tamano;  // Tamaño en bytes
@@ -12,6 +12,9 @@ public class File_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeOlg
         this.formato = formato;
         this.tamano = tamano;
     }
+
+
+
 
     public String getContenido() {
         return contenido;
@@ -35,5 +38,19 @@ public class File_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeOlg
 
     public void setTamano(long tamano) {
         this.tamano = tamano;
+    }
+
+    @Override
+    public String toString() {
+        return "FileFolderSystem{" +
+                "nombre='" + super.getNombre() + '\'' +
+                ", fechaCreacion=" + super.getFechaCreacion() +
+                ", fechaModificacion=" + super.getFechaModificacion() +
+                ", creadorUser='" + super.getCreadorUser() + '\'' +
+                ", atributoSeguridad=" + super.getAtributoSeguridad() +
+                ", contenido='" + contenido + '\'' +
+                ", formato='" + formato + '\'' +
+                ", tamano=" + tamano +
+                '}';
     }
 }
