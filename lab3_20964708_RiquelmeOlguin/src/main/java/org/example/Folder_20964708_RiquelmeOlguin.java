@@ -18,6 +18,11 @@ public class Folder_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeO
         }
         return null;
     }
+
+
+    public void eliminarcontenido(List<Contenido_20964708_RiquelmeOlguin> Contenido, String NombreEliminar){
+        Contenido.removeIf(p -> p.getNombre().equals(NombreEliminar));
+    }
     @Override
     public String toString() {
         return "Folder_20964708_RiquelmeOlguin{" +

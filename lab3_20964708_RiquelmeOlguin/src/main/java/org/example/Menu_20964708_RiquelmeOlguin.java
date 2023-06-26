@@ -93,7 +93,8 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("6. Crear un FOLDER");
         System.out.println("7. Crear FILE");
         System.out.println("8. Acceder a carpeta");
-        System.out.println("9. Salir");
+        System.out.println("9. Eliminar por nombre");
+        System.out.println("10. Salir");
         System.out.println();
         System.out.println();
 
@@ -166,6 +167,10 @@ public class Menu_20964708_RiquelmeOlguin {
                     Sistema.cd(nombreRuta.toUpperCase());
                     break;
                 case 9:
+                    System.out.println("Ingrese el nombre a eliminar");
+                    String NombreEliminar = entrada.nextLine();
+                    Sistema.del(NombreEliminar.toUpperCase());
+                case 10:
                     System.out.printf("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();

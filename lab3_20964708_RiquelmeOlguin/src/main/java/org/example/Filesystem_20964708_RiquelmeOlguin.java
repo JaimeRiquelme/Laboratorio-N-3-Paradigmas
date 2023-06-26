@@ -190,6 +190,66 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
+    @Override
+    public void del(String Nombre) {
+        String RutaActual = getRutaActual();
+        String[] RutaSplit = RutaActual.split("/");
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        Folder_20964708_RiquelmeOlguin FolderActual;
+
+        List<String> NombresContenido;
+        if (Nombre.equals("*")){
+            if (RutaSplit.length == 1){
+                DriveActual.Contenido.clear();
+            }else{
+                FolderActual = buscarContenido(RutaSplit,DriveActual);
+                FolderActual.Contenido.clear();
+            }
+        }else if(Nombre.contains("*") && Nombre.contains(".")){
+            System.out.println("IngresaEaaa");
+            String[] NombreSplit = Nombre.split("\\.");
+            String Extension = ".".concat(NombreSplit[1].toUpperCase());
+            DriveActual.elimiarContenidoExt(DriveActual.Contenido,Extension);
+        }else{
+            if (RutaSplit.length == 1) {
+                NombresContenido = getContenidoNombres(DriveActual.Contenido);
+                if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
+                    if (NombresContenido.contains(Nombre)) {
+                        DriveActual.eliminarcontenidoDrive(DriveActual.Contenido, Nombre);
+                    } else {
+                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                    }
+                }
+                if (Nombre.contains(".")) { //Si contiene un punto, es un file
+                    String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
+                    if (NombresContenido.contains(NombreEliminar)) {
+                        DriveActual.eliminarcontenidoDrive(DriveActual.Contenido, NombreEliminar);
+                    } else {
+                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                    }
+                }
+            } else {
+                FolderActual = buscarContenido(RutaSplit, DriveActual);
+                NombresContenido = getContenidoNombres(FolderActual.Contenido);
+                if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
+                    if (NombresContenido.contains(Nombre)) {
+                        FolderActual.eliminarcontenido(FolderActual.Contenido, Nombre);
+                    } else {
+                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                    }
+                }
+                if (Nombre.contains(".")) { //Si contiene un punto, es un file
+                    String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
+                    if (NombresContenido.contains(NombreEliminar)) {
+                        FolderActual.eliminarcontenido(FolderActual.Contenido, NombreEliminar);
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
     public String getNombre() {
         return nombre;
@@ -339,7 +399,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 seguridad = crearSeguridad();
                 switch (eleccion2){
                     case 1:
-                        formato = ".txt";
+                        formato = ".TXT";
                         System.out.println("Ingrese el Conteido texto del archivo.");
                         contenido = entrada.nextLine();
                         TextFile_20964708_RiquelmeOlguin newfile = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
@@ -347,7 +407,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         break;
 
                     case 2:
-                        formato = ".md";
+                        formato = ".MD";
                         System.out.println("Ingrese el Contenido texto del archivo.");
                         contenido = entrada.nextLine();
                         TextFile_20964708_RiquelmeOlguin newfile2 = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
@@ -366,7 +426,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 seguridad = crearSeguridad();
                 switch (eleccion3){
                     case 1:
-                        formato = ".docx";
+                        formato = ".DOCX";
                         System.out.println("Ingrese el contenido del DOCUMENTO");
                         contenido = entrada.nextLine();
                         DocumentFile_20964708_RiquelmeOlguin newfile3 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
@@ -374,7 +434,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         break;
 
                     case 2:
-                        formato = ".pdf";
+                        formato = ".PDF";
                         System.out.println("Ingrese el contenido del DOCUMENTO");
                         contenido = entrada.nextLine();
                         DocumentFile_20964708_RiquelmeOlguin newfile4 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
@@ -393,25 +453,25 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 seguridad = crearSeguridad();
                 switch (eleccion4){
                     case 1:
-                        formato = ".java";
+                        formato = ".JAVA";
                         System.out.println("Ingrese CODIGO del archivo");
                         contenido = entrada.nextLine();
-                        DocumentFile_20964708_RiquelmeOlguin newfile5 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        CodeFile_20964708_RiquelmeOlguin newfile5 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
                         addFile(newfile5);
                         break;
 
                     case 2:
-                        formato = ".py";
+                        formato = ".PY";
                         System.out.println("Ingrese CODIGO del archivo");
                         contenido = entrada.nextLine();
-                        DocumentFile_20964708_RiquelmeOlguin newfile6 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        CodeFile_20964708_RiquelmeOlguin newfile6 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
                         addFile(newfile6);
                         break;
                     case 3:
-                        formato = ".rkt";
+                        formato = ".RKT";
                         System.out.println("Ingrese CODIGO del archivo");
                         contenido = entrada.nextLine();
-                        DocumentFile_20964708_RiquelmeOlguin newfile7 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        CodeFile_20964708_RiquelmeOlguin newfile7 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
                         addFile(newfile7);
                         break;
                 }

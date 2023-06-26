@@ -27,6 +27,19 @@ public class Drive_20964708_RiquelmeOlguin implements  Interfaz_Drive_20964708_R
         return null;
     }
 
+    public void eliminarcontenidoDrive(List<Contenido_20964708_RiquelmeOlguin> Contenido, String NombreEliminar){
+        Contenido.removeIf(p -> p.getNombre().equals(NombreEliminar));
+    }
+
+    public void elimiarContenidoExt(List<Contenido_20964708_RiquelmeOlguin> Contenido, String Formato){
+        System.out.println("Entroaca");
+        Contenido.removeIf(contenido -> contenido instanceof File_20964708_RiquelmeOlguin && ((File_20964708_RiquelmeOlguin) contenido).getFormato()
+                .equals(Formato));
+    }
+
+
+
+
 
 
     public String getLetra() {
