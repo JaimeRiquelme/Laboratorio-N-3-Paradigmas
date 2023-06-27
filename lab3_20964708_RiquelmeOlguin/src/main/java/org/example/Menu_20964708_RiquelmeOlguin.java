@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Menu_20964708_RiquelmeOlguin {
     private boolean salirMenu;
+    private boolean SistemaCreado = false;
     private Filesystem_20964708_RiquelmeOlguin Sistema;
 
 
@@ -38,23 +39,47 @@ public class Menu_20964708_RiquelmeOlguin {
             int eleccion = entrada.nextInt();
             switch(eleccion){
                 case 1:
-                    scannerOpcion1();
-                    break;
+                    if (!SistemaCreado) {
+                        scannerOpcion1();
+                        SistemaCreado = true;
+                        break;
+                    }else{
+                        System.out.println("Ya existe un sistema!");
+                        break;
+                    }
                 case 2:
-                    mensajeopcional2();
-                    scannerOpcion2();
+                    if (SistemaCreado) {
+                        mensajeopcional2();
+                        scannerOpcion2();
+                    }else{
+                        System.out.println("Debe crear un sistema antes de modificarlo.");
+                        break;
+                    }
                 case 3:
-                    System.out.printf("Filesystem_20964708_RiquelmeOlguin{" +
-                            "nombre='" + Sistema.getNombre() + '\'' +
-                            ", fechaCreacion=" + Sistema.getFechaCreacion() +
-                            ", drives=" + Sistema.getDrives() +
-                            ", usuarios=" + Sistema.getUsuarios() +
-                            ", usuarioActual='" + Sistema.getUsuarioActual() + '\'' +
-                            ", DriveActual='" + Sistema.getDriveActual() + '\'' +
-                            ", RutaActual='" + Sistema.getRutaActual() + '\'' +
-                            '}');
-                    break;
 
+                    if (SistemaCreado) {
+                        System.out.printf("Filesystem_20964708_RiquelmeOlguin{%n" +
+                                        "  nombre='%s',%n" +
+                                        "  fechaCreacion=%s,%n" +
+                                        "  drives=%s,%n" +
+                                        "  usuarios=%s,%n" +
+                                        "  usuarioActual='%s',%n" +
+                                        "  DriveActual='%s',%n" +
+                                        "  RutaActual='%s'%n" +
+                                        "}%n",
+                                Sistema.getNombre(),
+                                Sistema.getFechaCreacion(),
+                                Sistema.getDrives(),
+                                Sistema.getUsuarios(),
+                                Sistema.getUsuarioActual(),
+                                Sistema.getDriveActual(),
+                                Sistema.getRutaActual());
+
+                        break;
+                    }else {
+                        System.out.println("Debe crear un sistema antes de visualizarlo.");
+                        break;
+                    }
 
                 case 4:
                     System.out.println("\nPrograma finalizado.");

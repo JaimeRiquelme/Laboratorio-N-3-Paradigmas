@@ -1,5 +1,6 @@
 package org.example;
 
+import javax.sound.midi.Soundbank;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.Random;
@@ -94,20 +95,19 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     @Override
     public void mkdir(String Nombre) {
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        if (DriveActual == null){
+            System.out.println("Ningun drive seleccionado. Porfavor seleccione uno!");
+            return;
+        }
         if (getUsuarioActual() != null) {
-            Date Fecha_creacion;
-            Date Fecha_modif;
-            String Creador;
-            Drive_20964708_RiquelmeOlguin DriveActual;
-            AtributosSeguridad_20964708_RiquelmeOlguin Atributos;
-            Fecha_modif = new Date();
-            Fecha_creacion = new Date();
-            Creador = getUsuarioActual();
-            Atributos = crearSeguridad();
-            Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos);
+            Date Fecha_creacion = new Date();
+            Date Fecha_modif = new Date();
+            String Creador = getUsuarioActual();
             String Ruta = getRutaActual();
             String[] RutaSplit = Ruta.split("/");
-            DriveActual = buscarDriveActual();
+            AtributosSeguridad_20964708_RiquelmeOlguin Atributos = crearSeguridad();
+            Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos);
             List<String> NombresUsados;
             if (RutaSplit.length == 1) { // C:/Folder1/Folder2/folder3/folder4
                 NombresUsados = getContenidoNombres(DriveActual.Contenido);
@@ -138,6 +138,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         String[] RutaSplit = RutaActual.split("/");
 
         Drive_20964708_RiquelmeOlguin Driveactual = buscarDriveActual();
+
 
         if (Driveactual == null) {
             System.out.println("Drive actual no encontrado.");
@@ -310,15 +311,15 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     }
 
     public Drive_20964708_RiquelmeOlguin buscarDriveActual() {
-        Drive_20964708_RiquelmeOlguin DriveActual = null;
+        Drive_20964708_RiquelmeOlguin BuscarDriveActual = null;
         for (Drive_20964708_RiquelmeOlguin Drive : drives) {
             if (Drive.getLetra().equals(getDriveActual())) {
-                DriveActual = Drive;
+                BuscarDriveActual = Drive;
 
                 break;
             }
         }
-        return DriveActual;
+        return BuscarDriveActual;
     }
 
 
@@ -352,6 +353,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         Random random = new Random();
         Scanner entrada = new Scanner(System.in);
         Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        if (DriveActual == null){
+            System.out.println("Ningun drive seleccionado. Porfavor seleccione uno!");
+            return;
+        }
         String RutaActual = getRutaActual();
         String[] RutaActualSplit = RutaActual.split("/");
         List<String> NombresUsados;
