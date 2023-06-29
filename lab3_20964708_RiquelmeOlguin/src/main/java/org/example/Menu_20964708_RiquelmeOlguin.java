@@ -195,16 +195,19 @@ public class Menu_20964708_RiquelmeOlguin {
                     System.out.println("Ingrese el nombre a eliminar");
                     String NombreEliminar = entrada.nextLine();
                     Sistema.del(NombreEliminar.toUpperCase());
+                    break;
                 case 10:
                     System.out.printf("Ingrese el nombre a copiar");
                     String NombreCopiar = entrada.nextLine();
                     System.out.println("Ingrese la ruta destino");
                     String RutaDestino = entrada.nextLine();
                     Sistema.copy(NombreCopiar,RutaDestino);
+                    break;
                 case 11:
                     System.out.printf("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();
+                    break;
                 default:
                     System.out.println("\nEsa opción no existe");
                     break;
