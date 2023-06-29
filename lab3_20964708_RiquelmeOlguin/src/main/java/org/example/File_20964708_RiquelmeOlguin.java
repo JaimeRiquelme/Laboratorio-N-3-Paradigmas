@@ -53,4 +53,5 @@ public abstract class File_20964708_RiquelmeOlguin extends Contenido_20964708_Ri
                 ", tamano=" + tamano +
                 '}';
     }
+
 }

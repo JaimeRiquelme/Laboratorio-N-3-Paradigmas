@@ -19,6 +19,15 @@ public class Folder_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeO
         return null;
     }
 
+    public File_20964708_RiquelmeOlguin buscarFile(String nombre) {
+        for (Contenido_20964708_RiquelmeOlguin objeto : this.Contenido) {
+            if (objeto instanceof File_20964708_RiquelmeOlguin   && objeto.getNombre().equals(nombre)) {
+                return (File_20964708_RiquelmeOlguin) objeto;
+            }
+        }
+        return null;
+    }
+
 
     public void eliminarcontenido(List<Contenido_20964708_RiquelmeOlguin> Contenido, String NombreEliminar){
         Contenido.removeIf(p -> p.getNombre().equals(NombreEliminar));

@@ -1,6 +1,5 @@
 package org.example;
-
-import javax.sound.midi.Soundbank;
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.Random;
@@ -249,7 +248,59 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
+    @Override
+    public void copy(String NombreCopiar, String path) {
+        //Aquí obtengo el drive y folder que voy a copiar
+        String RutaActual = getRutaActual();
+        String[] RutaSplitActual = RutaActual.split("/");
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        Folder_20964708_RiquelmeOlguin Factual = buscarContenido(RutaSplitActual,DriveActual); // aqui tengo el folder actual donde se está en la ruta
 
+        //Aqui obtengo el drive y folder donde copiar.
+        String DriveCopiar = path.substring(0,1);
+        String[] RutaCopiarSplit = path.split("/");
+        Drive_20964708_RiquelmeOlguin DriveActualCopiar = buscarDrivePorLetra(DriveCopiar);
+
+        if(RutaCopiarSplit.length == 1) { //Si es 1 significa que tengo que copiar en la raiz
+            //Aqui verifico si tengo que copiar un folder o un file
+            if (NombreCopiar.split("\\.").length == 1) {
+                Folder_20964708_RiquelmeOlguin FolderCopiar = Factual.buscarFolder(NombreCopiar);
+                if (FolderCopiar != null) {
+                    DriveActualCopiar.Contenido.add(FolderCopiar);
+                } else {
+                    System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
+                }
+            } else {
+                String NombreSplit[] = NombreCopiar.split("\\.");
+                File_20964708_RiquelmeOlguin FileCopia = Factual.buscarFile(NombreSplit[0]);
+
+                if (FileCopia != null) {
+                    DriveActualCopiar.Contenido.add(FileCopia);
+                } else {
+                    System.out.println("El nombre ingresado no conincide con ningun File existente.");
+                }
+            }
+        }else{
+            Folder_20964708_RiquelmeOlguin Fcopiar = buscarContenido(RutaCopiarSplit,DriveActualCopiar); //este sera el folder donde se copiará
+            if (NombreCopiar.split("\\.").length == 1) {
+                Folder_20964708_RiquelmeOlguin FolderCopiar = Factual.buscarFolder(NombreCopiar);
+                if (FolderCopiar != null) {
+                    Fcopiar.Contenido.add(FolderCopiar);
+                } else {
+                    System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
+                }
+            } else {
+                String NombreSplit[] = NombreCopiar.split("\\.");
+                File_20964708_RiquelmeOlguin FileCopia = Factual.buscarFile(NombreSplit[0]);
+
+                if (FileCopia != null) {
+                    Fcopiar.Contenido.add(FileCopia);
+                } else {
+                    System.out.println("El nombre ingresado no conincide con ningun File existente.");
+                }
+            }
+        }
+    }
 
 
     public String getNombre() {
@@ -321,6 +372,18 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
         return BuscarDriveActual;
     }
+
+    public Drive_20964708_RiquelmeOlguin buscarDrivePorLetra(String letraDrive) {
+        Drive_20964708_RiquelmeOlguin BuscarDrive = null;
+        for (Drive_20964708_RiquelmeOlguin Drive : drives) {
+            if (Drive.getLetra().equals(letraDrive)) {
+                BuscarDrive = Drive;
+                break;
+            }
+        }
+        return BuscarDrive;
+    }
+
 
 
     public Folder_20964708_RiquelmeOlguin buscarContenido(String[] RutaSplit, Drive_20964708_RiquelmeOlguin DriveActual) {
@@ -517,6 +580,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
         return seguridad;
 
+    }
+
+    public List<Contenido_20964708_RiquelmeOlguin> filtrarPorFormato(List<Contenido_20964708_RiquelmeOlguin> lista, String formato) {
+        return lista.stream()
+                .filter(contenido -> contenido instanceof File_20964708_RiquelmeOlguin && ((File_20964708_RiquelmeOlguin) contenido).getFormato().equals(formato))
+                .collect(Collectors.toList());
     }
 }
 

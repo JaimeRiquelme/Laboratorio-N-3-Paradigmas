@@ -27,11 +27,18 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     void del(String Nombre);
 
+    void copy(String NombreCopiar, String path);
+
     Folder_20964708_RiquelmeOlguin buscarContenido(String[] RutaSplit, Drive_20964708_RiquelmeOlguin DriveActual);
     Drive_20964708_RiquelmeOlguin buscarDriveActual();
+
+    Drive_20964708_RiquelmeOlguin buscarDrivePorLetra(String letraDrive);
     List<String> getContenidoNombres(List<Contenido_20964708_RiquelmeOlguin> contenido);
 
     void crearFile(String Nombre);
+    AtributosSeguridad_20964708_RiquelmeOlguin crearSeguridad();
+
+    List<Contenido_20964708_RiquelmeOlguin> filtrarPorFormato(List<Contenido_20964708_RiquelmeOlguin> lista, String formato);
 
 
 }
