@@ -28,7 +28,7 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
     void del(String Nombre);
 
     void copy(String NombreCopiar, String path);
-
+    void move(String NombreCopiar,String path);
     Folder_20964708_RiquelmeOlguin buscarContenido(String[] RutaSplit, Drive_20964708_RiquelmeOlguin DriveActual);
     Drive_20964708_RiquelmeOlguin buscarDriveActual();
 

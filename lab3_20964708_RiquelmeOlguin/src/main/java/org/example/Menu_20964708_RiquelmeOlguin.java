@@ -119,7 +119,9 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("7. Crear FILE");
         System.out.println("8. Acceder a carpeta");
         System.out.println("9. Eliminar por nombre");
-        System.out.println("10. Salir");
+        System.out.println("10. Copiar Contenido");
+        System.out.println("11. Mover Contenido");
+        System.out.println("12. Salir");
         System.out.println();
         System.out.println();
 
@@ -201,9 +203,16 @@ public class Menu_20964708_RiquelmeOlguin {
                     String NombreCopiar = entrada.nextLine();
                     System.out.println("Ingrese la ruta destino");
                     String RutaDestino = entrada.nextLine();
-                    Sistema.copy(NombreCopiar,RutaDestino);
+                    Sistema.copy(NombreCopiar.toUpperCase(),RutaDestino.toUpperCase());
                     break;
                 case 11:
+                    System.out.printf("Ingrese el nombre a mover");
+                    String NombreMover = entrada.nextLine();
+                    System.out.println("Ingrese la ruta destino");
+                    String RutaDestinoMover = entrada.nextLine();
+                    Sistema.move(NombreMover.toUpperCase(),RutaDestinoMover.toUpperCase());
+
+                case 12:
                     System.out.printf("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();

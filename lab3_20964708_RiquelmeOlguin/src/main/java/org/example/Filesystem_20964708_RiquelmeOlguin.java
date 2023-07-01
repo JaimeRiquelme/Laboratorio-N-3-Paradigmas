@@ -6,19 +6,19 @@ import java.util.Random;
 
 public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
-    String nombre;
+    private String nombre;
 
-    Date fechaCreacion;
+    private Date fechaCreacion;
 
-    List<Drive_20964708_RiquelmeOlguin> drives;
+    private List<Drive_20964708_RiquelmeOlguin> drives;
 
-    List<String> usuarios;
+    private List<String> usuarios;
 
-    String usuarioActual;
+    private String usuarioActual;
 
-    String DriveActual;
+    private String DriveActual;
 
-    String RutaActual;
+    private String RutaActual;
 
     public Filesystem_20964708_RiquelmeOlguin(String nombre) {
         this.nombre = nombre;
@@ -109,17 +109,17 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos);
             List<String> NombresUsados;
             if (RutaSplit.length == 1) { // C:/Folder1/Folder2/folder3/folder4
-                NombresUsados = getContenidoNombres(DriveActual.Contenido);
+                NombresUsados = getContenidoNombres(DriveActual.getContenido());
                 if (!NombresUsados.contains(Nombre)){
-                    DriveActual.Contenido.add(NewFolder);
+                    DriveActual.getContenido().add(NewFolder);
                 }else{
                     System.out.println("Este nombre ya existe!, Prueba otro.");
                 }
             } else {
                 Folder_20964708_RiquelmeOlguin actual = buscarContenido(RutaSplit, DriveActual);
-                NombresUsados = getContenidoNombres(actual.Contenido);
+                NombresUsados = getContenidoNombres(actual.getContenido());
                 if (!NombresUsados.contains(Nombre)) {
-                        actual.Contenido.add(NewFolder);
+                        actual.getContenido().add(NewFolder);
                         actual.setFechaModificacion(Fecha_modif); //Cada ves que se inserta algo en el folder, se actualiza la fecha modif
                 }else {
                     System.out.println("Este nombre ya existe!, Prueba otro.");
@@ -159,10 +159,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         } else {
             List<String> NombresContenido;
             if (getDriveActual().concat(":/").equals(getRutaActual())) {
-                NombresContenido = getContenidoNombres(Driveactual.Contenido);
+                NombresContenido = getContenidoNombres(Driveactual.getContenido());
             } else {
                 Folder_20964708_RiquelmeOlguin Folderactual = buscarContenido(RutaSplit, Driveactual);
-                NombresContenido = getContenidoNombres(Folderactual.Contenido);
+                NombresContenido = getContenidoNombres(Folderactual.getContenido());
             }
 
             if(NombresContenido.contains(Nombre)) {
@@ -187,21 +187,21 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
 
         if(RutaSplit.length == 1){
-            NombresUsados = getContenidoNombres(DriveActual.Contenido);
+            NombresUsados = getContenidoNombres(DriveActual.getContenido());
             if (NombresUsados.contains(NombreFile)){
-                DriveActual.Contenido.removeIf(f -> f.getNombre().equals(NombreFile));
-                DriveActual.Contenido.add(file);
+                DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
+                DriveActual.getContenido().add(file);
             }else {
-                DriveActual.Contenido.add(file);
+                DriveActual.getContenido().add(file);
             }
         }else{
             Folder_20964708_RiquelmeOlguin folderActual = buscarContenido(RutaSplit,DriveActual);
-            NombresUsados = getContenidoNombres(folderActual.Contenido);
+            NombresUsados = getContenidoNombres(folderActual.getContenido());
             if (NombresUsados.contains(NombreFile)){
-                folderActual.Contenido.removeIf(f -> f.getNombre().equals(NombreFile));
-                folderActual.Contenido.add(file);
+                folderActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
+                folderActual.getContenido().add(file);
             }else{
-                folderActual.Contenido.add(file);
+                folderActual.getContenido().add(file);
             }
         }
 
@@ -217,21 +217,21 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         List<String> NombresContenido;
         if (Nombre.equals("*")){
             if (RutaSplit.length == 1){
-                DriveActual.Contenido.clear();
+                DriveActual.getContenido().clear();
             }else{
                 FolderActual = buscarContenido(RutaSplit,DriveActual);
-                FolderActual.Contenido.clear();
+                FolderActual.getContenido().clear();
             }
         }else if(Nombre.contains("*") && Nombre.contains(".")){
             String[] NombreSplit = Nombre.split("\\.");
             String Extension = ".".concat(NombreSplit[1].toUpperCase());
-            DriveActual.elimiarContenidoExt(DriveActual.Contenido,Extension);
+            DriveActual.elimiarContenidoExt(DriveActual.getContenido(),Extension);
         }else{
             if (RutaSplit.length == 1) {
-                NombresContenido = getContenidoNombres(DriveActual.Contenido);
+                NombresContenido = getContenidoNombres(DriveActual.getContenido());
                 if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
                     if (NombresContenido.contains(Nombre)) {
-                        DriveActual.eliminarcontenidoDrive(DriveActual.Contenido, Nombre);
+                        DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), Nombre);
                     } else {
                         System.out.println("El nombre ingresado no existe dentro del contenido.");
                     }
@@ -239,17 +239,17 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 if (Nombre.contains(".")) { //Si contiene un punto, es un file
                     String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
                     if (NombresContenido.contains(NombreEliminar)) {
-                        DriveActual.eliminarcontenidoDrive(DriveActual.Contenido, NombreEliminar);
+                        DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), NombreEliminar);
                     } else {
                         System.out.println("El nombre ingresado no existe dentro del contenido.");
                     }
                 }
             } else {
                 FolderActual = buscarContenido(RutaSplit, DriveActual);
-                NombresContenido = getContenidoNombres(FolderActual.Contenido);
+                NombresContenido = getContenidoNombres(FolderActual.getContenido());
                 if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
                     if (NombresContenido.contains(Nombre)) {
-                        FolderActual.eliminarcontenido(FolderActual.Contenido, Nombre);
+                        FolderActual.eliminarcontenido(FolderActual.getContenido(), Nombre);
                     } else {
                         System.out.println("El nombre ingresado no existe dentro del contenido.");
                     }
@@ -257,7 +257,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 if (Nombre.contains(".")) { //Si contiene un punto, es un file
                     String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
                     if (NombresContenido.contains(NombreEliminar)) {
-                        FolderActual.eliminarcontenido(FolderActual.Contenido, NombreEliminar);
+                        FolderActual.eliminarcontenido(FolderActual.getContenido(), NombreEliminar);
                     }
                 }
             }
@@ -265,12 +265,15 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     }
 
     @Override
-    public void copy(String NombreCopiar, String path) {
+    public void copy(String NombreCopiar, String path) { //arreglar cuando intenta copiar en un folder que no existe..........
         //Aquí obtengo el drive y folder que voy a copiar
         String RutaActual = getRutaActual();
         String[] RutaSplitActual = RutaActual.split("/");
         Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        Folder_20964708_RiquelmeOlguin Factual = buscarContenido(RutaSplitActual,DriveActual); // aqui tengo el folder actual donde se está en la ruta
+        Folder_20964708_RiquelmeOlguin Factual = null; // aqui tengo el folder actual donde se está en la ruta
+        if (RutaSplitActual.length != 1){
+            Factual = buscarContenido(RutaSplitActual,DriveActual);
+        }
 
         //Aqui obtengo el drive y folder donde copiar.
         String DriveCopiar = path.substring(0,1);
@@ -282,31 +285,43 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             String Extension = ".".concat(NombreSplit[1].toUpperCase());
             List<Contenido_20964708_RiquelmeOlguin> ContenidoCopy;
             if (RutaSplitActual.length == 1){
-                ContenidoCopy = filtrarPorFormato(DriveActual.Contenido,Extension);
+                ContenidoCopy = filtrarPorFormato(DriveActual.getContenido(),Extension);
             }else{
-                ContenidoCopy = filtrarPorFormato(Factual.Contenido,Extension);
+                ContenidoCopy = filtrarPorFormato(Factual.getContenido(),Extension);
             }
             if (RutaCopiarSplit.length == 1){ //Tengo que copiar en la raiz
-                DriveActual.Contenido.addAll(ContenidoCopy);
+                DriveActualCopiar.getContenido().addAll(ContenidoCopy);
             }else { // sino tengo que copiar en el folder actual
-                Factual.Contenido.addAll(ContenidoCopy);
+                Folder_20964708_RiquelmeOlguin FolderCopiar = buscarContenido(RutaCopiarSplit,DriveActualCopiar);
+                FolderCopiar.getContenido().addAll(ContenidoCopy);
             }
         }else{
             if(RutaCopiarSplit.length == 1) { //Si es 1 significa que tengo que copiar en la raiz
                 //Aqui verifico si tengo que copiar un folder o un file
                 if (NombreCopiar.split("\\.").length == 1) {
-                    Folder_20964708_RiquelmeOlguin FolderCopiar = Factual.buscarFolder(NombreCopiar);
+                    Folder_20964708_RiquelmeOlguin FolderCopiar = null;
+                    if (RutaSplitActual.length == 1){
+                        FolderCopiar = DriveActual.buscarFolder(NombreCopiar);
+                    }else{
+                        FolderCopiar = Factual.buscarFolder(NombreCopiar);
+                    }
+
                     if (FolderCopiar != null) {
-                        DriveActualCopiar.Contenido.add(FolderCopiar);
+                        DriveActualCopiar.getContenido().add(FolderCopiar);
                     } else {
                         System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
                     }
                 } else {
                     String NombreSplit[] = NombreCopiar.split("\\.");
-                    File_20964708_RiquelmeOlguin FileCopia = Factual.buscarFile(NombreSplit[0]);
+                    File_20964708_RiquelmeOlguin FileCopia = null;
+                    if (RutaSplitActual.length == 1){
+                        FileCopia = DriveActual.buscarFile(NombreSplit[0]);
+                    }else{
+                        FileCopia = Factual.buscarFile(NombreSplit[0]);
+                    }
 
                     if (FileCopia != null) {
-                        DriveActualCopiar.Contenido.add(FileCopia);
+                        DriveActualCopiar.getContenido().add(FileCopia);
                     } else {
                         System.out.println("El nombre ingresado no conincide con ningun File existente.");
                     }
@@ -316,7 +331,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 if (NombreCopiar.split("\\.").length == 1) {
                     Folder_20964708_RiquelmeOlguin FolderCopiar = Factual.buscarFolder(NombreCopiar);
                     if (FolderCopiar != null) {
-                        Fcopiar.Contenido.add(FolderCopiar);
+                        Fcopiar.getContenido().add(FolderCopiar);
                     } else {
                         System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
                     }
@@ -325,7 +340,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                     File_20964708_RiquelmeOlguin FileCopia = Factual.buscarFile(NombreSplit[0]);
 
                     if (FileCopia != null) {
-                        Fcopiar.Contenido.add(FileCopia);
+                        Fcopiar.getContenido().add(FileCopia);
                     } else {
                         System.out.println("El nombre ingresado no conincide con ningun File existente.");
                     }
@@ -333,6 +348,16 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         }
     }
+
+    @Override
+    public void move(String nombreMover, String path) {
+        // Primero intentamos copiar el contenido a la nueva ubicación
+        copy(nombreMover, path);
+
+        // Luego intentamos eliminar el contenido original
+        del(nombreMover);
+    }
+
 
 
     public String getNombre() {

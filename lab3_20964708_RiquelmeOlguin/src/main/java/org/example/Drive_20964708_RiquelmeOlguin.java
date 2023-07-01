@@ -5,11 +5,11 @@ import java.util.List;
 
 public class Drive_20964708_RiquelmeOlguin implements  Interfaz_Drive_20964708_RiquelmeOlguin{
 
-    String letra;
-    String nombre;
-    int capacidad;
+    private String letra;
+    private String nombre;
+    private int capacidad;
 
-    List<Contenido_20964708_RiquelmeOlguin> Contenido;
+    private List<Contenido_20964708_RiquelmeOlguin> Contenido;
 
     public Drive_20964708_RiquelmeOlguin(String letra, String nombre, int capacidad) {
         this.letra = letra;
@@ -22,6 +22,15 @@ public class Drive_20964708_RiquelmeOlguin implements  Interfaz_Drive_20964708_R
         for (Contenido_20964708_RiquelmeOlguin objeto : this.Contenido) {
             if (objeto instanceof Folder_20964708_RiquelmeOlguin && objeto.getNombre().equals(nombre)) {
                 return (Folder_20964708_RiquelmeOlguin)objeto;
+            }
+        }
+        return null;
+    }
+
+    public File_20964708_RiquelmeOlguin buscarFile(String nombre) {
+        for (Contenido_20964708_RiquelmeOlguin objeto : this.Contenido) {
+            if (objeto instanceof File_20964708_RiquelmeOlguin   && objeto.getNombre().equals(nombre)) {
+                return (File_20964708_RiquelmeOlguin) objeto;
             }
         }
         return null;

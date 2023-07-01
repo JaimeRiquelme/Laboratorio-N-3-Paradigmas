@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Folder_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeOlguin implements Interfaz_Folder_20964708_RiquelmeOlguin {
-    List<Contenido_20964708_RiquelmeOlguin> Contenido;
+    private List<Contenido_20964708_RiquelmeOlguin> Contenido;
 
     public Folder_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad) {
         super(nombre, fechaCreacion, fechaModificacion, creadorUser, atributoSeguridad);
