@@ -1,5 +1,4 @@
 package org.example;
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.Random;
@@ -78,7 +77,6 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     public void swithDrive(String Letra) {
         var listaLetras = drives.stream().map(Drive_20964708_RiquelmeOlguin::getLetra)
                 .collect(Collectors.toList());
-
         if (getUsuarioActual() != null) {
             if (listaLetras.contains(Letra.toUpperCase())) {
                 setDriveActual(Letra.toUpperCase());
@@ -89,7 +87,6 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         } else {
             System.out.println("No hay ningun usuario logeado, porfavor realize logeo.");
         }
-
     }
 
     @Override
@@ -138,7 +135,6 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
         Drive_20964708_RiquelmeOlguin Driveactual = buscarDriveActual();
 
-
         if (Driveactual == null) {
             System.out.println("Drive actual no encontrado.");
             return;
@@ -154,8 +150,27 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         } else if ("/".equals(Nombre)) {
             setRutaActual(getDriveActual().concat(":/"));
-        }else if (Character.toString(Nombre.charAt(0)).equals(".") && (Nombre != "..")) {
+        } else if (Character.toString(Nombre.charAt(0)).equals(".") && (Nombre != "..")) {
             return;
+        } else if (Nombre.contains("/")) { // Añadida esta opción para manejar rutas.
+            List<Contenido_20964708_RiquelmeOlguin> contenido;
+            if (getDriveActual().concat(":/").equals(getRutaActual())) {
+                contenido = Driveactual.getContenido();
+            } else {
+                Folder_20964708_RiquelmeOlguin Folderactual = buscarContenido(RutaSplit, Driveactual);
+                contenido = Folderactual.getContenido();
+            }
+
+            // Verificar si la ruta dada en Nombre existe.
+            if(verificarRuta(contenido, Arrays.asList(Nombre.split("/")))) {
+                if (RutaActual.equals(getDriveActual().concat(":/"))) {
+                    setRutaActual(RutaActual.concat(Nombre));
+                } else {
+                    setRutaActual(RutaActual.concat("/").concat(Nombre));
+                }
+            } else {
+                System.out.println("El nombre del archivo no existe en la ruta actual.");
+            }
         } else {
             List<String> NombresContenido;
             if (getDriveActual().concat(":/").equals(getRutaActual())) {
@@ -176,6 +191,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         }
     }
+
 
     @Override
     public void addFile(File_20964708_RiquelmeOlguin file) {
@@ -624,6 +640,31 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 .filter(contenido -> contenido instanceof File_20964708_RiquelmeOlguin && ((File_20964708_RiquelmeOlguin) contenido).getFormato().equals(formato))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public boolean verificarRuta(List<Contenido_20964708_RiquelmeOlguin> Contenido, List<String> RutaSplit) {
+        Folder_20964708_RiquelmeOlguin FolderActual = null;
+        for (String Nombre : RutaSplit){
+            FolderActual = buscarFolder(Contenido,Nombre);
+            if (FolderActual == null){
+                return false;
+            }else{
+                Contenido = FolderActual.getContenido();
+            }
+        }
+        return true;
+    }
+
+    public Folder_20964708_RiquelmeOlguin buscarFolder(List<Contenido_20964708_RiquelmeOlguin> contenido, String nombre) {
+        for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
+            if (objeto instanceof Folder_20964708_RiquelmeOlguin && objeto.getNombre().equals(nombre)) {
+                return (Folder_20964708_RiquelmeOlguin) objeto;
+            }
+        }
+        return null;
+    }
+
+
 }
 
 

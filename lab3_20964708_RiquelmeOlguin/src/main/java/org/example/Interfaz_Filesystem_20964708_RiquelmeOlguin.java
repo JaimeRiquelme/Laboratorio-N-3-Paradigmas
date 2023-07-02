@@ -40,6 +40,8 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     List<Contenido_20964708_RiquelmeOlguin> filtrarPorFormato(List<Contenido_20964708_RiquelmeOlguin> lista, String formato);
 
+    boolean verificarRuta(List<Contenido_20964708_RiquelmeOlguin> Contenido, List<String> RutaSplit);
+
 
 }
 
