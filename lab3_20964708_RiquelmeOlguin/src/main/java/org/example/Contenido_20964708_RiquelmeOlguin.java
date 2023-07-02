@@ -50,4 +50,8 @@ public abstract class Contenido_20964708_RiquelmeOlguin {
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 }

@@ -1,4 +1,5 @@
 package org.example;
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.Random;
@@ -344,36 +345,199 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 }
             }else{
                 Folder_20964708_RiquelmeOlguin Fcopiar = buscarContenido(RutaCopiarSplit,DriveActualCopiar); //este sera el folder donde se copiará
-                if (NombreCopiar.split("\\.").length == 1) {
-                    Folder_20964708_RiquelmeOlguin FolderCopiar = Factual.buscarFolder(NombreCopiar);
-                    if (FolderCopiar != null) {
-                        Fcopiar.getContenido().add(FolderCopiar);
+                if (Fcopiar !=null) {
+                    if (NombreCopiar.split("\\.").length == 1) {
+                        Folder_20964708_RiquelmeOlguin FolderCopiar = Factual.buscarFolder(NombreCopiar);
+                        if (FolderCopiar != null) {
+                            Fcopiar.getContenido().add(FolderCopiar);
+                        } else {
+                            System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
+                        }
                     } else {
-                        System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
-                    }
-                } else {
-                    String NombreSplit[] = NombreCopiar.split("\\.");
-                    File_20964708_RiquelmeOlguin FileCopia = Factual.buscarFile(NombreSplit[0]);
+                        String NombreSplit[] = NombreCopiar.split("\\.");
+                        File_20964708_RiquelmeOlguin FileCopia = Factual.buscarFile(NombreSplit[0]);
 
-                    if (FileCopia != null) {
-                        Fcopiar.getContenido().add(FileCopia);
-                    } else {
-                        System.out.println("El nombre ingresado no conincide con ningun File existente.");
+                        if (FileCopia != null) {
+                            Fcopiar.getContenido().add(FileCopia);
+                        } else {
+                            System.out.println("El nombre ingresado no conincide con ningun File existente.");
+                        }
                     }
+                }else {
+                    System.out.println("El folder donde copiar no fue encontrado.");
                 }
             }
         }
     }
 
     @Override
-    public void move(String nombreMover, String path) {
-        // Primero intentamos copiar el contenido a la nueva ubicación
-        copy(nombreMover, path);
+    public void move(String nombreMover, String path) { //error cuando intento copiar dentro mover dentro de una carpeta.
+        String RutaActual = getRutaActual();
+        String[] RutaSplitActual = RutaActual.split("/");
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        Folder_20964708_RiquelmeOlguin Factual = null; // aqui tengo el folder actual donde se está en la ruta
+        if (RutaSplitActual.length != 1){
+            Factual = buscarContenido(RutaSplitActual,DriveActual);
+        }
+        //Aqui obtengo el drive y folder donde copiar.
+        String DriveCopiar = path.substring(0,1);
+        String[] RutaCopiarSplit = path.split("/");
+        Drive_20964708_RiquelmeOlguin DriveActualCopiar = buscarDrivePorLetra(DriveCopiar);
+        List<String> NombresUsados;
 
-        // Luego intentamos eliminar el contenido original
-        del(nombreMover);
+        if(RutaCopiarSplit.length == 1) { //Si es 1 significa que tengo que copiar en la raiz
+            //Aqui verifico si tengo que copiar un folder o un file
+            if (nombreMover.split("\\.").length == 1) {
+                Folder_20964708_RiquelmeOlguin FolderMover = null;
+                if (RutaSplitActual.length == 1){
+                    FolderMover = DriveActual.buscarFolder(nombreMover);
+                    del(nombreMover);
+                }else{
+                    FolderMover = Factual.buscarFolder(nombreMover);
+                    del(nombreMover);
+                }
+
+                if (FolderMover != null) {
+                    NombresUsados = getContenidoNombres(DriveActualCopiar.getContenido());
+                    if (NombresUsados.contains(nombreMover)){
+                        DriveActualCopiar.getContenido().removeIf(f -> f.getNombre().equals(nombreMover));
+                        DriveActualCopiar.getContenido().add(FolderMover);
+                        del(nombreMover);
+                       // DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
+                    }else {
+                        DriveActualCopiar.getContenido().add(FolderMover);
+                        del(nombreMover);
+                    }
+                } else {
+                    System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
+                }
+            } else {
+                String NombreSplit[] = nombreMover.split("\\.");
+                File_20964708_RiquelmeOlguin FileCopia = null;
+                if (RutaSplitActual.length == 1){
+                    FileCopia = DriveActual.buscarFile(NombreSplit[0]);
+                }else{
+                    FileCopia = Factual.buscarFile(NombreSplit[0]);
+                }
+
+                if (FileCopia != null) {
+                    String[] NombreFileSplit = nombreMover.split("\\.");
+                    NombresUsados = getContenidoNombres(DriveActualCopiar.getContenido());
+                    if (NombresUsados.contains(NombreFileSplit[0])){
+                        DriveActualCopiar.getContenido().removeIf(f-> f.getNombre().equals(NombreFileSplit[0]));
+                        DriveActualCopiar.getContenido().add(FileCopia);
+                        del(nombreMover);
+                    }else {
+                        DriveActualCopiar.getContenido().add(FileCopia);
+                        del(nombreMover);
+                    }
+                } else {
+                    System.out.println("El nombre ingresado no conincide con ningun File existente.");
+                }
+            }
+        }else{
+            Folder_20964708_RiquelmeOlguin Fcopiar = buscarContenido(RutaCopiarSplit,DriveActualCopiar); //este sera el folder donde se copiará
+            if (Fcopiar !=null) {
+                if (nombreMover.split("\\.").length == 1) {
+                    Folder_20964708_RiquelmeOlguin FolderMover = Factual.buscarFolder(nombreMover);
+                    if (FolderMover != null) {
+                        NombresUsados = getContenidoNombres(Fcopiar.getContenido());
+                        if (NombresUsados.contains(nombreMover)){
+                            Fcopiar.getContenido().removeIf(f -> f.getNombre().equals(nombreMover));
+                            Fcopiar.getContenido().add(FolderMover);
+                            del(nombreMover);
+                            // DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
+                        }else {
+                            Fcopiar.getContenido().add(FolderMover);
+                            del(nombreMover);
+                        }
+                    } else {
+                        System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
+                    }
+                } else {
+                    String NombreSplit[] = nombreMover.split("\\.");
+                    File_20964708_RiquelmeOlguin FileMover = Factual.buscarFile(NombreSplit[0]);
+
+                    if (FileMover != null) {
+                        String[] NombreFileSplit = nombreMover.split("\\.");
+                        NombresUsados = getContenidoNombres(Factual.getContenido());
+                        if (NombresUsados.contains(NombreFileSplit[0])){
+                            Factual.getContenido().removeIf(f-> f.getNombre().equals(NombreFileSplit[0]));
+                            Factual.getContenido().add(FileMover);
+                            del(nombreMover);
+                        }else {
+                            Factual.getContenido().add(FileMover);
+                            del(nombreMover);
+                        }
+                    } else {
+                        System.out.println("El nombre ingresado no conincide con ningun File existente.");
+                    }
+                }
+            }else {
+                System.out.println("El folder donde copiar no fue encontrado.");
+            }
+        }
     }
 
+    @Override
+    public void ren(String Nombre, String NuevoNombre) {
+        String RutaActual = getRutaActual();
+        String[] RutaActualSplit = RutaActual.split("/");
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        List<String> NombresUsados;
+
+
+        if (RutaActualSplit.length == 1){
+            String[] NombreSplit = Nombre.split("\\.");
+            NombresUsados = getContenidoNombres(DriveActual.getContenido());
+            if (!NombresUsados.contains(NuevoNombre)) {
+                if (Nombre.split("\\.").length != 1) { //significa que no es un folder
+                    String[] NuevoNombreSplit = NuevoNombre.split("\\.");
+                    File_20964708_RiquelmeOlguin FileRenombrar = DriveActual.buscarFile(NombreSplit[0]);
+                    if (FileRenombrar != null) {
+                        FileRenombrar.setNombre(NuevoNombreSplit[0]);
+                        FileRenombrar.setFormato(".".concat(NuevoNombreSplit[1]));
+                    } else {
+                        System.out.println("Nombre NO encontrado");
+                    }
+                } else {
+                    Folder_20964708_RiquelmeOlguin FolderRenombrar = DriveActual.buscarFolder(Nombre);
+                    if (FolderRenombrar != null) {
+                        FolderRenombrar.setNombre(NuevoNombre);
+                    } else {
+                        System.out.println("Nombre NO encontrado.");
+                    }
+                }
+            }else{
+                System.out.println("Ese nombre ya existe en el sistema");
+            }
+        }else{
+            Folder_20964708_RiquelmeOlguin Actual = buscarContenido(RutaActualSplit,DriveActual);
+            NombresUsados = getContenidoNombres(Actual.getContenido());
+            if (!NombresUsados.contains(NuevoNombre)) {
+                if (Nombre.split("\\.").length != 1) { //significa que no es un folder
+                    String[] NuevoNombreSplit = NuevoNombre.split("\\.");
+                    String[] NombreSplit = Nombre.split("\\.");
+                    File_20964708_RiquelmeOlguin FileRenombrar = Actual.buscarFile(NombreSplit[0]);
+                    if (FileRenombrar != null) {
+                        FileRenombrar.setNombre(NuevoNombreSplit[0]);
+                        FileRenombrar.setFormato(".".concat(NuevoNombreSplit[1]));
+                    } else {
+                        System.out.println("Nombre NO encontrado");
+                    }
+                } else {
+                    Folder_20964708_RiquelmeOlguin FolderRenombrar = Actual.buscarFolder(Nombre);
+                    if (FolderRenombrar != null) {
+                        FolderRenombrar.setNombre(NuevoNombre);
+                    } else {
+                        System.out.println("Nombre NO encontrado.");
+                    }
+                }
+            }else{
+                System.out.println("Ese nombre ya existe en el sistema");
+            }
+        }
+    }
 
 
     public String getNombre() {
@@ -521,7 +685,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 switch (eleccion2){
                     case 1:
                         formato = ".TXT";
-                        System.out.println("Ingrese el Conteido texto del archivo.");
+                        System.out.println("Ingrese el Contenido texto del archivo.");
                         contenido = entrada.nextLine();
                         TextFile_20964708_RiquelmeOlguin newfile = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
                         addFile(newfile);

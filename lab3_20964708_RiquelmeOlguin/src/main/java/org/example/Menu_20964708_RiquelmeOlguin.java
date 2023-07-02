@@ -121,7 +121,8 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("9. Eliminar por nombre");
         System.out.println("10. Copiar Contenido");
         System.out.println("11. Mover Contenido");
-        System.out.println("12. Salir");
+        System.out.println("12. Renombrar Contenido");
+        System.out.println("13. Salir");
         System.out.println();
         System.out.println();
 
@@ -132,7 +133,7 @@ public class Menu_20964708_RiquelmeOlguin {
         try {
             System.out.print("Ingrese su opcion: ");
             int eleccion = entrada.nextInt();
-            entrada.nextLine();  // Consumir el salto de línea residual
+            entrada.nextLine();
 
             switch(eleccion){
                 case 1:
@@ -191,29 +192,48 @@ public class Menu_20964708_RiquelmeOlguin {
                     String nombreRuta;
                     System.out.println("Ingrese el nombre de la carpeta");
                     nombreRuta = entrada.nextLine();
-                    Sistema.cd(nombreRuta.toUpperCase());
+                    if (!nombreRuta.contains(".")) {
+                        Sistema.cd(nombreRuta.toUpperCase());
+                    }else{
+                        System.out.println("Ingrese un nombre de carpeta valido");
+                    }
                     break;
                 case 9:
-                    System.out.println("Ingrese el nombre a eliminar");
+                    System.out.println("Ingrese el NOMBRE a eliminar");
                     String NombreEliminar = entrada.nextLine();
                     Sistema.del(NombreEliminar.toUpperCase());
                     break;
                 case 10:
-                    System.out.printf("Ingrese el nombre a copiar");
+                    System.out.println("Ingrese el nombre a copiar. Ej:");
+                    System.out.println("Si es Folder -> nombre");
+                    System.out.println("Si es File -> nombre.extension");
                     String NombreCopiar = entrada.nextLine();
                     System.out.println("Ingrese la ruta destino");
                     String RutaDestino = entrada.nextLine();
                     Sistema.copy(NombreCopiar.toUpperCase(),RutaDestino.toUpperCase());
                     break;
                 case 11:
-                    System.out.printf("Ingrese el nombre a mover");
+                    System.out.println("Ingrese el nombre a mover");
+                    System.out.println("Si es Folder -> nombre (Ej: Folder1)");
+                    System.out.println("Si es File -> nombre.extension (Ej: File1.txt)");
                     String NombreMover = entrada.nextLine();
-                    System.out.println("Ingrese la ruta destino");
+                    System.out.println("Ingrese la ruta destino (Ej: C:/folder3/folder6)");
                     String RutaDestinoMover = entrada.nextLine();
                     Sistema.move(NombreMover.toUpperCase(),RutaDestinoMover.toUpperCase());
-
+                    break;
                 case 12:
-                    System.out.printf("Volver al menú principal.");
+                    System.out.println("Ingrese el nombre del Folder/File a renombrar");
+                    System.out.println("Si es Folder -> nombre (Ej: Folder1)");
+                    System.out.println("Si es File -> nombre.extension (Ej: File1.txt)");
+                    String NombreRenombrar = entrada.nextLine();
+                    System.out.println("Ingrese el NUEVO nombre");
+                    System.out.println("Si es Folder -> nombre (Ej: Folder1)");
+                    System.out.println("Si es File -> nombre.extension (Ej: File1.txt)");
+                    String NuevoNombre = entrada.nextLine();
+                    Sistema.ren(NombreRenombrar.toUpperCase(),NuevoNombre.toUpperCase());
+                    break;
+                case 13:
+                    System.out.println("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();
                     break;
