@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
@@ -31,6 +32,9 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
     void move(String NombreCopiar,String path);
 
     void ren(String Nombre,String NuevoNombre);
+
+    void dir(List<String> Parametros);
+
     Folder_20964708_RiquelmeOlguin buscarContenido(String[] RutaSplit, Drive_20964708_RiquelmeOlguin DriveActual);
     Drive_20964708_RiquelmeOlguin buscarDriveActual();
 

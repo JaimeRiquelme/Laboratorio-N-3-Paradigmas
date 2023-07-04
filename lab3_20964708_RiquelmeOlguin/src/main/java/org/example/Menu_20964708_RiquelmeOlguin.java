@@ -1,7 +1,6 @@
 package org.example;
 import javax.swing.*;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Menu_20964708_RiquelmeOlguin {
@@ -122,7 +121,8 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("10. Copiar Contenido");
         System.out.println("11. Mover Contenido");
         System.out.println("12. Renombrar Contenido");
-        System.out.println("13. Salir");
+        System.out.println("13. listar contenido");
+        System.out.println("14. Salir");
         System.out.println();
         System.out.println();
 
@@ -233,6 +233,13 @@ public class Menu_20964708_RiquelmeOlguin {
                     Sistema.ren(NombreRenombrar.toUpperCase(),NuevoNombre.toUpperCase());
                     break;
                 case 13:
+                    System.out.println("Ingrese los elementos para listar en formato [\"elemento1\", \"elemento2\", ...]:");
+                    String linea = entrada.nextLine();
+                    List<String> ListParametros = new ArrayList<>(Arrays.asList(linea.split(",")));
+                    Sistema.dir(ListParametros);
+
+                    break;
+                case 14:
                     System.out.println("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();

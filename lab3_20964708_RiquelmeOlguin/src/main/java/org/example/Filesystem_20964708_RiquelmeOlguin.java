@@ -130,7 +130,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
 
     @Override
-    public void cd(String Nombre) {
+    public void cd(String Nombre) { //AREGLAR .. EN SOLO UNA RAIZ
         String RutaActual = getRutaActual();
         String[] RutaSplit = RutaActual.split("/");
 
@@ -538,6 +538,66 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         }
     }
+
+
+    public void dir(List<String> args) {
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        String RutaActual = getRutaActual();
+        String[] RutaSplit = RutaActual.split("/");
+        if (RutaSplit.length != 1) {
+            Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaSplit, DriveActual);
+            if (args == null || args.isEmpty()) {
+                System.out.println("La lista está vacía.");
+            } else if (args.size() == 1 && args.get(0).equals("")) {
+                List<String> ListaNombres = getContenidoNombres(FolderActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+            } else {
+                System.out.println("La lista tiene los siguientes elementos:");
+                for (String arg : args) {
+                    System.out.println(arg);
+                }
+            }
+
+        } else {
+            if (args == null || args.isEmpty()) {
+                System.out.println("La lista está vacía.");
+            } else if (args.size() == 1 && args.get(0).equals("")) {
+                List<String> ListaNombres = getContenidoNombres(DriveActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(nombre).append("\n");
+                    System.out.println(ListaMostarNombres);
+                }
+            } else {
+                System.out.println("La lista tiene los siguientes elementos:");
+                for (String arg : args) {
+                    System.out.println(arg);
+                }
+            }
+        }
+    }
+/*
+    public void dir(List<String> args) {
+        if (args == null || args.isEmpty()) {
+            System.out.println("La lista está vacía.");
+        } else if (args.size() == 1 && args.get(0).equals("")) {
+            System.out.println("La lista contiene una única cadena vacía.");
+        } else {
+            System.out.println("La lista tiene los siguientes elementos:");
+            for (String arg : args) {
+                System.out.println(arg);
+            }
+        }
+    }
+
+
+
+ */
 
 
     public String getNombre() {
