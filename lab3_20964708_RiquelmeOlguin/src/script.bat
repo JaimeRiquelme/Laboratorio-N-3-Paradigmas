@@ -1,0 +1,2 @@
+javac CodigoFuente_20964708_RiquelmeOlguin/*.java
+java CodigoFuente_20964708_RiquelmeOlguin/Main
