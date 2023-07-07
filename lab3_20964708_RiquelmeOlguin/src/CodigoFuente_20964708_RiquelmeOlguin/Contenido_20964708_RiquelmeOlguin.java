@@ -2,11 +2,11 @@ package CodigoFuente_20964708_RiquelmeOlguin;
 import java.util.Date;
 
 public abstract class Contenido_20964708_RiquelmeOlguin {
-    private String nombre;
-    private Date fechaCreacion;
-    private Date fechaModificacion;
-    private String creadorUser;
-    private AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad;
+    protected String nombre;
+    protected Date fechaCreacion;
+    protected Date fechaModificacion;
+    protected String creadorUser;
+    protected AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad;
 
     public Contenido_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad) {
         this.nombre = nombre;

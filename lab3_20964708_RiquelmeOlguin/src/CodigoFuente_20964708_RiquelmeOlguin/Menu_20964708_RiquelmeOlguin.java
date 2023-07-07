@@ -190,6 +190,11 @@ public class Menu_20964708_RiquelmeOlguin {
                     break;
                 case 8:
                     String nombreRuta;
+                    System.out.println("OPCIONES DISPONIBLES DE USO:");
+                    System.out.println("- Volver al directorio padre : .. ");
+                    System.out.println("- Volver a la raiz : / ");
+                    System.out.println("- Referirse al directorio actual : . (Todo aquel que inicie con '.') ");
+                    System.out.println("- Ingresar con ruta relativa: Ejemplo: Folder1/Folder2 ");
                     System.out.println("Ingrese el nombre de la carpeta");
                     nombreRuta = entrada.nextLine();
                     if (!nombreRuta.contains(".")) {
