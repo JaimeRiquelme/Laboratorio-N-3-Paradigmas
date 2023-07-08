@@ -64,7 +64,8 @@ public class Menu_20964708_RiquelmeOlguin {
                                         "  usuarios=%s,%n" +
                                         "  usuarioActual='%s',%n" +
                                         "  DriveActual='%s',%n" +
-                                        "  RutaActual='%s'%n" +
+                                        "  RutaActual='%s',%n" +
+                                        "  Papelera='%s',%n" +
                                         "}%n",
                                 Sistema.getNombre(),
                                 Sistema.getFechaCreacion(),
@@ -72,7 +73,8 @@ public class Menu_20964708_RiquelmeOlguin {
                                 Sistema.getUsuarios(),
                                 Sistema.getUsuarioActual(),
                                 Sistema.getDriveActual(),
-                                Sistema.getRutaActual());
+                                Sistema.getRutaActual(),
+                                Sistema.getPapelera());
 
                         break;
                     }else {
@@ -197,10 +199,12 @@ public class Menu_20964708_RiquelmeOlguin {
                     System.out.println("- Ingresar con ruta relativa: Ejemplo: Folder1/Folder2 ");
                     System.out.println("Ingrese el nombre de la carpeta");
                     nombreRuta = entrada.nextLine();
-                    if (!nombreRuta.contains(".")) {
+                    if (nombreRuta.equals("..")){
+                        Sistema.cd(nombreRuta.toUpperCase());
+                    }else if (!nombreRuta.contains(".")) { // esto es para que no entre en un file y no de error posterior.
                         Sistema.cd(nombreRuta.toUpperCase());
                     }else{
-                        System.out.println("Ingrese un nombre de carpeta valido");
+                        System.out.println("Ingrese un nombre de Carpeta valido");
                     }
                     break;
                 case 9:

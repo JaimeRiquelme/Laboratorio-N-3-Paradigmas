@@ -20,6 +20,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     private String RutaActual;
 
+    private List<Papelera_20964708_RiquelmeOlguin> Papelera;
+
     public Filesystem_20964708_RiquelmeOlguin(String nombre) {
         this.nombre = nombre;
         this.fechaCreacion = new Date();
@@ -28,6 +30,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         this.usuarioActual = null;
         this.DriveActual = null;
         this.RutaActual = null;
+        this.Papelera = new ArrayList<>();
 
     }
 
@@ -248,6 +251,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 NombresContenido = getContenidoNombres(DriveActual.getContenido());
                 if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
                     if (NombresContenido.contains(Nombre)) {
+                        Folder_20964708_RiquelmeOlguin FolderPapelera = DriveActual.buscarFolder(Nombre);
+                        Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FolderPapelera,RutaActual);
+                        Papelera.add(ObjetoPapelera);
                         DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), Nombre);
                     } else {
                         System.out.println("El nombre ingresado no existe dentro del contenido.");
@@ -256,6 +262,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 if (Nombre.contains(".")) { //Si contiene un punto, es un file
                     String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
                     if (NombresContenido.contains(NombreEliminar)) {
+                        File_20964708_RiquelmeOlguin FilePapelera = DriveActual.buscarFile(NombreEliminar);
+                        Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FilePapelera,RutaActual);
+                        Papelera.add(ObjetoPapelera);
                         DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), NombreEliminar);
                     } else {
                         System.out.println("El nombre ingresado no existe dentro del contenido.");
@@ -266,6 +275,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 NombresContenido = getContenidoNombres(FolderActual.getContenido());
                 if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
                     if (NombresContenido.contains(Nombre)) {
+                        Folder_20964708_RiquelmeOlguin FolderPapelera = FolderActual.buscarFolder(Nombre);
+                        Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FolderPapelera,RutaActual);
+                        Papelera.add(ObjetoPapelera);
                         FolderActual.eliminarcontenido(FolderActual.getContenido(), Nombre);
                     } else {
                         System.out.println("El nombre ingresado no existe dentro del contenido.");
@@ -274,7 +286,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 if (Nombre.contains(".")) { //Si contiene un punto, es un file
                     String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
                     if (NombresContenido.contains(NombreEliminar)) {
+                        File_20964708_RiquelmeOlguin FilePapelera = FolderActual.buscarFile(NombreEliminar);
+                        Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FilePapelera,RutaActual);
+                        Papelera.add(ObjetoPapelera);
                         FolderActual.eliminarcontenido(FolderActual.getContenido(), NombreEliminar);
+                    } else {
+                        System.out.println("El nombre ingresado no existe dentro del contenido.");
                     }
                 }
             }
@@ -643,19 +660,36 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     @Override
     public String toString() {
-        return "Filesystem_20964708_RiquelmeOlguin{" +
-                "nombre='" + nombre + '\'' +
-                ", fechaCreacion=" + fechaCreacion +
-                ", drives=" + drives +
-                ", usuarios=" + usuarios +
-                ", usuarioActual='" + usuarioActual + '\'' +
-                ", DriveActual='" + DriveActual + '\'' +
-                ", RutaActual='" + RutaActual + '\'' +
-                '}';
+        String result = String.format(
+                "Filesystem_20964708_RiquelmeOlguin{%n" +
+                        "  nombre='%s',%n" +
+                        "  fechaCreacion=%s,%n" +
+                        "  drives=%s,%n" +
+                        "  usuarios=%s,%n" +
+                        "  usuarioActual='%s',%n" +
+                        "  DriveActual='%s',%n" +
+                        "  RutaActual='%s',%n" +
+                        "  Papelera='%s',%n" +
+                        "}%n",
+                nombre,
+                fechaCreacion,
+                drives,
+                usuarios,
+                usuarioActual,
+                DriveActual,
+                RutaActual,
+                Papelera
+        );
+        return result;
     }
+
 
     public String getRutaActual() {
         return RutaActual;
+    }
+
+    public List<Papelera_20964708_RiquelmeOlguin> getPapelera() {
+        return Papelera;
     }
 
     public Drive_20964708_RiquelmeOlguin buscarDriveActual() {
@@ -887,6 +921,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
         return null;
     }
+
 
 
 }
