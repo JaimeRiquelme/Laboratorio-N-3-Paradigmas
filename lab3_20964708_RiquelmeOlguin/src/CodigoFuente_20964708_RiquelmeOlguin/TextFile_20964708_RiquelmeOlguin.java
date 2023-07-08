@@ -7,5 +7,12 @@ public class TextFile_20964708_RiquelmeOlguin extends File_20964708_RiquelmeOlgu
         super(nombre, fechaCreacion, fechaModificacion, usuarioCreador, atributoSeguridad, contenido, formato, tamano);
     }
 
+    /**
+     * Metodo que podria contener un tipo de file tipo texto
+     */
+    public void LeerTexto(){
+        System.out.println("---Leyendo Texto---");
+    }
+
 
 }

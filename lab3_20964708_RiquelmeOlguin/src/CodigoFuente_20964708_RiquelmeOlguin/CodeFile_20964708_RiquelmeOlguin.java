@@ -7,6 +7,9 @@ public class CodeFile_20964708_RiquelmeOlguin extends File_20964708_RiquelmeOlgu
         super(nombre, fechaCreacion, fechaModificacion, usuarioCreador, atributoSeguridad, contenido, formato, tamano);
     }
 
+    /**
+     * Metodo que tiene solo archivos tipo Codigo
+     */
     void Compilar(){
         System.out.println("Compilando CODIGO");
     }

@@ -1,5 +1,4 @@
 package CodigoFuente_20964708_RiquelmeOlguin;
-import javax.swing.*;
 import java.util.*;
 
 
@@ -8,16 +7,24 @@ public class Menu_20964708_RiquelmeOlguin {
     private boolean SistemaCreado = false;
     private Filesystem_20964708_RiquelmeOlguin Sistema;
 
-
+    /**
+     * Constructor por defecto de la clase, inicializa el menú.
+     */
     public Menu_20964708_RiquelmeOlguin() {
         this.salirMenu = false;
     }
 
+    /**
+     * Método que ejecuta el menú principal y espera la entrada del usuario.
+     */
     public void ejecutarMenu(){
         MenuPrincipal();
         scannerOpcion();
     }
 
+    /**
+     * Método que imprime el menú principal.
+     */
     public void MenuPrincipal(){
         System.out.println("### Manipulador de Sistema ###");
         System.out.println("Escoja su opcion: ");
@@ -30,6 +37,9 @@ public class Menu_20964708_RiquelmeOlguin {
 
     }
 
+    /**
+     * Método que maneja la entrada del usuario para el menú principal.
+     */
     private void scannerOpcion(){
         Scanner entrada = new Scanner(System.in);
         try {
@@ -67,7 +77,7 @@ public class Menu_20964708_RiquelmeOlguin {
                                         "  RutaActual='%s',%n" +
                                         "  Papelera='%s',%n" +
                                         "}%n",
-                                Sistema.getNombre(),
+                                Sistema.getNombreSistema(),
                                 Sistema.getFechaCreacion(),
                                 Sistema.getDrives(),
                                 Sistema.getUsuarios(),
@@ -98,6 +108,9 @@ public class Menu_20964708_RiquelmeOlguin {
         }
     }
 
+    /**
+     * Método que maneja la entrada del usuario para crear un nuevo sistema de archivos.
+     */
     private void scannerOpcion1(){
         Scanner entrada = new Scanner(System.in);
         System.out.println("Ingrese el nombre del SISTEMA a crear: ");
@@ -107,6 +120,9 @@ public class Menu_20964708_RiquelmeOlguin {
 
     }
 
+    /**
+     * Método que imprime las opciones disponibles para modificar el sistema de archivos.
+     */
     public void mensajeopcional2(){
 
         System.out.println("### Mofificador de un sistema ###");
@@ -129,6 +145,10 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println();
 
     }
+
+    /**
+     * Método que maneja la entrada del usuario para modificar el sistema de archivos.
+     */
 
     public void scannerOpcion2(){
         Scanner entrada = new Scanner(System.in);
@@ -209,6 +229,11 @@ public class Menu_20964708_RiquelmeOlguin {
                     break;
                 case 9:
                     System.out.println("Ingrese el NOMBRE a eliminar");
+                    System.out.println("Si es Folder -> nombre");
+                    System.out.println("Si es File -> nombre.extension");
+                    System.out.println("---Comandos especiales---");
+                    System.out.println("Eliminar todo el contenido: *");
+                    System.out.println("Eliminar dado extension : '*.extension'");
                     String NombreEliminar = entrada.nextLine();
                     Sistema.del(NombreEliminar.toUpperCase());
                     break;
@@ -216,6 +241,8 @@ public class Menu_20964708_RiquelmeOlguin {
                     System.out.println("Ingrese el nombre a copiar. Ej:");
                     System.out.println("Si es Folder -> nombre");
                     System.out.println("Si es File -> nombre.extension");
+                    System.out.println("---Comandos especiales---");
+                    System.out.println("Copiar dado una extension: '*.extension'");
                     String NombreCopiar = entrada.nextLine();
                     System.out.println("Ingrese la ruta destino");
                     String RutaDestino = entrada.nextLine();
@@ -263,6 +290,10 @@ public class Menu_20964708_RiquelmeOlguin {
         }
     }
 
+    /**
+     * Getter para la variable salirMenu.
+     * @return boolean - el estado actual del menú (si debe salir o no).
+     */
 
     public boolean getSalirMenu(){
         return salirMenu;

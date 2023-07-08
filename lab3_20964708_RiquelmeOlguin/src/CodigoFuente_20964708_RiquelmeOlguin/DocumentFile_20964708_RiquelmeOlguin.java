@@ -7,5 +7,10 @@ public class DocumentFile_20964708_RiquelmeOlguin extends File_20964708_Riquelme
         super(nombre, fechaCreacion, fechaModificacion, usuarioCreador, atributoSeguridad, contenido, formato, tamano);
     }
 
-    // Métodos específicos de DocumentFile pueden ser implementados aquí
+    /**
+     * Metodo que podria tener un archivo tipo Documento.
+     */
+    public void MostrarDocumento(){
+        System.out.printf("---Mostrando Documento");
+    }
 }

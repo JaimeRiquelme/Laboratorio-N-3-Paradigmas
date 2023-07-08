@@ -1,12 +1,12 @@
 package CodigoFuente_20964708_RiquelmeOlguin;
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.Random;
 
 public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
-    private String nombre;
+
+    private String NombreSistema;
 
     private Date fechaCreacion;
 
@@ -22,8 +22,13 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     private List<Papelera_20964708_RiquelmeOlguin> Papelera;
 
-    public Filesystem_20964708_RiquelmeOlguin(String nombre) {
-        this.nombre = nombre;
+    /**
+     * Contructor del sistema
+     * @param NombreSistema
+     */
+
+    public Filesystem_20964708_RiquelmeOlguin(String NombreSistema) {
+        this.NombreSistema = NombreSistema;
         this.fechaCreacion = new Date();
         this.drives = new ArrayList<>();
         this.usuarios = new ArrayList<>();
@@ -34,6 +39,14 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     }
 
+    /**
+     * Añade un nuevo Drive_20964708_RiquelmeOlguin a la lista de drives si la letra proporcionada no existe ya.
+     * Si la letra ya existe en la lista de drives, muestra un mensaje de error.
+     *
+     * @param letra
+     * @param nombre
+     * @param capacidad
+     */
     public void addDrive(String letra, String nombre, int capacidad) {
         var nd = new Drive_20964708_RiquelmeOlguin(letra, nombre, capacidad);
         var listaLetras = drives.stream().map(Drive_20964708_RiquelmeOlguin::getLetra)
@@ -45,6 +58,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
+    /**
+     * Registra a un usuario en un sistema, si el usuario ya existe entrega un mensaje de error.
+     * @param NombreUsuario
+     */
+
     public void register(String NombreUsuario) {
         if (!usuarios.contains(NombreUsuario.toUpperCase())) {
             usuarios.add(NombreUsuario.toUpperCase());
@@ -54,6 +72,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     }
 
+    /**
+     * Logea a un usuario en un sistema, si ya existe un usuario logeado devuelve un
+     * mensaje de error.
+     * @param usuario
+     */
     @Override
     public void login(String usuario) {
         if (getUsuarioActual() != null) {
@@ -68,6 +91,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
+    /**
+     * Deslogea un usuario de un sistema, si no existe ningun usuario logeado devuelve mensaje de error.
+     */
     @Override
     public void logout() {
         if (getUsuarioActual() == null) {
@@ -77,6 +103,13 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
+    /**
+     * Cambia el Drive actual al indicado por el parámetro Letra, si es que se encuentra disponible.
+     * Si no hay un usuario actualmente logueado o si la Letra proporcionada no corresponde a un Drive existente,
+     * se mostrará un mensaje de error.
+     *
+     * @param Letra
+     */
     @Override
     public void swithDrive(String Letra) {
         var listaLetras = drives.stream().map(Drive_20964708_RiquelmeOlguin::getLetra)
@@ -93,6 +126,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
+
+    /**
+     * Crea un nuevo directorio con el nombre proporcionado en la ruta actual si el usuario está logueado y el nombre no está en uso.
+     * @param Nombre
+     */
     @Override
     public void mkdir(String Nombre) {
         Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
@@ -131,7 +169,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
-
+    /**
+     * Cambia la ruta actual a la proporcionada en el parámetro Nombre. Esta función maneja comandos estándar como ".." para moverse a la ruta padre,
+     * "/" para ir a la raíz del drive y rutas relativas o absolutas. Si la ruta proporcionada no existe, se mostrará un mensaje de error.
+     *
+     * @param Nombre
+     */
     @Override
     public void cd(String Nombre) { //AREGLAR .. EN SOLO UNA RAIZ
         String RutaActual = getRutaActual();
@@ -197,6 +240,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     }
 
 
+    /**
+     * Añade un archivo a la ubicación actual. Si un archivo con el mismo nombre ya existe en la ubicación, se reemplaza.
+     *
+     * @param file
+     */
     @Override
     public void addFile(File_20964708_RiquelmeOlguin file) {
         String Ruta = getRutaActual();
@@ -227,6 +275,13 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     }
 
+    /**
+     * Elimina el archivo o directorio con el nombre proporcionado de la ubicación actual.
+     * Soporta comandos de eliminación avanzados como "*" para eliminar todo y "*.<extension>" para eliminar archivos de una cierta extensión.
+     * Los archivos y directorios eliminados se mueven a la papelera de reciclaje.
+     *
+     * @param Nombre
+     */
     @Override
     public void del(String Nombre) {
         String RutaActual = getRutaActual();
@@ -245,7 +300,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }else if(Nombre.contains("*") && Nombre.contains(".")){
             String[] NombreSplit = Nombre.split("\\.");
             String Extension = ".".concat(NombreSplit[1].toUpperCase());
-            DriveActual.elimiarContenidoExt(DriveActual.getContenido(),Extension);
+            if (RutaSplit.length == 1) {
+                DriveActual.elimiarContenidoExt(DriveActual.getContenido(), Extension);
+            }else{
+                FolderActual = buscarContenido(RutaSplit, DriveActual);
+                FolderActual.elimiarContenidoExt(FolderActual.getContenido(),Extension);
+            }
         }else{
             if (RutaSplit.length == 1) {
                 NombresContenido = getContenidoNombres(DriveActual.getContenido());
@@ -297,6 +357,14 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         }
     }
+
+    /**
+     * Copia un archivo o directorio desde la ubicación actual a la ruta especificada.
+     * El método también soporta copiar todos los archivos con una cierta extensión usando el formato "*.extension".
+     *
+     * @param NombreCopiar
+     * @param path
+     */
 
     @Override
     public void copy(String NombreCopiar, String path) { //arreglar cuando intenta copiar en un folder que no existe..........
@@ -387,6 +455,14 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
+
+    /**
+     * Mueve un archivo o directorio desde la ubicación actual a la ruta especificada.
+     * El método eliminará el archivo o directorio de la ubicación original después de moverlo.
+     *
+     * @param nombreMover
+     * @param path
+     */
     @Override
     public void move(String nombreMover, String path) { //error cuando intento copiar dentro mover dentro de una carpeta.
         String RutaActual = getRutaActual();
@@ -408,10 +484,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 Folder_20964708_RiquelmeOlguin FolderMover = null;
                 if (RutaSplitActual.length == 1){
                     FolderMover = DriveActual.buscarFolder(nombreMover);
-                    del(nombreMover);
+                    delAux(nombreMover);
                 }else{
                     FolderMover = Factual.buscarFolder(nombreMover);
-                    del(nombreMover);
+                    delAux(nombreMover);
                 }
 
                 if (FolderMover != null) {
@@ -419,11 +495,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                     if (NombresUsados.contains(nombreMover)){
                         DriveActualCopiar.getContenido().removeIf(f -> f.getNombre().equals(nombreMover));
                         DriveActualCopiar.getContenido().add(FolderMover);
-                        del(nombreMover);
+                        delAux(nombreMover);
                        // DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
                     }else {
                         DriveActualCopiar.getContenido().add(FolderMover);
-                        del(nombreMover);
+                        delAux(nombreMover);
                     }
                 } else {
                     System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
@@ -443,10 +519,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                     if (NombresUsados.contains(NombreFileSplit[0])){
                         DriveActualCopiar.getContenido().removeIf(f-> f.getNombre().equals(NombreFileSplit[0]));
                         DriveActualCopiar.getContenido().add(FileCopia);
-                        del(nombreMover);
+                        delAux(nombreMover);
                     }else {
                         DriveActualCopiar.getContenido().add(FileCopia);
-                        del(nombreMover);
+                        delAux(nombreMover);
                     }
                 } else {
                     System.out.println("El nombre ingresado no conincide con ningun File existente.");
@@ -462,11 +538,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         if (NombresUsados.contains(nombreMover)){
                             Fcopiar.getContenido().removeIf(f -> f.getNombre().equals(nombreMover));
                             Fcopiar.getContenido().add(FolderMover);
-                            del(nombreMover);
+                            delAux(nombreMover);
                             // DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
                         }else {
                             Fcopiar.getContenido().add(FolderMover);
-                            del(nombreMover);
+                            delAux(nombreMover);
                         }
                     } else {
                         System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
@@ -481,10 +557,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         if (NombresUsados.contains(NombreFileSplit[0])){
                             Factual.getContenido().removeIf(f-> f.getNombre().equals(NombreFileSplit[0]));
                             Factual.getContenido().add(FileMover);
-                            del(nombreMover);
+                            delAux(nombreMover);
                         }else {
                             Factual.getContenido().add(FileMover);
-                            del(nombreMover);
+                            delAux(nombreMover);
                         }
                     } else {
                         System.out.println("El nombre ingresado no conincide con ningun File existente.");
@@ -496,6 +572,19 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
+
+    /**
+     * Renombra un archivo o directorio en la ubicación actual con un nuevo nombre.
+     *
+     * Este método buscará un archivo o directorio con el nombre original especificado
+     * y cambiará su nombre al nuevo nombre proporcionado.
+     *
+     * Este método también verifica si el nuevo nombre ya existe en el sistema.
+     * Si el nuevo nombre ya existe, se imprimirá un mensaje en la consola y
+     * no se realizará la operación de cambio de nombre.
+     * @param Nombre
+     * @param NuevoNombre
+     */
     @Override
     public void ren(String Nombre, String NuevoNombre) {
         String RutaActual = getRutaActual();
@@ -556,7 +645,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
     }
 
-
+    /**
+     * Este método imprime el contenido del directorio actual o dependiendo de los argumentos entregados.
+     * @param args
+     */
     public void dir(List<String> args) {
         Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
         String RutaActual = getRutaActual();
@@ -587,9 +679,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 List<String> ListaNombres = getContenidoNombres(DriveActual.getContenido());
                 StringBuilder ListaMostarNombres = new StringBuilder();
                 for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(nombre).append("\n");
-                    System.out.println(ListaMostarNombres);
+                    ListaMostarNombres.append(Nombre).append("\n");
+
                 }
+                System.out.println(ListaMostarNombres);
             } else {
                 System.out.println("La lista tiene los siguientes elementos:");
                 for (String arg : args) {
@@ -598,66 +691,87 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         }
     }
-/*
-    public void dir(List<String> args) {
-        if (args == null || args.isEmpty()) {
-            System.out.println("La lista está vacía.");
-        } else if (args.size() == 1 && args.get(0).equals("")) {
-            System.out.println("La lista contiene una única cadena vacía.");
-        } else {
-            System.out.println("La lista tiene los siguientes elementos:");
-            for (String arg : args) {
-                System.out.println(arg);
-            }
-        }
+
+
+    /**
+     * selector de Nombre sistema
+     * @return
+     */
+    public String getNombreSistema() {
+        return NombreSistema;
     }
 
-
-
- */
-
-
-    public String getNombre() {
-        return nombre;
-    }
-
+    /**
+     * Selector de fecha creacion
+     * @return
+     */
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
 
-
+    /**
+     * selectro de drives del sistema
+     * @return
+     */
     public List<Drive_20964708_RiquelmeOlguin> getDrives() {
         return drives;
     }
 
-
+    /**
+     * selector de usuarios del sistema
+     * @return
+     */
     public List<String> getUsuarios() {
         return usuarios;
     }
 
+    /**
+     * modificador del usuario actual del sistema
+     * @param usuarioActual
+     */
     public void setUsuarioActual(String usuarioActual) {
         this.usuarioActual = usuarioActual;
     }
 
 
+    /**
+     * selector del usuario actual
+     * @return
+     */
     public String getUsuarioActual() {
         return usuarioActual;
     }
 
+    /**
+     * selector del drive actual
+     * @return
+     */
 
     public String getDriveActual() {
         return DriveActual;
     }
 
+    /**
+     * modificador del drive actual
+     * @param driveActual
+     */
+
     public void setDriveActual(String driveActual) {
         this.DriveActual = driveActual;
     }
 
-
+    /**
+     * modificador de la ruta actual
+     * @param rutaActual
+     */
     public void setRutaActual(String rutaActual) {
         RutaActual = rutaActual;
     }
 
+    /**
+     * toString del sistema
+     * @return
+     */
     @Override
     public String toString() {
         String result = String.format(
@@ -671,7 +785,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         "  RutaActual='%s',%n" +
                         "  Papelera='%s',%n" +
                         "}%n",
-                nombre,
+                NombreSistema,
                 fechaCreacion,
                 drives,
                 usuarios,
@@ -683,14 +797,27 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return result;
     }
 
+    /**
+     * selector de la ruta actual del sistema
+     * @return
+     */
 
     public String getRutaActual() {
         return RutaActual;
     }
 
+    /**
+     * selector de la papelera del sistema
+     * @return
+     */
     public List<Papelera_20964708_RiquelmeOlguin> getPapelera() {
         return Papelera;
     }
+
+    /**
+     * metodo que busca el drive actual y devuelve el objeto drive actual
+     * @return
+     */
 
     public Drive_20964708_RiquelmeOlguin buscarDriveActual() {
         Drive_20964708_RiquelmeOlguin BuscarDriveActual = null;
@@ -704,6 +831,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return BuscarDriveActual;
     }
 
+    /**
+     * metodo que busca un drive dado una letra ingresada. devuelve el drive referente a esa letra
+     * @param letraDrive
+     * @return
+     */
     public Drive_20964708_RiquelmeOlguin buscarDrivePorLetra(String letraDrive) {
         Drive_20964708_RiquelmeOlguin BuscarDrive = null;
         for (Drive_20964708_RiquelmeOlguin Drive : drives) {
@@ -716,6 +848,13 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     }
 
 
+    /**
+     * metodo que busca un folder dado un nombre en una lista de contenido, esto funciona hasta que la lista de la path se reccorre completa
+     * y se llega hasta el ultimo folder, este se retorna como el folder actual posicionado del sistema.
+     * @param RutaSplit
+     * @param DriveActual
+     * @return
+     */
 
     public Folder_20964708_RiquelmeOlguin buscarContenido(String[] RutaSplit, Drive_20964708_RiquelmeOlguin DriveActual) {
         Folder_20964708_RiquelmeOlguin actual = null;
@@ -733,6 +872,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return actual;
     }
 
+    /**
+     * Metodo que obtiene todos los nombres de el contenido que contiene una lista de contenido.
+     * @param contenido
+     * @return
+     */
+
     public List<String> getContenidoNombres(List<Contenido_20964708_RiquelmeOlguin> contenido) {
         List<String> nombres = new ArrayList<>();
 
@@ -742,6 +887,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return nombres;
     }
 
+    /**
+     * Metodo que crea un file, dado el tipo que file que existen, esto se le piden al usuario.
+     * una ves creado el file se hace el llamado a el metodo addFile para ingresarlo al sistema.
+     * @param Nombre
+     */
     @Override
     public void crearFile(String Nombre) {
         Random random = new Random();
@@ -749,6 +899,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
         if (DriveActual == null){
             System.out.println("Ningun drive seleccionado. Porfavor seleccione uno!");
+            return;
+        }else if (usuarioActual == null){
+            System.out.println("Ningun Usuario registrado. Porfavor Registre uno!");
             return;
         }
 
@@ -864,6 +1017,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return;
     }
 
+    /**
+     * Metodo que crea un objeto atributos de seguridad para el contenido.
+     * @return
+     */
+
     public AtributosSeguridad_20964708_RiquelmeOlguin crearSeguridad(){
         Scanner entrada = new Scanner(System.in);
         int Valor1;
@@ -893,11 +1051,25 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     }
 
+    /**
+     * Metodo que filtra Files dado un formato especifico de estos.
+     * @param lista
+     * @param formato
+     * @return
+     */
+
     public List<Contenido_20964708_RiquelmeOlguin> filtrarPorFormato(List<Contenido_20964708_RiquelmeOlguin> lista, String formato) {
         return lista.stream()
                 .filter(contenido -> contenido instanceof File_20964708_RiquelmeOlguin && ((File_20964708_RiquelmeOlguin) contenido).getFormato().equals(formato))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Metodo que verifica que dado una ruta, esta existe en el sistema.
+     * @param Contenido
+     * @param RutaSplit
+     * @return
+     */
 
     @Override
     public boolean verificarRuta(List<Contenido_20964708_RiquelmeOlguin> Contenido, List<String> RutaSplit) {
@@ -913,6 +1085,13 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return true;
     }
 
+    /**
+     * Metodo que dado una lista de contenido y un nombre devuelve el folder referente a ese folder.
+     * @param contenido
+     * @param nombre
+     * @return
+     */
+
     public Folder_20964708_RiquelmeOlguin buscarFolder(List<Contenido_20964708_RiquelmeOlguin> contenido, String nombre) {
         for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
             if (objeto instanceof Folder_20964708_RiquelmeOlguin && objeto.getNombre().equals(nombre)) {
@@ -921,6 +1100,51 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
         return null;
     }
+
+    public void delAux(String Nombre) {
+        String RutaActual = getRutaActual();
+        String[] RutaSplit = RutaActual.split("/");
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        Folder_20964708_RiquelmeOlguin FolderActual;
+        List<String> NombresContenido;
+            if (RutaSplit.length == 1) {
+                NombresContenido = getContenidoNombres(DriveActual.getContenido());
+                if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
+                    if (NombresContenido.contains(Nombre)) {
+                        DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), Nombre);
+                    } else {
+                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                    }
+                }
+                if (Nombre.contains(".")) { //Si contiene un punto, es un file
+                    String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
+                    if (NombresContenido.contains(NombreEliminar)) {
+                        DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), NombreEliminar);
+                    } else {
+                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                    }
+                }
+            } else {
+                FolderActual = buscarContenido(RutaSplit, DriveActual);
+                NombresContenido = getContenidoNombres(FolderActual.getContenido());
+                if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
+                    if (NombresContenido.contains(Nombre)) {
+                        FolderActual.eliminarcontenido(FolderActual.getContenido(), Nombre);
+                    } else {
+                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                    }
+                }
+                if (Nombre.contains(".")) { //Si contiene un punto, es un file
+                    String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
+                    if (NombresContenido.contains(NombreEliminar)) {
+                        FolderActual.eliminarcontenido(FolderActual.getContenido(), NombreEliminar);
+                    } else {
+                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                    }
+                }
+            }
+        }
+
 
 
 
