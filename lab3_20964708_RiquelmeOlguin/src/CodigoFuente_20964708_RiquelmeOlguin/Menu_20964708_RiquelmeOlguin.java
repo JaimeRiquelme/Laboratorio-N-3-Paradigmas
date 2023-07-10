@@ -270,6 +270,7 @@ public class Menu_20964708_RiquelmeOlguin {
                     break;
                 case 13:
                     System.out.println("Ingrese los elementos para listar en formato [\"elemento1\", \"elemento2\", ...]:");
+                    System.out.println("--Presione ENTER SIN NINGUN CARACTER PARA LISTAR ACTUAL--");
                     String linea = entrada.nextLine();
                     List<String> ListParametros = new ArrayList<>(Arrays.asList(linea.split(",")));
                     Sistema.dir(ListParametros);

@@ -180,6 +180,13 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     boolean verificarRuta(List<Contenido_20964708_RiquelmeOlguin> Contenido, List<String> RutaSplit);
 
+    /**
+     * Método para recuperar todos los nombres de contenido NO oculto.
+     * @param contenido
+     * @return
+     */
+    List<String> getContenidoNombresSeguridad(List<Contenido_20964708_RiquelmeOlguin> contenido);
+
 
 }
 

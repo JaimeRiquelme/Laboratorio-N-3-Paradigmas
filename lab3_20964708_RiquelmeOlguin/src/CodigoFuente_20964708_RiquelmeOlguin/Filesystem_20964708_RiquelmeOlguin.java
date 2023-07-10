@@ -653,19 +653,73 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
         String RutaActual = getRutaActual();
         String[] RutaSplit = RutaActual.split("/");
+        List<String> ListaNombres;
         if (RutaSplit.length != 1) {
             Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaSplit, DriveActual);
             if (args == null || args.isEmpty()) {
                 System.out.println("La lista está vacía.");
             } else if (args.size() == 1 && args.get(0).equals("")) {
-                List<String> ListaNombres = getContenidoNombres(FolderActual.getContenido());
+                ListaNombres = getContenidoNombresSeguridad(FolderActual.getContenido());
                 StringBuilder ListaMostarNombres = new StringBuilder();
                 for (String Nombre : ListaNombres){
                     ListaMostarNombres.append(Nombre).append("\n");
 
                 }
                 System.out.println(ListaMostarNombres);
-            } else {
+            } else if(args.get(0).equals("/s")){
+                ListaNombres = getNombresTotalesSeguridad(FolderActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+            }else if(args.get(0).equals("/a")){
+                ListaNombres = getContenidoNombres(FolderActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+            }else if(args.get(0).equals("/s") && args.get(1).equals("/a")){
+                ListaNombres = getNombresTotales(FolderActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+            }else if(args.get(0).equals("/o N") || args.get(0).equals("/o -N")){
+                ListaNombres = getContenidoNombresSeguridad(FolderActual.getContenido());
+                Collections.sort(ListaNombres);
+                StringBuilder ListaMostarNombres = new StringBuilder();
+
+                if (args.get(0).contains("-")){
+                    Collections.reverse(ListaNombres);
+                }
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+
+            }else if(args.get(0).equals("/o D") || args.get(0).equals("/o -D")){
+                ListaNombres = getNombresPorFecha(FolderActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+
+                if (args.get(0).contains("-")){
+                    Collections.reverse(ListaNombres);
+                }
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+
+
+            }
+            else{
                 System.out.println("La lista tiene los siguientes elementos:");
                 for (String arg : args) {
                     System.out.println(arg);
@@ -676,18 +730,74 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             if (args == null || args.isEmpty()) {
                 System.out.println("La lista está vacía.");
             } else if (args.size() == 1 && args.get(0).equals("")) {
-                List<String> ListaNombres = getContenidoNombres(DriveActual.getContenido());
+                ListaNombres = getContenidoNombresSeguridad(DriveActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+                System.out.println("Todos los directorios incluyendo los SubDirectorios.");
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+            } else if(args.get(0).equals("/s")){
+                ListaNombres = getNombresTotalesSeguridad(DriveActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+                System.out.println("Todos los directorios incluyendo los SubDirectorios.");
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+            }else if(args.get(0).equals("/a")){
+                ListaNombres = getContenidoNombres(DriveActual.getContenido());
                 StringBuilder ListaMostarNombres = new StringBuilder();
                 for (String Nombre : ListaNombres){
                     ListaMostarNombres.append(Nombre).append("\n");
 
                 }
                 System.out.println(ListaMostarNombres);
-            } else {
+            }else if(args.get(0).equals("/s") && args.get(1).equals("/a")){
+                ListaNombres = getNombresTotales(DriveActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+            }else if(args.get(0).equals("/o N") || args.get(0).equals("/o -N")){
+                ListaNombres = getContenidoNombresSeguridad(DriveActual.getContenido());
+                Collections.sort(ListaNombres);
+                StringBuilder ListaMostarNombres = new StringBuilder();
+
+                if (args.get(0).contains("-")){
+                    Collections.reverse(ListaNombres);
+                }
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+
+            }else if(args.get(0).equals("/o D") || args.get(0).equals("/o -D")){
+                ListaNombres = getNombresPorFecha(DriveActual.getContenido());
+                StringBuilder ListaMostarNombres = new StringBuilder();
+
+                if (args.get(0).contains("-")){
+                    Collections.reverse(ListaNombres);
+                }
+                for (String Nombre : ListaNombres){
+                    ListaMostarNombres.append(Nombre).append("\n");
+
+                }
+                System.out.println(ListaMostarNombres);
+
+
+            }
+            else{
                 System.out.println("La lista tiene los siguientes elementos:");
                 for (String arg : args) {
                     System.out.println(arg);
                 }
+                System.out.println("Por favor verifique los argumentos ingresados.");
             }
         }
     }
@@ -884,6 +994,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
             nombres.add(objeto.getNombre());
         }
+
         return nombres;
     }
 
@@ -1144,6 +1255,98 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 }
             }
         }
+
+    public List<String> getContenidoNombresSeguridad(List<Contenido_20964708_RiquelmeOlguin> contenido) {
+        List<String> nombres = new ArrayList<>();
+
+        for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
+            if (!objeto.getAtributoSeguridad().esOculto()) {
+                nombres.add(objeto.getNombre());
+            }
+        }
+        return nombres;
+    }
+
+
+
+    public List<String> getNombresTotalesSeguridad(List<Contenido_20964708_RiquelmeOlguin> contenido) {
+        List<String> nombres = new ArrayList<>();
+
+        for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
+            if (!objeto.getAtributoSeguridad().esOculto()) {
+                nombres.add(objeto.getNombre());
+            }
+
+            // Verificamos si el objeto es un Folder antes de hacer la llamada recursiva
+            if (objeto instanceof Folder_20964708_RiquelmeOlguin) {
+                Folder_20964708_RiquelmeOlguin carpeta = (Folder_20964708_RiquelmeOlguin) objeto;
+                nombres.addAll(getNombresTotalesSeguridad(carpeta.getContenido()));
+            }
+        }
+
+        return nombres;
+    }
+
+    public List<String> getNombresTotales(List<Contenido_20964708_RiquelmeOlguin> contenido) {
+        List<String> nombres = new ArrayList<>();
+
+        for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
+                nombres.add(objeto.getNombre());
+            // Verificamos si el objeto es un Folder antes de hacer la llamada recursiva
+            if (objeto instanceof Folder_20964708_RiquelmeOlguin) {
+                Folder_20964708_RiquelmeOlguin carpeta = (Folder_20964708_RiquelmeOlguin) objeto;
+                nombres.addAll(getNombresTotales(carpeta.getContenido()));
+            }
+        }
+
+        return nombres;
+    }
+
+    public List<Contenido_20964708_RiquelmeOlguin> recolectarObjetosNoOcultos(List<Contenido_20964708_RiquelmeOlguin> contenido) {
+        List<Contenido_20964708_RiquelmeOlguin> objetosNoOcultos = new ArrayList<>();
+
+        for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
+            if (!objeto.getAtributoSeguridad().esOculto()) {
+                objetosNoOcultos.add(objeto);
+            }
+
+            if (objeto instanceof Folder_20964708_RiquelmeOlguin) {
+                Folder_20964708_RiquelmeOlguin carpeta = (Folder_20964708_RiquelmeOlguin) objeto;
+                objetosNoOcultos.addAll(recolectarObjetosNoOcultos(carpeta.getContenido()));
+            }
+        }
+
+        return objetosNoOcultos;
+    }
+
+    public List<String> getNombresPorFecha(List<Contenido_20964708_RiquelmeOlguin> contenido) {
+        List<Contenido_20964708_RiquelmeOlguin> objetosNoOcultos = recolectarObjetosNoOcultos(contenido);
+
+        Collections.sort(objetosNoOcultos, Comparator.comparing(Contenido_20964708_RiquelmeOlguin::getFechaCreacion));
+
+        List<String> nombres = objetosNoOcultos.stream()
+                .map(Contenido_20964708_RiquelmeOlguin::getNombre)
+                .collect(Collectors.toList());
+
+        return nombres;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
