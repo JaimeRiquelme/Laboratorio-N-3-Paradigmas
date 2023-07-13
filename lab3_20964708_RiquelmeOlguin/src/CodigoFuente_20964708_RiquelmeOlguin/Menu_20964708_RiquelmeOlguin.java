@@ -1,4 +1,5 @@
 package CodigoFuente_20964708_RiquelmeOlguin;
+import java.security.Principal;
 import java.util.*;
 
 
@@ -60,6 +61,7 @@ public class Menu_20964708_RiquelmeOlguin {
                     if (SistemaCreado) {
                         mensajeopcional2();
                         scannerOpcion2();
+                        break;
                     }else{
                         System.out.println("Debe crear un sistema antes de modificarlo.");
                         break;
@@ -140,7 +142,8 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("11. Mover Contenido");
         System.out.println("12. Renombrar Contenido");
         System.out.println("13. listar contenido");
-        System.out.println("14. Salir");
+        System.out.println("14. Formatear una unidad.");
+        System.out.println("15. Salir");
         System.out.println();
         System.out.println();
 
@@ -277,6 +280,16 @@ public class Menu_20964708_RiquelmeOlguin {
 
                     break;
                 case 14:
+                    System.out.println("Ingrese la LETRA del drive a formatear");
+                    String Letra = entrada.nextLine();
+                    System.out.println("Ingrese el nuevo nombre del drive");
+                    String NuevoNombreDrive = entrada.nextLine();
+                    if (Letra.length() > 1){
+                        System.out.println("Ingrese una letra correctamente.");
+                    }else {
+                        Sistema.format(Letra.toUpperCase(),NuevoNombreDrive.toUpperCase());
+                    }
+                case 15:
                     System.out.println("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();
@@ -290,6 +303,8 @@ public class Menu_20964708_RiquelmeOlguin {
             entrada.next();
         }
     }
+
+
 
     /**
      * Getter para la variable salirMenu.

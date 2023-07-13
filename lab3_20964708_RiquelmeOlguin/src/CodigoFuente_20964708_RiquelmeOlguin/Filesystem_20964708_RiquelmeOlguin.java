@@ -654,6 +654,16 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         String RutaActual = getRutaActual();
         String[] RutaSplit = RutaActual.split("/");
         List<String> ListaNombres;
+
+        if (args.get(0).equals("?")){
+            System.out.println("---OPCIONES DISPONIBLES---");
+            System.out.println(" ' ' -> Listar actual (Presionar enter)");
+            System.out.println(" '/s' -> Listar actual y subdirectorios");
+            System.out.println(" '/a' -> Listar actual incluyendo contenido oculto.");
+            System.out.println(" '/s , /a' -> Listar actual y subdirectorios incluyendo contenido oculto (incluir la coma entre ambos)");
+            System.out.println(" '/o N , /o -N -> Listar contenido actual en orden alfabetico ascendente/descendiente'");
+            System.out.println(" '/o D , /o -D -> Listar contenido actual segun fecha creación ascendente/descendiente'");
+        }
         if (RutaSplit.length != 1) {
             Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaSplit, DriveActual);
             if (args == null || args.isEmpty()) {
@@ -800,6 +810,20 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 System.out.println("Por favor verifique los argumentos ingresados.");
             }
         }
+    }
+
+    /**
+     * Método para formatear una unidad dado su letra, además se actualiza su nombre una vez formateado.
+     *
+     * @param Letra
+     * @param Nombre
+     */
+    @Override
+    public void format(String Letra, String Nombre) {
+        Drive_20964708_RiquelmeOlguin DriveFormat = buscarDrivePorLetra(Letra);
+
+        DriveFormat.getContenido().clear();
+        DriveFormat.setNombre(Nombre);
     }
 
 

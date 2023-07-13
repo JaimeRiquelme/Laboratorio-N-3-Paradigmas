@@ -132,4 +132,12 @@ public class Drive_20964708_RiquelmeOlguin implements  Interfaz_Drive_20964708_R
                 ", Contenido=" + Contenido +
                 '}';
     }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setContenido(List<Contenido_20964708_RiquelmeOlguin> contenido) {
+        Contenido = contenido;
+    }
 }
