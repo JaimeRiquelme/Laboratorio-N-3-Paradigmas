@@ -111,6 +111,7 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
 
     void dir(List<String> Parametros);
     void format(String Letra,String Nombre);
+    void encrypt(String Contrasena, String NombreFolder);
 
     /**
      * Método para buscar contenido dentro del sistema de archivos.

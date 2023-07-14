@@ -7,6 +7,7 @@ public abstract class Contenido_20964708_RiquelmeOlguin implements Interfaz_Cont
     protected Date fechaModificacion;
     protected String creadorUser;
     protected AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad;
+    protected char[] Contrasena;
 
     /**
      * Contructor de Contenido del sistema
@@ -17,12 +18,13 @@ public abstract class Contenido_20964708_RiquelmeOlguin implements Interfaz_Cont
      * @param atributoSeguridad
      */
 
-    public Contenido_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad) {
+    public Contenido_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad, char[] Contrasena) {
         this.nombre = nombre;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
         this.creadorUser = creadorUser;
         this.atributoSeguridad = atributoSeguridad;
+        this.Contrasena = Contrasena;
     }
 
 
@@ -84,6 +86,7 @@ public abstract class Contenido_20964708_RiquelmeOlguin implements Interfaz_Cont
                 ", fechaModificacion=" + fechaModificacion +
                 ", creadorUser='" + creadorUser + '\'' +
                 ", atributoSeguridad=" + atributoSeguridad +
+                ", Contraseña= " + Contrasena +
                 '}';
     }
 
@@ -105,4 +108,10 @@ public abstract class Contenido_20964708_RiquelmeOlguin implements Interfaz_Cont
         this.nombre = nombre;
     }
 
+    public char[] getContrasena() {
+        return Contrasena;
+    }
+    public String getContrasenaString() {
+        return new String(Contrasena);
+    }
 }

@@ -1,5 +1,5 @@
 package CodigoFuente_20964708_RiquelmeOlguin;
-import java.security.Principal;
+
 import java.util.*;
 
 
@@ -286,10 +286,19 @@ public class Menu_20964708_RiquelmeOlguin {
                     String NuevoNombreDrive = entrada.nextLine();
                     if (Letra.length() > 1){
                         System.out.println("Ingrese una letra correctamente.");
+                        break;
                     }else {
                         Sistema.format(Letra.toUpperCase(),NuevoNombreDrive.toUpperCase());
+                        break;
                     }
                 case 15:
+                    System.out.println("Ingrese el nombre del folder a encryptar");
+                    String NombreFolderEncrypt = entrada.nextLine();
+                    System.out.println("Ingrese la contraseña del folder a encryptar");
+                    String ContrasenaFolder = entrada.nextLine();
+                    Sistema.encrypt(ContrasenaFolder,NombreFolderEncrypt);
+                    break;
+                case 16:
                     System.out.println("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();

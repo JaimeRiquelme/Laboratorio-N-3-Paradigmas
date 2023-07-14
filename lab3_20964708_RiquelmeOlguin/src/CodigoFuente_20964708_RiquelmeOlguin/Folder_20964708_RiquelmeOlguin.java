@@ -15,8 +15,8 @@ public class Folder_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeO
      * @param creadorUser El usuario que creó la carpeta.
      * @param atributoSeguridad Los atributos de seguridad de la carpeta.
      */
-    public Folder_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad) {
-        super(nombre, fechaCreacion, fechaModificacion, creadorUser, atributoSeguridad);
+    public Folder_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String creadorUser, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad, char[] Contrasena) {
+        super(nombre, fechaCreacion, fechaModificacion, creadorUser, atributoSeguridad, Contrasena);
         Contenido = new ArrayList<>();
     }
 
@@ -81,7 +81,8 @@ public class Folder_20964708_RiquelmeOlguin extends Contenido_20964708_RiquelmeO
                 ", Fecha_modificacion=" + getFechaModificacion() +
                 ", CreadorUser='" + getCreadorUser() + '\'' +
                 ", AtributoSeguridad=" + getAtributoSeguridad() +
-                ",Contenido="+ Contenido +
+                ", Contenido="+ Contenido +
+                ", Contraseña =" + getContrasenaString() +
                 '}';
     }
 

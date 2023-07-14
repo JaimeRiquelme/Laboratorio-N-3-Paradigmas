@@ -144,8 +144,9 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             String Creador = getUsuarioActual();
             String Ruta = getRutaActual();
             String[] RutaSplit = Ruta.split("/");
+            char[] contrasena = CrearContrasena();
             AtributosSeguridad_20964708_RiquelmeOlguin Atributos = crearSeguridad();
-            Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos);
+            Folder_20964708_RiquelmeOlguin NewFolder = new Folder_20964708_RiquelmeOlguin(Nombre, Fecha_creacion, Fecha_modif, Creador, Atributos, contrasena);
             List<String> NombresUsados;
             if (RutaSplit.length == 1) { // C:/Folder1/Folder2/folder3/folder4
                 NombresUsados = getContenidoNombres(DriveActual.getContenido());
@@ -826,6 +827,21 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         DriveFormat.setNombre(Nombre);
     }
 
+    @Override
+    public void encrypt(String Contrasena, String NombreFolder) {
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        Folder_20964708_RiquelmeOlguin FolderEncrypt = buscarFolder(DriveActual.getContenido(),NombreFolder);
+
+        if (FolderEncrypt != null && FolderEncrypt.getContrasenaString().equals(Contrasena)) {
+            int modValue = calcularModulo5(FolderEncrypt.getContrasena());
+            String NuevoNombre = sumarValorAModulo(FolderEncrypt.getNombre(),modValue);
+            FolderEncrypt.setNombre(NuevoNombre);
+            aplicarModuloAFolder(FolderEncrypt, modValue);
+        } else {
+            System.out.println("No se encontró el folder o la contraseña no coincide.");
+        }
+    }
+
 
     /**
      * selector de Nombre sistema
@@ -1054,6 +1070,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         String contenido;
         String formato;
         long tamano = random.nextInt(10000); //genera un numero random del 0 al 9999 para el tamaño
+        char[] contrasena;
 
         switch(eleccion) {
             case 1:
@@ -1069,7 +1086,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         formato = ".TXT";
                         System.out.println("Ingrese el Contenido texto del archivo.");
                         contenido = entrada.nextLine();
-                        TextFile_20964708_RiquelmeOlguin newfile = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        contrasena = CrearContrasena();
+                        TextFile_20964708_RiquelmeOlguin newfile = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
                         addFile(newfile);
                         break;
 
@@ -1077,7 +1095,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         formato = ".MD";
                         System.out.println("Ingrese el Contenido texto del archivo.");
                         contenido = entrada.nextLine();
-                        TextFile_20964708_RiquelmeOlguin newfile2 = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        contrasena = CrearContrasena();
+                        TextFile_20964708_RiquelmeOlguin newfile2 = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
                         addFile(newfile2);
                         break;
                 }
@@ -1096,7 +1115,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         formato = ".DOCX";
                         System.out.println("Ingrese el contenido del DOCUMENTO");
                         contenido = entrada.nextLine();
-                        DocumentFile_20964708_RiquelmeOlguin newfile3 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        contrasena = CrearContrasena();
+                        DocumentFile_20964708_RiquelmeOlguin newfile3 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
                         addFile(newfile3);
                         break;
 
@@ -1104,7 +1124,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         formato = ".PDF";
                         System.out.println("Ingrese el contenido del DOCUMENTO");
                         contenido = entrada.nextLine();
-                        DocumentFile_20964708_RiquelmeOlguin newfile4 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        contrasena = CrearContrasena();
+                        DocumentFile_20964708_RiquelmeOlguin newfile4 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
                         addFile(newfile4);
                         break;
                 }
@@ -1123,7 +1144,8 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         formato = ".JAVA";
                         System.out.println("Ingrese CODIGO del archivo");
                         contenido = entrada.nextLine();
-                        CodeFile_20964708_RiquelmeOlguin newfile5 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        contrasena = CrearContrasena();
+                        CodeFile_20964708_RiquelmeOlguin newfile5 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
                         addFile(newfile5);
                         break;
 
@@ -1131,14 +1153,16 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                         formato = ".PY";
                         System.out.println("Ingrese CODIGO del archivo");
                         contenido = entrada.nextLine();
-                        CodeFile_20964708_RiquelmeOlguin newfile6 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        contrasena = CrearContrasena();
+                        CodeFile_20964708_RiquelmeOlguin newfile6 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
                         addFile(newfile6);
                         break;
                     case 3:
                         formato = ".RKT";
                         System.out.println("Ingrese CODIGO del archivo");
                         contenido = entrada.nextLine();
-                        CodeFile_20964708_RiquelmeOlguin newfile7 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano);
+                        contrasena = CrearContrasena();
+                        CodeFile_20964708_RiquelmeOlguin newfile7 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
                         addFile(newfile7);
                         break;
                 }
@@ -1354,6 +1378,55 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
         return nombres;
     }
+
+    public char[] CrearContrasena(){
+        Scanner entrada = new Scanner(System.in);
+        String contrasena;
+
+        while (true) {
+            System.out.println("Ingrese la contraseña:");
+            contrasena = entrada.nextLine();
+
+            if (contrasena.length() >= 6 && contrasena.matches(".*\\d.*") && contrasena.matches(".*[a-zA-Z].*")) {
+                break;
+            } else {
+                System.out.println("La contraseña debe tener al menos 6 caracteres, al menos una letra y al menos un número.");
+            }
+        }
+
+        return contrasena.toCharArray();
+    }
+
+    public int calcularModulo5(char[] contrasena) {
+        int suma = 0;
+        for (char c : contrasena) {
+            suma += (int) c;
+        }
+        return suma % 5;
+    }
+
+    // Este método suma el valor del modulo a cada carácter del nombre y retorna el nuevo nombre.
+    public String sumarValorAModulo(String nombre, int modValue) {
+        char[] caracteres = nombre.toCharArray();
+        for (int i = 0; i < caracteres.length; i++) {
+            caracteres[i] += modValue;
+        }
+        return new String(caracteres);
+    }
+
+    private void aplicarModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue) {
+        for (Contenido_20964708_RiquelmeOlguin objeto : carpeta.getContenido()) {
+            String NuevoNombre = sumarValorAModulo(objeto.getNombre(), modValue);
+            objeto.setNombre(NuevoNombre);
+
+            // Verificamos si el objeto es un Folder antes de hacer la llamada recursiva
+            if (objeto instanceof Folder_20964708_RiquelmeOlguin) {
+                Folder_20964708_RiquelmeOlguin subCarpeta = (Folder_20964708_RiquelmeOlguin) objeto;
+                aplicarModuloAFolder(subCarpeta, modValue);
+            }
+        }
+    }
+
 
 
 

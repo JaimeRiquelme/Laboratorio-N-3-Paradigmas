@@ -18,8 +18,8 @@ public abstract class File_20964708_RiquelmeOlguin extends Contenido_20964708_Ri
      * @param tamano
      */
 
-    public File_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String usuarioCreador, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad, String contenido, String formato, long tamano) {
-        super(nombre, fechaCreacion, fechaModificacion, usuarioCreador, atributoSeguridad);
+    public File_20964708_RiquelmeOlguin(String nombre, Date fechaCreacion, Date fechaModificacion, String usuarioCreador, AtributosSeguridad_20964708_RiquelmeOlguin atributoSeguridad, String contenido, String formato, long tamano, char[] contrasena) {
+        super(nombre, fechaCreacion, fechaModificacion, usuarioCreador, atributoSeguridad, contrasena);
         this.contenido = contenido;
         this.formato = formato;
         this.tamano = tamano;
@@ -97,6 +97,7 @@ public abstract class File_20964708_RiquelmeOlguin extends Contenido_20964708_Ri
                 ", contenido='" + contenido + '\'' +
                 ", formato='" + formato + '\'' +
                 ", tamano=" + tamano +
+                ", contrasena =" + getContrasenaString() +
                 '}';
     }
 
