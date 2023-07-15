@@ -143,7 +143,9 @@ public class Menu_20964708_RiquelmeOlguin {
         System.out.println("12. Renombrar Contenido");
         System.out.println("13. listar contenido");
         System.out.println("14. Formatear una unidad.");
-        System.out.println("15. Salir");
+        System.out.println("15. Encryptar un Folder.");
+        System.out.println("16. Desencryptar un Folder.");
+        System.out.println("17. Salir");
         System.out.println();
         System.out.println();
 
@@ -296,9 +298,16 @@ public class Menu_20964708_RiquelmeOlguin {
                     String NombreFolderEncrypt = entrada.nextLine();
                     System.out.println("Ingrese la contraseña del folder a encryptar");
                     String ContrasenaFolder = entrada.nextLine();
-                    Sistema.encrypt(ContrasenaFolder,NombreFolderEncrypt);
+                    Sistema.encrypt(ContrasenaFolder,NombreFolderEncrypt.toUpperCase());
                     break;
                 case 16:
+                    System.out.println("Ingrese el nombre del folder a desencryptar");
+                    String NombreFolderdesencrypt = entrada.nextLine();
+                    System.out.println("Ingrese la contraseña del folder a desencryptar");
+                    String ContrasenaFolderdesencrypt = entrada.nextLine();
+                    Sistema.decrypt(ContrasenaFolderdesencrypt,NombreFolderdesencrypt.toUpperCase());
+                    break;
+                case 17:
                     System.out.println("Volver al menú principal.");
                     MenuPrincipal();
                     scannerOpcion();

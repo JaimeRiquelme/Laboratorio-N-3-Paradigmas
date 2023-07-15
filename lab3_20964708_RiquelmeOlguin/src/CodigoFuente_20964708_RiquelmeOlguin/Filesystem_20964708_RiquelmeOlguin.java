@@ -827,10 +827,24 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         DriveFormat.setNombre(Nombre);
     }
 
+    /**
+     * Funcion que permite encryptar una carpeta con todo su contenido dentro, la contraseña debe estar correcta.
+     * @param Contrasena
+     * @param NombreFolder
+     */
+
     @Override
     public void encrypt(String Contrasena, String NombreFolder) {
         Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        Folder_20964708_RiquelmeOlguin FolderEncrypt = buscarFolder(DriveActual.getContenido(),NombreFolder);
+        String RutaActual = getRutaActual();
+        String[] RutaActualSplit = RutaActual.split("/");
+        Folder_20964708_RiquelmeOlguin FolderEncrypt;
+        if (RutaActualSplit.length == 1) {
+            FolderEncrypt = buscarFolder(DriveActual.getContenido(), NombreFolder);
+        }else{
+            Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaActualSplit,DriveActual);
+            FolderEncrypt = buscarFolder(FolderActual.getContenido(),NombreFolder);
+        }
 
         if (FolderEncrypt != null && FolderEncrypt.getContrasenaString().equals(Contrasena)) {
             int modValue = calcularModulo5(FolderEncrypt.getContrasena());
@@ -841,6 +855,37 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             System.out.println("No se encontró el folder o la contraseña no coincide.");
         }
     }
+
+    /**
+     * Método para desencryptar un contenido.
+     * @param Contrasena
+     * @param NombreFolder
+     */
+
+
+    public void decrypt(String Contrasena, String NombreFolder) {
+        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+        String RutaActual = getRutaActual();
+        String[] RutaActualSplit = RutaActual.split("/");
+        Folder_20964708_RiquelmeOlguin FolderDecrypt;
+        if (RutaActualSplit.length == 1) {
+            FolderDecrypt = buscarFolderDecrypt(DriveActual.getContenido(), NombreFolder, Contrasena);
+        } else {
+            Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaActualSplit,DriveActual);
+            FolderDecrypt = buscarFolderDecrypt(FolderActual.getContenido(), NombreFolder, Contrasena);
+        }
+
+        if (FolderDecrypt != null && FolderDecrypt.getContrasenaString().equals(Contrasena)) {
+            int modValue = calcularModulo5(FolderDecrypt.getContrasena());
+            String NuevoNombre = restarValorAModulo(FolderDecrypt.getNombre(),modValue);
+            FolderDecrypt.setNombre(NuevoNombre);
+            aplicarInversoModuloAFolder(FolderDecrypt, modValue);
+        } else {
+            System.out.println("No se encontró el folder o la contraseña no coincide.");
+        }
+    }
+
+
 
 
     /**
@@ -1260,6 +1305,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return null;
     }
 
+    /**
+     * Método que elimina el contenido de una lista de contenido. (Similar a del, pero sin mover a papelera.)
+     * @param Nombre
+     */
+
     public void delAux(String Nombre) {
         String RutaActual = getRutaActual();
         String[] RutaSplit = RutaActual.split("/");
@@ -1304,6 +1354,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         }
 
+    /**
+     * Metodo para obtener todos los nombres de una lista de contenido. (solamente contenido visible)
+     * @param contenido
+     * @return
+     */
+
     public List<String> getContenidoNombresSeguridad(List<Contenido_20964708_RiquelmeOlguin> contenido) {
         List<String> nombres = new ArrayList<>();
 
@@ -1314,6 +1370,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
         return nombres;
     }
+
+    /**
+     * Método para obtener los nombres de los contenidos de una lista y sus sublistas. (Solamente visibles)
+     * @param contenido
+     * @return
+     */
 
 
 
@@ -1335,6 +1397,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return nombres;
     }
 
+    /**
+     * Método para obtener todos los nombres de una lista y sublistas
+     * @param contenido
+     * @return
+     */
+
     public List<String> getNombresTotales(List<Contenido_20964708_RiquelmeOlguin> contenido) {
         List<String> nombres = new ArrayList<>();
 
@@ -1349,6 +1417,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
         return nombres;
     }
+
+    /**
+     * Método que busca todos los objetos no ocultos de una lista de contenido.
+     * @param contenido
+     * @return
+     */
 
     public List<Contenido_20964708_RiquelmeOlguin> recolectarObjetosNoOcultos(List<Contenido_20964708_RiquelmeOlguin> contenido) {
         List<Contenido_20964708_RiquelmeOlguin> objetosNoOcultos = new ArrayList<>();
@@ -1367,6 +1441,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return objetosNoOcultos;
     }
 
+    /**
+     * Método que obtiene ordena por el atributo fecha una lista y luego obtiene los nombres de cada objeto.
+     * @param contenido
+     * @return
+     */
+
     public List<String> getNombresPorFecha(List<Contenido_20964708_RiquelmeOlguin> contenido) {
         List<Contenido_20964708_RiquelmeOlguin> objetosNoOcultos = recolectarObjetosNoOcultos(contenido);
 
@@ -1378,6 +1458,11 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
         return nombres;
     }
+
+    /**
+     * Método para crear una contraseña de un objeto contenido.
+     * @return
+     */
 
     public char[] CrearContrasena(){
         Scanner entrada = new Scanner(System.in);
@@ -1397,6 +1482,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return contrasena.toCharArray();
     }
 
+    /**
+     * Método para calcular el modulo de una contraseña.
+     * @param contrasena
+     * @return
+     */
+
     public int calcularModulo5(char[] contrasena) {
         int suma = 0;
         for (char c : contrasena) {
@@ -1405,7 +1496,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         return suma % 5;
     }
 
-    // Este método suma el valor del modulo a cada carácter del nombre y retorna el nuevo nombre.
+    /**
+     * Método para sumar el modulo calculado a un Nombre (String)
+     * @param nombre
+     * @param modValue
+     * @return
+     */
     public String sumarValorAModulo(String nombre, int modValue) {
         char[] caracteres = nombre.toCharArray();
         for (int i = 0; i < caracteres.length; i++) {
@@ -1413,6 +1509,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         }
         return new String(caracteres);
     }
+
+    /**
+     * Método que aplica el modulo calculado a una lista de carpetas y subcarpetas.
+     * @param carpeta
+     * @param modValue
+     */
 
     private void aplicarModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue) {
         for (Contenido_20964708_RiquelmeOlguin objeto : carpeta.getContenido()) {
@@ -1425,6 +1527,54 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 aplicarModuloAFolder(subCarpeta, modValue);
             }
         }
+    }
+
+    /**
+     * Método para restar el modulo calculado a un Nombre (String)
+     * @param nombre
+     * @param modValue
+     * @return
+     */
+    public String restarValorAModulo(String nombre, int modValue) {
+        char[] caracteres = nombre.toCharArray();
+        for (int i = 0; i < caracteres.length; i++) {
+            caracteres[i] -= modValue;
+        }
+        return new String(caracteres);
+    }
+
+    /**
+     * Método que aplica la inversa del modulo calculado a una lista de carpetas y subcarpetas.
+     * @param carpeta
+     * @param modValue
+     */
+    private void aplicarInversoModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue) {
+        for (Contenido_20964708_RiquelmeOlguin objeto : carpeta.getContenido()) {
+            String nuevoNombre = restarValorAModulo(objeto.getNombre(), modValue);
+            objeto.setNombre(nuevoNombre);
+
+            // Verificamos si el objeto es un Folder antes de hacer la llamada recursiva
+            if (objeto instanceof Folder_20964708_RiquelmeOlguin) {
+                Folder_20964708_RiquelmeOlguin subCarpeta = (Folder_20964708_RiquelmeOlguin) objeto;
+                aplicarInversoModuloAFolder(subCarpeta, modValue);
+            }
+        }
+    }
+
+    public Folder_20964708_RiquelmeOlguin buscarFolderDecrypt(List<Contenido_20964708_RiquelmeOlguin> contenido, String NombreFolder, String Contrasena) {
+        for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {
+            if (objeto instanceof Folder_20964708_RiquelmeOlguin) {
+                Folder_20964708_RiquelmeOlguin folder = (Folder_20964708_RiquelmeOlguin) objeto;
+                if (folder.getContrasenaString().equals(Contrasena)) {
+                    int modValue = calcularModulo5(folder.getContrasena());
+                    String nombreDecifrado = restarValorAModulo(folder.getNombre(), modValue);
+                    if (nombreDecifrado.equals(NombreFolder)) {
+                        return folder;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 
