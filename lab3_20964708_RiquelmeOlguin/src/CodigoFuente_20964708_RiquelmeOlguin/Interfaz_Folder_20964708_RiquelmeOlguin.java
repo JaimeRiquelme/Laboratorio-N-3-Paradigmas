@@ -29,6 +29,14 @@ public interface Interfaz_Folder_20964708_RiquelmeOlguin {
     void eliminarcontenido(List<Contenido_20964708_RiquelmeOlguin> Contenido, String NombreEliminar);
 
     /**
+     * Metodo para eliminar el contenido dado una extension.
+     * @param Contenido
+     * @param Formato
+     */
+
+     void elimiarContenidoExt(List<Contenido_20964708_RiquelmeOlguin> Contenido, String Formato);
+
+    /**
      * Obtiene la lista de contenido del Folder actual.
      *
      * @return La lista de contenido del Folder actual.

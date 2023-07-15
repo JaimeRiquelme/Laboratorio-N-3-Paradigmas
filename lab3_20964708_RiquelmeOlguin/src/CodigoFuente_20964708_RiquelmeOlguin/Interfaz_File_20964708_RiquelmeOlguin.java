@@ -30,18 +30,8 @@ public interface Interfaz_File_20964708_RiquelmeOlguin {
      */
     void setFormato(String formato);
 
-    /**
-     * Obtiene el tamaño del archivo.
-     *
-     * @return El tamaño del archivo en bytes.
-     */
-    long getTamano();
 
-    /**
-     * Establece el tamaño del archivo.
-     *
-     * @param tamano El nuevo tamaño del archivo en bytes.
-     */
-    void setTamano(long tamano);
+
+
 }
 

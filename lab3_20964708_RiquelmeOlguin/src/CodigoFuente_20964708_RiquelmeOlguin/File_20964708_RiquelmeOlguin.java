@@ -63,23 +63,9 @@ public abstract class File_20964708_RiquelmeOlguin extends Contenido_20964708_Ri
         this.formato = formato;
     }
 
-    /**
-     * Devuelve el tamaño del archivo.
-     *
-     * @return El tamaño del archivo en bytes.
-     */
-    public long getTamano() {
-        return tamano;
-    }
 
-    /**
-     * Establece el tamaño del archivo.
-     *
-     * @param tamano El nuevo tamaño del archivo en bytes.
-     */
-    public void setTamano(long tamano) {
-        this.tamano = tamano;
-    }
+
+
 
     /**
      * Devuelve una representación en cadena de caracteres del objeto.

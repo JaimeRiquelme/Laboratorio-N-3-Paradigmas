@@ -27,6 +27,8 @@ public class AtributosSeguridad_20964708_RiquelmeOlguin implements Interfaz_Atri
         this.esOculto = esOculto;
     }
 
+
+
     /**
      * selector de es oculto
      * @return
@@ -34,6 +36,7 @@ public class AtributosSeguridad_20964708_RiquelmeOlguin implements Interfaz_Atri
     public boolean esOculto() {
         return esOculto;
     }
+
 
 }
 
