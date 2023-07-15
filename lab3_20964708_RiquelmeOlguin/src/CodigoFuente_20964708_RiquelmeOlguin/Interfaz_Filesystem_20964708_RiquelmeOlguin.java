@@ -189,6 +189,101 @@ public interface Interfaz_Filesystem_20964708_RiquelmeOlguin {
      */
     List<String> getContenidoNombresSeguridad(List<Contenido_20964708_RiquelmeOlguin> contenido);
 
+    /**
+     * Método que elimina el contenido de una lista de contenido. (Similar a del, pero sin mover a papelera.)
+     * @param Nombre
+     */
+    void delAux(String Nombre);
 
+
+    /**
+     * Método para obtener los nombres de los contenidos de una lista y sus sublistas. (Solamente visibles)
+     * @param contenido
+     * @return
+     */
+
+     List<String> getNombresTotalesSeguridad(List<Contenido_20964708_RiquelmeOlguin> contenido);
+
+    /**
+     * Método para obtener todos los nombres de una lista y sublistas
+     * @param contenido
+     * @return
+     */
+
+     List<String> getNombresTotales(List<Contenido_20964708_RiquelmeOlguin> contenido);
+
+    /**
+     * Método que busca todos los objetos no ocultos de una lista de contenido.
+     * @param contenido
+     * @return
+     */
+
+    List<Contenido_20964708_RiquelmeOlguin> recolectarObjetosNoOcultos(List<Contenido_20964708_RiquelmeOlguin> contenido);
+
+    /**
+     * Método que obtiene ordena por el atributo fecha una lista y luego obtiene los nombres de cada objeto.
+     * @param contenido
+     * @return
+     */
+
+    List<String> getNombresPorFecha(List<Contenido_20964708_RiquelmeOlguin> contenido);
+
+
+    /**
+     * Método para crear una contraseña de un objeto contenido.
+     * @return
+     */
+
+    char[] CrearContrasena();
+
+    /**
+     * Método para calcular el modulo de una contraseña.
+     * @param contrasena
+     * @return
+     */
+
+    int calcularModulo5(char[] contrasena);
+
+    /**
+     * Método para sumar el modulo calculado a un Nombre (String)
+     * @param nombre
+     * @param modValue
+     * @return
+     */
+    String sumarValorAModulo(String nombre, int modValue);
+
+    /**
+     * Método que aplica el modulo calculado a una lista de carpetas y subcarpetas.
+     * @param carpeta
+     * @param modValue
+     */
+
+     void aplicarModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue);
+
+    /**
+     * Método para restar el modulo calculado a un Nombre (String)
+     * @param nombre
+     * @param modValue
+     * @return
+     */
+     String restarValorAModulo(String nombre, int modValue);
+
+    /**
+     * Método que aplica la inversa del modulo calculado a una lista de carpetas y subcarpetas.
+     * @param carpeta
+     * @param modValue
+     */
+     void aplicarInversoModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue);
+
+    /**
+     * Metódo que dado una lista de contenido convierte el nombre y verifica si es igual al nombrer ingresado, dado que el nombre está encryptado.
+     * @param contenido
+     * @param NombreFolder
+     * @param Contrasena
+     * @return
+     */
+
+     Folder_20964708_RiquelmeOlguin buscarFolderDecrypt(List<Contenido_20964708_RiquelmeOlguin> contenido, String NombreFolder, String Contrasena);
 }
+
 

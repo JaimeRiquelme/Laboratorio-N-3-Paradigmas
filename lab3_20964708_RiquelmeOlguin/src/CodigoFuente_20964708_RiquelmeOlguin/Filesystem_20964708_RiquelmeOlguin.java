@@ -1516,7 +1516,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      * @param modValue
      */
 
-    private void aplicarModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue) {
+    public void aplicarModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue) {
         for (Contenido_20964708_RiquelmeOlguin objeto : carpeta.getContenido()) {
             String NuevoNombre = sumarValorAModulo(objeto.getNombre(), modValue);
             objeto.setNombre(NuevoNombre);
@@ -1548,7 +1548,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      * @param carpeta
      * @param modValue
      */
-    private void aplicarInversoModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue) {
+    public void aplicarInversoModuloAFolder(Folder_20964708_RiquelmeOlguin carpeta, int modValue) {
         for (Contenido_20964708_RiquelmeOlguin objeto : carpeta.getContenido()) {
             String nuevoNombre = restarValorAModulo(objeto.getNombre(), modValue);
             objeto.setNombre(nuevoNombre);
@@ -1560,6 +1560,14 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             }
         }
     }
+
+    /**
+     * Metódo que dado una lista de contenido convierte el nombre y verifica si es igual al nombrer ingresado, dado que el nombre está encryptado.
+     * @param contenido
+     * @param NombreFolder
+     * @param Contrasena
+     * @return
+     */
 
     public Folder_20964708_RiquelmeOlguin buscarFolderDecrypt(List<Contenido_20964708_RiquelmeOlguin> contenido, String NombreFolder, String Contrasena) {
         for (Contenido_20964708_RiquelmeOlguin objeto : contenido) {

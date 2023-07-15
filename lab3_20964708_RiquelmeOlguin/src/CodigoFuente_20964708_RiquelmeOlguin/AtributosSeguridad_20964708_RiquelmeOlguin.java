@@ -28,22 +28,6 @@ public class AtributosSeguridad_20964708_RiquelmeOlguin implements Interfaz_Atri
     }
 
     /**
-     * selector de solo lectura
-     * @return
-     */
-    public boolean esSoloLectura() {
-        return esSoloLectura;
-    }
-
-    /**
-     * modificador de solo lectura
-     * @param esSoloLectura
-     */
-    public void setSoloLectura(boolean esSoloLectura) {
-        this.esSoloLectura = esSoloLectura;
-    }
-
-    /**
      * selector de es oculto
      * @return
      */
@@ -51,12 +35,5 @@ public class AtributosSeguridad_20964708_RiquelmeOlguin implements Interfaz_Atri
         return esOculto;
     }
 
-    /**
-     * modificador de oculto
-     * @param esOculto
-     */
-    public void setOculto(boolean esOculto) {
-        this.esOculto = esOculto;
-    }
 }
 
