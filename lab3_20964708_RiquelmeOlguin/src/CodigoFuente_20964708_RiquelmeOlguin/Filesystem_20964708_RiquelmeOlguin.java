@@ -553,8 +553,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                     }
                 } else {
                     String NombreSplit[] = nombreMover.split("\\.");
-                    File_20964708_RiquelmeOlguin FileMover = Factual.buscarFile(NombreSplit[0]);
-
+                    File_20964708_RiquelmeOlguin FileMover;
+                    if (RutaSplitActual.length == 1){
+                        FileMover = DriveActual.buscarFile(NombreSplit[0]);
+                    }else {
+                        FileMover = Factual.buscarFile(NombreSplit[0]); //si es raiz este no existe.
+                    }
                     if (FileMover != null) {
                         String[] NombreFileSplit = nombreMover.split("\\.");
                         NombresUsados = getContenidoNombres(Factual.getContenido());
