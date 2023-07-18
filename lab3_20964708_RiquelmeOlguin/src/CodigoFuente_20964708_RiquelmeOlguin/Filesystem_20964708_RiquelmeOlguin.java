@@ -53,6 +53,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 .collect(Collectors.toList());
         if (!listaLetras.contains(letra)) {
             drives.add(nd);
+            System.out.println("Drive agregado con exito!");
         } else {
             System.out.println("Letra de drive ya existe.");
         }
@@ -66,6 +67,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     public void register(String NombreUsuario) {
         if (!usuarios.contains(NombreUsuario.toUpperCase())) {
             usuarios.add(NombreUsuario.toUpperCase());
+            System.out.println("Usuario registrado con exito!");
         } else {
             System.out.println("El usuario " + NombreUsuario + " ya se encuentra registrado");
         }
@@ -84,6 +86,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         } else {
             if (usuarios.contains(usuario.toUpperCase())) {
                 setUsuarioActual(usuario.toUpperCase());
+                System.out.println("Usuario logeado con exito!");
             } else {
                 System.out.println("Usuario no registrado.");
             }
@@ -100,6 +103,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             System.out.println("No se encuentra ningún usuario logeado.");
         } else {
             setUsuarioActual(null);
+            System.out.println("Usuario deslogeado con exito!");
         }
     }
 
@@ -118,6 +122,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             if (listaLetras.contains(Letra.toUpperCase())) {
                 setDriveActual(Letra.toUpperCase());
                 setRutaActual(Letra.toUpperCase().concat(":/"));
+                System.out.println("Drive:" + Letra + " ,Cambiado con exito!");
             } else {
                 System.out.println("Drive no existente");
             }
@@ -152,6 +157,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 NombresUsados = getContenidoNombres(DriveActual.getContenido());
                 if (!NombresUsados.contains(Nombre)){
                     DriveActual.getContenido().add(NewFolder);
+                    System.out.println("Folder creado con exito!");
                 }else{
                     System.out.println("Este nombre ya existe!, Prueba otro.");
                 }
@@ -161,6 +167,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                 if (!NombresUsados.contains(Nombre)) {
                         actual.getContenido().add(NewFolder);
                         actual.setFechaModificacion(Fecha_modif); //Cada ves que se inserta algo en el folder, se actualiza la fecha modif
+                        System.out.printf("Folder creado con exito!");
                 }else {
                     System.out.println("Este nombre ya existe!, Prueba otro.");
                 }
@@ -191,14 +198,18 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
         if ("..".equals(Nombre)) {
             if(RutaSplit.length <= 2){
                 setRutaActual(getDriveActual().concat(":/"));
+                System.out.println("Volviendo a la ruta padre.");
             }
             else {
                 String NuevaRuta = RutaActual.substring(0, RutaActual.lastIndexOf("/"));
                 setRutaActual(NuevaRuta);
+                System.out.println("Volviendo a la ruta padre.");
             }
         } else if ("/".equals(Nombre)) {
             setRutaActual(getDriveActual().concat(":/"));
+            System.out.println("Volviendo a la raiz del sistema");
         } else if (Character.toString(Nombre.charAt(0)).equals(".") && (Nombre != "..")) {
+            System.out.println("Directorio actual.");
             return;
         } else if (Nombre.contains("/")) { // Añadida esta opción para manejar rutas.
             List<Contenido_20964708_RiquelmeOlguin> contenido;
@@ -213,6 +224,7 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             if(verificarRuta(contenido, Arrays.asList(Nombre.split("/")))) {
                 if (RutaActual.equals(getDriveActual().concat(":/"))) {
                     setRutaActual(RutaActual.concat(Nombre));
+                    System.out.println("Ingresando con ruta relativa.");
                 } else {
                     setRutaActual(RutaActual.concat("/").concat(Nombre));
                 }
@@ -231,8 +243,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             if(NombresContenido.contains(Nombre)) {
                 if (RutaActual.equals(getDriveActual().concat(":/"))) {
                     setRutaActual(RutaActual.concat(Nombre));
+                    System.out.println("Ingresando a" + Nombre);
                 } else {
                     setRutaActual(RutaActual.concat("/").concat(Nombre));
+                    System.out.println("Ingresando a" + Nombre);
                 }
             } else {
                 System.out.println("El nombre del archivo no existe en la ruta actual.");
@@ -260,8 +274,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             if (NombresUsados.contains(NombreFile)){
                 DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
                 DriveActual.getContenido().add(file);
+                System.out.println("File creado con exito!");
             }else {
                 DriveActual.getContenido().add(file);
+                System.out.println("File creado con exito!");
             }
         }else{
             Folder_20964708_RiquelmeOlguin folderActual = buscarContenido(RutaSplit,DriveActual);
@@ -269,8 +285,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
             if (NombresUsados.contains(NombreFile)){
                 folderActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
                 folderActual.getContenido().add(file);
+                System.out.println("File creado con exito!");
             }else{
                 folderActual.getContenido().add(file);
+                System.out.println("File creado con exito!");
             }
         }
 
@@ -285,77 +303,91 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      */
     @Override
     public void del(String Nombre) {
-        String RutaActual = getRutaActual();
-        String[] RutaSplit = RutaActual.split("/");
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        Folder_20964708_RiquelmeOlguin FolderActual;
+        try {
 
-        List<String> NombresContenido;
-        if (Nombre.equals("*")){
-            if (RutaSplit.length == 1){
-                DriveActual.getContenido().clear();
-            }else{
-                FolderActual = buscarContenido(RutaSplit,DriveActual);
-                FolderActual.getContenido().clear();
-            }
-        }else if(Nombre.contains("*") && Nombre.contains(".")){
-            String[] NombreSplit = Nombre.split("\\.");
-            String Extension = ".".concat(NombreSplit[1].toUpperCase());
-            if (RutaSplit.length == 1) {
-                DriveActual.elimiarContenidoExt(DriveActual.getContenido(), Extension);
-            }else{
-                FolderActual = buscarContenido(RutaSplit, DriveActual);
-                FolderActual.elimiarContenidoExt(FolderActual.getContenido(),Extension);
-            }
-        }else{
-            if (RutaSplit.length == 1) {
-                NombresContenido = getContenidoNombres(DriveActual.getContenido());
-                if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
-                    if (NombresContenido.contains(Nombre)) {
-                        Folder_20964708_RiquelmeOlguin FolderPapelera = DriveActual.buscarFolder(Nombre);
-                        Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FolderPapelera,RutaActual);
-                        Papelera.add(ObjetoPapelera);
-                        DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), Nombre);
-                    } else {
-                        System.out.println("El nombre ingresado no existe dentro del contenido.");
-                    }
+
+            String RutaActual = getRutaActual();
+            String[] RutaSplit = RutaActual.split("/");
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            Folder_20964708_RiquelmeOlguin FolderActual;
+
+            List<String> NombresContenido;
+            if (Nombre.equals("*")) {
+                if (RutaSplit.length == 1) {
+                    DriveActual.getContenido().clear();
+                    System.out.println("Elimiando todo el contenido.");
+                } else {
+                    FolderActual = buscarContenido(RutaSplit, DriveActual);
+                    FolderActual.getContenido().clear();
+                    System.out.println("Elimiando todo el contenido.");
                 }
-                if (Nombre.contains(".")) { //Si contiene un punto, es un file
-                    String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
-                    if (NombresContenido.contains(NombreEliminar)) {
-                        File_20964708_RiquelmeOlguin FilePapelera = DriveActual.buscarFile(NombreEliminar);
-                        Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FilePapelera,RutaActual);
-                        Papelera.add(ObjetoPapelera);
-                        DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), NombreEliminar);
-                    } else {
-                        System.out.println("El nombre ingresado no existe dentro del contenido.");
-                    }
+            } else if (Nombre.contains("*") && Nombre.contains(".")) {
+                String[] NombreSplit = Nombre.split("\\.");
+                String Extension = ".".concat(NombreSplit[1].toUpperCase());
+                if (RutaSplit.length == 1) {
+                    DriveActual.elimiarContenidoExt(DriveActual.getContenido(), Extension);
+                    System.out.println("Eliminando todo dado una extension.");
+                } else {
+                    FolderActual = buscarContenido(RutaSplit, DriveActual);
+                    FolderActual.elimiarContenidoExt(FolderActual.getContenido(), Extension);
+                    System.out.println("Eliminando todo dado una extension.");
                 }
             } else {
-                FolderActual = buscarContenido(RutaSplit, DriveActual);
-                NombresContenido = getContenidoNombres(FolderActual.getContenido());
-                if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
-                    if (NombresContenido.contains(Nombre)) {
-                        Folder_20964708_RiquelmeOlguin FolderPapelera = FolderActual.buscarFolder(Nombre);
-                        Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FolderPapelera,RutaActual);
-                        Papelera.add(ObjetoPapelera);
-                        FolderActual.eliminarcontenido(FolderActual.getContenido(), Nombre);
-                    } else {
-                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                if (RutaSplit.length == 1) {
+                    NombresContenido = getContenidoNombres(DriveActual.getContenido());
+                    if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
+                        if (NombresContenido.contains(Nombre)) {
+                            Folder_20964708_RiquelmeOlguin FolderPapelera = DriveActual.buscarFolder(Nombre);
+                            Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FolderPapelera, RutaActual);
+                            Papelera.add(ObjetoPapelera);
+                            DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), Nombre);
+                            System.out.println("Eliminando Folder");
+                        } else {
+                            System.out.println("El nombre ingresado no existe dentro del contenido.");
+                        }
                     }
-                }
-                if (Nombre.contains(".")) { //Si contiene un punto, es un file
-                    String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
-                    if (NombresContenido.contains(NombreEliminar)) {
-                        File_20964708_RiquelmeOlguin FilePapelera = FolderActual.buscarFile(NombreEliminar);
-                        Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FilePapelera,RutaActual);
-                        Papelera.add(ObjetoPapelera);
-                        FolderActual.eliminarcontenido(FolderActual.getContenido(), NombreEliminar);
-                    } else {
-                        System.out.println("El nombre ingresado no existe dentro del contenido.");
+                    if (Nombre.contains(".")) { //Si contiene un punto, es un file
+                        String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
+                        if (NombresContenido.contains(NombreEliminar)) {
+                            File_20964708_RiquelmeOlguin FilePapelera = DriveActual.buscarFile(NombreEliminar);
+                            Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FilePapelera, RutaActual);
+                            Papelera.add(ObjetoPapelera);
+                            DriveActual.eliminarcontenidoDrive(DriveActual.getContenido(), NombreEliminar);
+                            System.out.println("Elimiando File");
+                        } else {
+                            System.out.println("El nombre ingresado no existe dentro del contenido.");
+                        }
+                    }
+                } else {
+                    FolderActual = buscarContenido(RutaSplit, DriveActual);
+                    NombresContenido = getContenidoNombres(FolderActual.getContenido());
+                    if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
+                        if (NombresContenido.contains(Nombre)) {
+                            Folder_20964708_RiquelmeOlguin FolderPapelera = FolderActual.buscarFolder(Nombre);
+                            Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FolderPapelera, RutaActual);
+                            Papelera.add(ObjetoPapelera);
+                            FolderActual.eliminarcontenido(FolderActual.getContenido(), Nombre);
+                            System.out.println("Eliminando Folder");
+                        } else {
+                            System.out.println("El nombre ingresado no existe dentro del contenido.");
+                        }
+                    }
+                    if (Nombre.contains(".")) { //Si contiene un punto, es un file
+                        String NombreEliminar = Nombre.substring(0, Nombre.lastIndexOf('.'));
+                        if (NombresContenido.contains(NombreEliminar)) {
+                            File_20964708_RiquelmeOlguin FilePapelera = FolderActual.buscarFile(NombreEliminar);
+                            Papelera_20964708_RiquelmeOlguin ObjetoPapelera = new Papelera_20964708_RiquelmeOlguin(FilePapelera, RutaActual);
+                            Papelera.add(ObjetoPapelera);
+                            FolderActual.eliminarcontenido(FolderActual.getContenido(), NombreEliminar);
+                            System.out.println("Elimiando File");
+                        } else {
+                            System.out.println("El nombre ingresado no existe dentro del contenido.");
+                        }
                     }
                 }
             }
+        }catch (Exception e){
+            System.out.println("Error desconocido, intentelo nuevamente.");
         }
     }
 
@@ -368,91 +400,107 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      */
 
     @Override
-    public void copy(String NombreCopiar, String path) { //arreglar cuando intenta copiar en un folder que no existe..........
-        //Aquí obtengo el drive y folder que voy a copiar
-        String RutaActual = getRutaActual();
-        String[] RutaSplitActual = RutaActual.split("/");
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        Folder_20964708_RiquelmeOlguin Factual = null; // aqui tengo el folder actual donde se está en la ruta
-        if (RutaSplitActual.length != 1){
-            Factual = buscarContenido(RutaSplitActual,DriveActual);
-        }
+    public void copy(String NombreCopiar, String path) {
+        try {
+            //arreglar cuando intenta copiar en un folder que no existe..........
 
-        //Aqui obtengo el drive y folder donde copiar.
-        String DriveCopiar = path.substring(0,1);
-        String[] RutaCopiarSplit = path.split("/");
-        Drive_20964708_RiquelmeOlguin DriveActualCopiar = buscarDrivePorLetra(DriveCopiar);
-
-        if (NombreCopiar.contains("*") && NombreCopiar.contains(".")){ //Significa que estoy usando la opcion *.extension
-            String[] NombreSplit = NombreCopiar.split("\\.");
-            String Extension = ".".concat(NombreSplit[1].toUpperCase());
-            List<Contenido_20964708_RiquelmeOlguin> ContenidoCopy;
-            if (RutaSplitActual.length == 1){
-                ContenidoCopy = filtrarPorFormato(DriveActual.getContenido(),Extension);
-            }else{
-                ContenidoCopy = filtrarPorFormato(Factual.getContenido(),Extension);
+            //Aquí obtengo el drive y folder que voy a copiar
+            String RutaActual = getRutaActual();
+            String[] RutaSplitActual = RutaActual.split("/");
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            Folder_20964708_RiquelmeOlguin Factual = null; // aqui tengo el folder actual donde se está en la ruta
+            if (RutaSplitActual.length != 1) {
+                Factual = buscarContenido(RutaSplitActual, DriveActual);
             }
-            if (RutaCopiarSplit.length == 1){ //Tengo que copiar en la raiz
-                DriveActualCopiar.getContenido().addAll(ContenidoCopy);
-            }else { // sino tengo que copiar en el folder actual
-                Folder_20964708_RiquelmeOlguin FolderCopiar = buscarContenido(RutaCopiarSplit,DriveActualCopiar);
-                FolderCopiar.getContenido().addAll(ContenidoCopy);
-            }
-        }else{
-            if(RutaCopiarSplit.length == 1) { //Si es 1 significa que tengo que copiar en la raiz
-                //Aqui verifico si tengo que copiar un folder o un file
-                if (NombreCopiar.split("\\.").length == 1) {
-                    Folder_20964708_RiquelmeOlguin FolderCopiar = null;
-                    if (RutaSplitActual.length == 1){
-                        FolderCopiar = DriveActual.buscarFolder(NombreCopiar);
-                    }else{
-                        FolderCopiar = Factual.buscarFolder(NombreCopiar);
-                    }
 
-                    if (FolderCopiar != null) {
-                        DriveActualCopiar.getContenido().add(FolderCopiar);
-                    } else {
-                        System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
-                    }
+            //Aqui obtengo el drive y folder donde copiar.
+            String DriveCopiar = path.substring(0, 1);
+            String[] RutaCopiarSplit = path.split("/");
+            Drive_20964708_RiquelmeOlguin DriveActualCopiar = buscarDrivePorLetra(DriveCopiar);
+            if (DriveActualCopiar == null) {
+                System.out.println("No se encontro el drive donde copiar");
+                return;
+            }
+
+            if (NombreCopiar.contains("*") && NombreCopiar.contains(".")) { //Significa que estoy usando la opcion *.extension
+                String[] NombreSplit = NombreCopiar.split("\\.");
+                String Extension = ".".concat(NombreSplit[1].toUpperCase());
+                List<Contenido_20964708_RiquelmeOlguin> ContenidoCopy;
+                if (RutaSplitActual.length == 1) {
+                    ContenidoCopy = filtrarPorFormato(DriveActual.getContenido(), Extension);
                 } else {
-                    String NombreSplit[] = NombreCopiar.split("\\.");
-                    File_20964708_RiquelmeOlguin FileCopia = null;
-                    if (RutaSplitActual.length == 1){
-                        FileCopia = DriveActual.buscarFile(NombreSplit[0]);
-                    }else{
-                        FileCopia = Factual.buscarFile(NombreSplit[0]);
-                    }
-
-                    if (FileCopia != null) {
-                        DriveActualCopiar.getContenido().add(FileCopia);
-                    } else {
-                        System.out.println("El nombre ingresado no conincide con ningun File existente.");
-                    }
+                    ContenidoCopy = filtrarPorFormato(Factual.getContenido(), Extension);
                 }
-            }else{
-                Folder_20964708_RiquelmeOlguin Fcopiar = buscarContenido(RutaCopiarSplit,DriveActualCopiar); //este sera el folder donde se copiará
-                if (Fcopiar !=null) {
+                if (RutaCopiarSplit.length == 1) { //Tengo que copiar en la raiz
+                    DriveActualCopiar.getContenido().addAll(ContenidoCopy);
+                    System.out.println("Copiando dado un formato");
+                } else { // sino tengo que copiar en el folder actual
+                    Folder_20964708_RiquelmeOlguin FolderCopiar = buscarContenido(RutaCopiarSplit, DriveActualCopiar);
+                    FolderCopiar.getContenido().addAll(ContenidoCopy);
+                    System.out.println("Copiando dado un formato");
+                }
+            } else {
+                if (RutaCopiarSplit.length == 1) { //Si es 1 significa que tengo que copiar en la raiz
+                    //Aqui verifico si tengo que copiar un folder o un file
                     if (NombreCopiar.split("\\.").length == 1) {
-                        Folder_20964708_RiquelmeOlguin FolderCopiar = Factual.buscarFolder(NombreCopiar);
+                        Folder_20964708_RiquelmeOlguin FolderCopiar = null;
+                        if (RutaSplitActual.length == 1) {
+                            FolderCopiar = DriveActual.buscarFolder(NombreCopiar);
+                        } else {
+                            FolderCopiar = Factual.buscarFolder(NombreCopiar);
+                        }
+
                         if (FolderCopiar != null) {
-                            Fcopiar.getContenido().add(FolderCopiar);
+                            DriveActualCopiar.getContenido().add(FolderCopiar);
+                            System.out.println("Copiando Folder");
                         } else {
                             System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
                         }
                     } else {
                         String NombreSplit[] = NombreCopiar.split("\\.");
-                        File_20964708_RiquelmeOlguin FileCopia = Factual.buscarFile(NombreSplit[0]);
+                        File_20964708_RiquelmeOlguin FileCopia = null;
+                        if (RutaSplitActual.length == 1) {
+                            FileCopia = DriveActual.buscarFile(NombreSplit[0]);
+                        } else {
+                            FileCopia = Factual.buscarFile(NombreSplit[0]);
+                        }
 
                         if (FileCopia != null) {
-                            Fcopiar.getContenido().add(FileCopia);
+                            DriveActualCopiar.getContenido().add(FileCopia);
+                            System.out.println("Copiando File");
                         } else {
                             System.out.println("El nombre ingresado no conincide con ningun File existente.");
                         }
                     }
-                }else {
-                    System.out.println("El folder donde copiar no fue encontrado.");
+                } else {
+                    Folder_20964708_RiquelmeOlguin Fcopiar = buscarContenido(RutaCopiarSplit, DriveActualCopiar); //este sera el folder donde se copiará
+                    if (Fcopiar != null) {
+                        if (NombreCopiar.split("\\.").length == 1) {
+                            Folder_20964708_RiquelmeOlguin FolderCopiar = Factual.buscarFolder(NombreCopiar);
+                            if (FolderCopiar != null) {
+                                Fcopiar.getContenido().add(FolderCopiar);
+                                System.out.println("Copiando Folder");
+                            } else {
+                                System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
+                            }
+                        } else {
+                            String NombreSplit[] = NombreCopiar.split("\\.");
+                            File_20964708_RiquelmeOlguin FileCopia = Factual.buscarFile(NombreSplit[0]);
+
+                            if (FileCopia != null) {
+                                Fcopiar.getContenido().add(FileCopia);
+                                System.out.println("Copiando File");
+                            } else {
+                                System.out.println("El nombre ingresado no conincide con ningun File existente.");
+                            }
+                        }
+                    } else {
+                        System.out.println("El folder donde copiar no fue encontrado.");
+                    }
                 }
             }
+        }catch (Exception e){
+            System.out.println("Error desconocido, intenta otra vez.");
         }
     }
 
@@ -465,118 +513,134 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      * @param path
      */
     @Override
-    public void move(String nombreMover, String path) { //error cuando intento copiar dentro mover dentro de una carpeta.
-        String RutaActual = getRutaActual();
-        String[] RutaSplitActual = RutaActual.split("/");
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        Folder_20964708_RiquelmeOlguin Factual = null; // aqui tengo el folder actual donde se está en la ruta
-        if (RutaSplitActual.length != 1){
-            Factual = buscarContenido(RutaSplitActual,DriveActual); //c:/folder1/folder2/folder3
-        }
-        //Aqui obtengo el drive y folder donde copiar.
-        String DriveCopiar = path.substring(0,1); //d:/folder3
-        String[] RutaCopiarSplit = path.split("/");
-        Drive_20964708_RiquelmeOlguin DriveActualCopiar = buscarDrivePorLetra(DriveCopiar);
-        List<String> NombresUsados;
-
-        if(RutaCopiarSplit.length == 1) { //Si es 1 significa que tengo que copiar en la raiz d:/ drive->contenido
-            //Aqui verifico si tengo que copiar un folder o un file
-            if (nombreMover.split("\\.").length == 1) {
-                Folder_20964708_RiquelmeOlguin FolderMover = null;
-                if (RutaSplitActual.length == 1){
-                    FolderMover = DriveActual.buscarFolder(nombreMover);
-                }else{
-                    FolderMover = Factual.buscarFolder(nombreMover);
-                }
-                if (FolderMover != null) {
-                    NombresUsados = getContenidoNombres(DriveActualCopiar.getContenido());
-                    if (NombresUsados.contains(nombreMover)){
-                        DriveActualCopiar.getContenido().removeIf(f -> f.getNombre().equals(nombreMover));
-                        DriveActualCopiar.getContenido().add(FolderMover);
-                        delAux(nombreMover);
-                       // DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
-                    }else {
-                        DriveActualCopiar.getContenido().add(FolderMover);
-                        delAux(nombreMover);
-                    }
-                } else {
-                    System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
-                }
-            } else {
-                String NombreSplit[] = nombreMover.split("\\.");
-                File_20964708_RiquelmeOlguin FileCopia = null;
-                if (RutaSplitActual.length == 1){
-                    FileCopia = DriveActual.buscarFile(NombreSplit[0]);
-                }else{
-                    FileCopia = Factual.buscarFile(NombreSplit[0]);
-                }
-
-                if (FileCopia != null) {
-                    String[] NombreFileSplit = nombreMover.split("\\.");
-                    NombresUsados = getContenidoNombres(DriveActualCopiar.getContenido());
-                    if (NombresUsados.contains(NombreFileSplit[0])){
-                        DriveActualCopiar.getContenido().removeIf(f-> f.getNombre().equals(NombreFileSplit[0]));
-                        DriveActualCopiar.getContenido().add(FileCopia);
-                        delAux(nombreMover);
-                    }else {
-                        DriveActualCopiar.getContenido().add(FileCopia);
-                        delAux(nombreMover);
-                    }
-                } else {
-                    System.out.println("El nombre ingresado no conincide con ningun File existente.");
-                }
+    public void move(String nombreMover, String path) {
+        try {//error cuando intento copiar dentro mover dentro de una carpeta.
+            String RutaActual = getRutaActual();
+            String[] RutaSplitActual = RutaActual.split("/");
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            Folder_20964708_RiquelmeOlguin Factual = null; // aqui tengo el folder actual donde se está en la ruta
+            if (RutaSplitActual.length != 1) {
+                Factual = buscarContenido(RutaSplitActual, DriveActual); //c:/folder1/folder2/folder3
             }
-        }else{
-            Folder_20964708_RiquelmeOlguin Fcopiar = buscarContenido(RutaCopiarSplit,DriveActualCopiar); //este sera el folder donde se copiará //d:/folder1
-            if (Fcopiar !=null) {
-                if (nombreMover.split("\\.").length == 1) { //folder o file.txt
-                    Folder_20964708_RiquelmeOlguin FolderMover;
-                    if (RutaSplitActual.length == 1){
-                        FolderMover = DriveActual.buscarFolder(nombreMover);
+            //Aqui obtengo el drive y folder donde copiar.
+            String DriveCopiar = path.substring(0, 1); //d:/folder3
+            String[] RutaCopiarSplit = path.split("/");
+            Drive_20964708_RiquelmeOlguin DriveActualCopiar = buscarDrivePorLetra(DriveCopiar);
+            if (DriveActualCopiar == null) {
+                System.out.println("Error al encontrar el drive donde copiar");
+                return;
+            }
+            List<String> NombresUsados;
 
-                    }else {
-                        FolderMover = Factual.buscarFolder(nombreMover); //si es raiz este no existe.
+            if (RutaCopiarSplit.length == 1) { //Si es 1 significa que tengo que copiar en la raiz d:/ drive->contenido
+                //Aqui verifico si tengo que copiar un folder o un file
+                if (nombreMover.split("\\.").length == 1) {
+                    Folder_20964708_RiquelmeOlguin FolderMover = null;
+                    if (RutaSplitActual.length == 1) {
+                        FolderMover = DriveActual.buscarFolder(nombreMover);
+                    } else {
+                        FolderMover = Factual.buscarFolder(nombreMover);
                     }
                     if (FolderMover != null) {
-                        NombresUsados = getContenidoNombres(Fcopiar.getContenido());
-                        if (NombresUsados.contains(nombreMover)){
-                            Fcopiar.getContenido().removeIf(f -> f.getNombre().equals(nombreMover));
-                            Fcopiar.getContenido().add(FolderMover);
+                        NombresUsados = getContenidoNombres(DriveActualCopiar.getContenido());
+                        if (NombresUsados.contains(nombreMover)) {
+                            DriveActualCopiar.getContenido().removeIf(f -> f.getNombre().equals(nombreMover));
+                            DriveActualCopiar.getContenido().add(FolderMover);
                             delAux(nombreMover);
+                            System.out.println("Moviendo Folder");
                             // DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
-                        }else {
-                            Fcopiar.getContenido().add(FolderMover);
+                        } else {
+                            DriveActualCopiar.getContenido().add(FolderMover);
                             delAux(nombreMover);
+                            System.out.println("Moviendo Folder");
                         }
                     } else {
                         System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
                     }
                 } else {
                     String NombreSplit[] = nombreMover.split("\\.");
-                    File_20964708_RiquelmeOlguin FileMover;
-                    if (RutaSplitActual.length == 1){
-                        FileMover = DriveActual.buscarFile(NombreSplit[0]);
-                    }else {
-                        FileMover = Factual.buscarFile(NombreSplit[0]); //si es raiz este no existe.
+                    File_20964708_RiquelmeOlguin FileCopia = null;
+                    if (RutaSplitActual.length == 1) {
+                        FileCopia = DriveActual.buscarFile(NombreSplit[0]);
+                    } else {
+                        FileCopia = Factual.buscarFile(NombreSplit[0]);
                     }
-                    if (FileMover != null) {
+
+                    if (FileCopia != null) {
                         String[] NombreFileSplit = nombreMover.split("\\.");
-                        NombresUsados = getContenidoNombres(Factual.getContenido());
-                        if (NombresUsados.contains(NombreFileSplit[0])){
-                            Factual.getContenido().removeIf(f-> f.getNombre().equals(NombreFileSplit[0]));
-                            Factual.getContenido().add(FileMover);
+                        NombresUsados = getContenidoNombres(DriveActualCopiar.getContenido());
+                        if (NombresUsados.contains(NombreFileSplit[0])) {
+                            DriveActualCopiar.getContenido().removeIf(f -> f.getNombre().equals(NombreFileSplit[0]));
+                            DriveActualCopiar.getContenido().add(FileCopia);
                             delAux(nombreMover);
-                        }else {
-                            Factual.getContenido().add(FileMover);
+                            System.out.println("Moviendo File");
+                        } else {
+                            DriveActualCopiar.getContenido().add(FileCopia);
                             delAux(nombreMover);
+                            System.out.println("Moviendo File");
                         }
                     } else {
                         System.out.println("El nombre ingresado no conincide con ningun File existente.");
                     }
                 }
-            }else {
-                System.out.println("El folder donde copiar no fue encontrado.");
+            } else {
+                Folder_20964708_RiquelmeOlguin Fcopiar = buscarContenido(RutaCopiarSplit, DriveActualCopiar); //este sera el folder donde se copiará //d:/folder1
+                if (Fcopiar != null) {
+                    if (nombreMover.split("\\.").length == 1) { //folder o file.txt
+                        Folder_20964708_RiquelmeOlguin FolderMover;
+                        if (RutaSplitActual.length == 1) {
+                            FolderMover = DriveActual.buscarFolder(nombreMover);
+
+                        } else {
+                            FolderMover = Factual.buscarFolder(nombreMover); //si es raiz este no existe.
+                        }
+                        if (FolderMover != null) {
+                            NombresUsados = getContenidoNombres(Fcopiar.getContenido());
+                            if (NombresUsados.contains(nombreMover)) {
+                                Fcopiar.getContenido().removeIf(f -> f.getNombre().equals(nombreMover));
+                                Fcopiar.getContenido().add(FolderMover);
+                                delAux(nombreMover);
+                                System.out.println("Moviendo Folder");
+                                // DriveActual.getContenido().removeIf(f -> f.getNombre().equals(NombreFile));
+                            } else {
+                                Fcopiar.getContenido().add(FolderMover);
+                                delAux(nombreMover);
+                                System.out.println("Moviendo Folder");
+                            }
+                        } else {
+                            System.out.println("El nombre ingresado no coincide con ningun Folder existente.");
+                        }
+                    } else {
+                        String NombreSplit[] = nombreMover.split("\\.");
+                        File_20964708_RiquelmeOlguin FileMover;
+                        if (RutaSplitActual.length == 1) {
+                            FileMover = DriveActual.buscarFile(NombreSplit[0]);
+                        } else {
+                            FileMover = Factual.buscarFile(NombreSplit[0]); //si es raiz este no existe.
+                        }
+                        if (FileMover != null) {
+                            String[] NombreFileSplit = nombreMover.split("\\.");
+                            NombresUsados = getContenidoNombres(Factual.getContenido());
+                            if (NombresUsados.contains(NombreFileSplit[0])) {
+                                Factual.getContenido().removeIf(f -> f.getNombre().equals(NombreFileSplit[0]));
+                                Factual.getContenido().add(FileMover);
+                                delAux(nombreMover);
+                                System.out.println("Moviendo File");
+                            } else {
+                                Factual.getContenido().add(FileMover);
+                                delAux(nombreMover);
+                                System.out.println("Moviendo File");
+                            }
+                        } else {
+                            System.out.println("El nombre ingresado no conincide con ningun File existente.");
+                        }
+                    }
+                } else {
+                    System.out.println("El folder donde copiar no fue encontrado.");
+                }
             }
+        }catch (Exception e){
+            System.out.println("Error desconocido, intenta nuevamente.");
         }
     }
 
@@ -595,61 +659,71 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      */
     @Override
     public void ren(String Nombre, String NuevoNombre) {
-        String RutaActual = getRutaActual();
-        String[] RutaActualSplit = RutaActual.split("/");
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        List<String> NombresUsados;
+        try {
 
 
-        if (RutaActualSplit.length == 1){
-            String[] NombreSplit = Nombre.split("\\.");
-            NombresUsados = getContenidoNombres(DriveActual.getContenido());
-            if (!NombresUsados.contains(NuevoNombre)) {
-                if (Nombre.split("\\.").length != 1) { //significa que no es un folder
-                    String[] NuevoNombreSplit = NuevoNombre.split("\\.");
-                    File_20964708_RiquelmeOlguin FileRenombrar = DriveActual.buscarFile(NombreSplit[0]);
-                    if (FileRenombrar != null) {
-                        FileRenombrar.setNombre(NuevoNombreSplit[0]);
-                        FileRenombrar.setFormato(".".concat(NuevoNombreSplit[1]));
+            String RutaActual = getRutaActual();
+            String[] RutaActualSplit = RutaActual.split("/");
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            List<String> NombresUsados;
+
+
+            if (RutaActualSplit.length == 1) {
+                String[] NombreSplit = Nombre.split("\\.");
+                NombresUsados = getContenidoNombres(DriveActual.getContenido());
+                if (!NombresUsados.contains(NuevoNombre)) {
+                    if (Nombre.split("\\.").length != 1) { //significa que no es un folder
+                        String[] NuevoNombreSplit = NuevoNombre.split("\\.");
+                        File_20964708_RiquelmeOlguin FileRenombrar = DriveActual.buscarFile(NombreSplit[0]);
+                        if (FileRenombrar != null) {
+                            FileRenombrar.setNombre(NuevoNombreSplit[0]);
+                            FileRenombrar.setFormato(".".concat(NuevoNombreSplit[1]));
+                            System.out.println("Renombrando File.");
+                        } else {
+                            System.out.println("Nombre NO encontrado");
+                        }
                     } else {
-                        System.out.println("Nombre NO encontrado");
+                        Folder_20964708_RiquelmeOlguin FolderRenombrar = DriveActual.buscarFolder(Nombre);
+                        if (FolderRenombrar != null) {
+                            FolderRenombrar.setNombre(NuevoNombre);
+                            System.out.println("Renombrando Folder");
+                        } else {
+                            System.out.println("Nombre NO encontrado.");
+                        }
                     }
                 } else {
-                    Folder_20964708_RiquelmeOlguin FolderRenombrar = DriveActual.buscarFolder(Nombre);
-                    if (FolderRenombrar != null) {
-                        FolderRenombrar.setNombre(NuevoNombre);
-                    } else {
-                        System.out.println("Nombre NO encontrado.");
-                    }
+                    System.out.println("Ese nombre ya existe en el sistema");
                 }
-            }else{
-                System.out.println("Ese nombre ya existe en el sistema");
-            }
-        }else{
-            Folder_20964708_RiquelmeOlguin Actual = buscarContenido(RutaActualSplit,DriveActual);
-            NombresUsados = getContenidoNombres(Actual.getContenido());
-            if (!NombresUsados.contains(NuevoNombre)) {
-                if (Nombre.split("\\.").length != 1) { //significa que no es un folder
-                    String[] NuevoNombreSplit = NuevoNombre.split("\\.");
-                    String[] NombreSplit = Nombre.split("\\.");
-                    File_20964708_RiquelmeOlguin FileRenombrar = Actual.buscarFile(NombreSplit[0]);
-                    if (FileRenombrar != null) {
-                        FileRenombrar.setNombre(NuevoNombreSplit[0]);
-                        FileRenombrar.setFormato(".".concat(NuevoNombreSplit[1]));
+            } else {
+                Folder_20964708_RiquelmeOlguin Actual = buscarContenido(RutaActualSplit, DriveActual);
+                NombresUsados = getContenidoNombres(Actual.getContenido());
+                if (!NombresUsados.contains(NuevoNombre)) {
+                    if (Nombre.split("\\.").length != 1) { //significa que no es un folder
+                        String[] NuevoNombreSplit = NuevoNombre.split("\\.");
+                        String[] NombreSplit = Nombre.split("\\.");
+                        File_20964708_RiquelmeOlguin FileRenombrar = Actual.buscarFile(NombreSplit[0]);
+                        if (FileRenombrar != null) {
+                            FileRenombrar.setNombre(NuevoNombreSplit[0]);
+                            FileRenombrar.setFormato(".".concat(NuevoNombreSplit[1]));
+                            System.out.println("Renombrando File");
+                        } else {
+                            System.out.println("Nombre NO encontrado");
+                        }
                     } else {
-                        System.out.println("Nombre NO encontrado");
+                        Folder_20964708_RiquelmeOlguin FolderRenombrar = Actual.buscarFolder(Nombre);
+                        if (FolderRenombrar != null) {
+                            FolderRenombrar.setNombre(NuevoNombre);
+                            System.out.println("Renombrando Folder");
+                        } else {
+                            System.out.println("Nombre NO encontrado.");
+                        }
                     }
                 } else {
-                    Folder_20964708_RiquelmeOlguin FolderRenombrar = Actual.buscarFolder(Nombre);
-                    if (FolderRenombrar != null) {
-                        FolderRenombrar.setNombre(NuevoNombre);
-                    } else {
-                        System.out.println("Nombre NO encontrado.");
-                    }
+                    System.out.println("Ese nombre ya existe en el sistema");
                 }
-            }else{
-                System.out.println("Ese nombre ya existe en el sistema");
             }
+        }catch (Exception e){
+            System.out.println("Error desconocido, intente nuevamente.");
         }
     }
 
@@ -658,165 +732,179 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      * @param args
      */
     public void dir(List<String> args) {
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        String RutaActual = getRutaActual();
-        String[] RutaSplit = RutaActual.split("/");
-        List<String> ListaNombres;
-
-        if (args.get(0).equals("?")){
-            System.out.println("---OPCIONES DISPONIBLES---");
-            System.out.println(" ' ' -> Listar actual (Presionar enter)");
-            System.out.println(" '/s' -> Listar actual y subdirectorios");
-            System.out.println(" '/a' -> Listar actual incluyendo contenido oculto.");
-            System.out.println(" '/s , /a' -> Listar actual y subdirectorios incluyendo contenido oculto (incluir la coma entre ambos)");
-            System.out.println(" '/o N , /o -N -> Listar contenido actual en orden alfabetico ascendente/descendiente'");
-            System.out.println(" '/o D , /o -D -> Listar contenido actual segun fecha creación ascendente/descendiente'");
-        }
-        if (RutaSplit.length != 1) {
-            Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaSplit, DriveActual);
-            if (args == null || args.isEmpty()) {
-                System.out.println("La lista está vacía.");
-            } else if (args.size() == 1 && args.get(0).equals("")) {
-                ListaNombres = getContenidoNombresSeguridad(FolderActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-            } else if(args.get(0).equals("/s")){
-                ListaNombres = getNombresTotalesSeguridad(FolderActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-            }else if(args.get(0).equals("/a")){
-                ListaNombres = getContenidoNombres(FolderActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-            }else if(args.get(0).equals("/s") && args.get(1).equals("/a")){
-                ListaNombres = getNombresTotales(FolderActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-            }else if(args.get(0).equals("/o N") || args.get(0).equals("/o -N")){
-                ListaNombres = getContenidoNombresSeguridad(FolderActual.getContenido());
-                Collections.sort(ListaNombres);
-                StringBuilder ListaMostarNombres = new StringBuilder();
-
-                if (args.get(0).contains("-")){
-                    Collections.reverse(ListaNombres);
-                }
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-
-            }else if(args.get(0).equals("/o D") || args.get(0).equals("/o -D")){
-                ListaNombres = getNombresPorFecha(FolderActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-
-                if (args.get(0).contains("-")){
-                    Collections.reverse(ListaNombres);
-                }
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
+        try {
 
 
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            String RutaActual = getRutaActual();
+            String[] RutaSplit = RutaActual.split("/");
+            List<String> ListaNombres;
+
+            if (args.get(0).equals("?")) {
+                System.out.println("---OPCIONES DISPONIBLES---");
+                System.out.println(" ' ' -> Listar actual (Presionar enter)");
+                System.out.println(" '/s' -> Listar actual y subdirectorios");
+                System.out.println(" '/a' -> Listar actual incluyendo contenido oculto.");
+                System.out.println(" '/s , /a' -> Listar actual y subdirectorios incluyendo contenido oculto (incluir la coma entre ambos)");
+                System.out.println(" '/o N , /o -N -> Listar contenido actual en orden alfabetico ascendente/descendiente'");
+                System.out.println(" '/o D , /o -D -> Listar contenido actual segun fecha creación ascendente/descendiente'");
             }
-            else{
-                System.out.println("La lista tiene los siguientes elementos:");
-                for (String arg : args) {
-                    System.out.println(arg);
+            if (RutaSplit.length != 1) {
+                Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaSplit, DriveActual);
+                if (args == null || args.isEmpty()) {
+                    System.out.println("La lista está vacía.");
+                } else if (args.size() == 1 && args.get(0).equals("")) {
+                    ListaNombres = getContenidoNombresSeguridad(FolderActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando en folder actual.");
+                    System.out.println(ListaMostarNombres);
+                } else if (args.get(0).equals("/s")) {
+                    ListaNombres = getNombresTotalesSeguridad(FolderActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando folder actual y subdirectorios.");
+                    System.out.println(ListaMostarNombres);
+                } else if (args.get(0).equals("/a")) {
+                    ListaNombres = getContenidoNombres(FolderActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando directorio actual incluyendo contenido oculto.");
+                    System.out.println(ListaMostarNombres);
+                } else if (args.get(0).equals("/s") && args.get(1).equals("/a")) {
+                    ListaNombres = getNombresTotales(FolderActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando actual y subdirectorios incluyendo oculto.");
+                    System.out.println(ListaMostarNombres);
+                } else if (args.get(0).equals("/o N") || args.get(0).equals("/o -N")) {
+                    ListaNombres = getContenidoNombresSeguridad(FolderActual.getContenido());
+                    Collections.sort(ListaNombres);
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+
+                    if (args.get(0).contains("-")) {
+                        Collections.reverse(ListaNombres);
+                    }
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando por orden alfabetico.");
+                    System.out.println(ListaMostarNombres);
+
+                } else if (args.get(0).equals("/o D") || args.get(0).equals("/o -D")) {
+                    ListaNombres = getNombresPorFecha(FolderActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+
+                    if (args.get(0).contains("-")) {
+                        Collections.reverse(ListaNombres);
+                    }
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando por fecha de creacion.");
+                    System.out.println(ListaMostarNombres);
+
+
+                } else {
+                    System.out.println("La lista tiene los siguientes elementos:");
+                    for (String arg : args) {
+                        System.out.println(arg);
+                    }
+                }
+
+            } else {
+                if (args == null || args.isEmpty()) {
+                    System.out.println("La lista está vacía.");
+                } else if (args.size() == 1 && args.get(0).equals("")) {
+                    ListaNombres = getContenidoNombresSeguridad(DriveActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+                    System.out.println("Todos los directorios incluyendo los SubDirectorios.");
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println(ListaMostarNombres);
+                } else if (args.get(0).equals("/s")) {
+                    ListaNombres = getNombresTotalesSeguridad(DriveActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+                    System.out.println("Todos los directorios incluyendo los SubDirectorios.");
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println(ListaMostarNombres);
+                } else if (args.get(0).equals("/a")) {
+                    ListaNombres = getContenidoNombres(DriveActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando actual incluyendo contenido oculto");
+                    System.out.println(ListaMostarNombres);
+                } else if (args.get(0).equals("/s") && args.get(1).equals("/a")) {
+                    ListaNombres = getNombresTotales(DriveActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando actual y subdirectorios, incluyendo contenido oculto");
+                    System.out.println(ListaMostarNombres);
+                } else if (args.get(0).equals("/o N") || args.get(0).equals("/o -N")) {
+                    ListaNombres = getContenidoNombresSeguridad(DriveActual.getContenido());
+                    Collections.sort(ListaNombres);
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+
+                    if (args.get(0).contains("-")) {
+                        Collections.reverse(ListaNombres);
+                    }
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando por orden alfabetico");
+                    System.out.println(ListaMostarNombres);
+
+                } else if (args.get(0).equals("/o D") || args.get(0).equals("/o -D")) {
+                    ListaNombres = getNombresPorFecha(DriveActual.getContenido());
+                    StringBuilder ListaMostarNombres = new StringBuilder();
+
+                    if (args.get(0).contains("-")) {
+                        Collections.reverse(ListaNombres);
+                    }
+                    for (String Nombre : ListaNombres) {
+                        ListaMostarNombres.append(Nombre).append("\n");
+
+                    }
+                    System.out.println("Listando por orden fecha de creacion");
+                    System.out.println(ListaMostarNombres);
+
+
+                } else {
+                    System.out.println("La lista tiene los siguientes elementos:");
+                    for (String arg : args) {
+                        System.out.println(arg);
+                    }
+                    System.out.println("Por favor verifique los argumentos ingresados.");
                 }
             }
-
-        } else {
-            if (args == null || args.isEmpty()) {
-                System.out.println("La lista está vacía.");
-            } else if (args.size() == 1 && args.get(0).equals("")) {
-                ListaNombres = getContenidoNombresSeguridad(DriveActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-                System.out.println("Todos los directorios incluyendo los SubDirectorios.");
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-            } else if(args.get(0).equals("/s")){
-                ListaNombres = getNombresTotalesSeguridad(DriveActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-                System.out.println("Todos los directorios incluyendo los SubDirectorios.");
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-            }else if(args.get(0).equals("/a")){
-                ListaNombres = getContenidoNombres(DriveActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-            }else if(args.get(0).equals("/s") && args.get(1).equals("/a")){
-                ListaNombres = getNombresTotales(DriveActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-            }else if(args.get(0).equals("/o N") || args.get(0).equals("/o -N")){
-                ListaNombres = getContenidoNombresSeguridad(DriveActual.getContenido());
-                Collections.sort(ListaNombres);
-                StringBuilder ListaMostarNombres = new StringBuilder();
-
-                if (args.get(0).contains("-")){
-                    Collections.reverse(ListaNombres);
-                }
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-
-            }else if(args.get(0).equals("/o D") || args.get(0).equals("/o -D")){
-                ListaNombres = getNombresPorFecha(DriveActual.getContenido());
-                StringBuilder ListaMostarNombres = new StringBuilder();
-
-                if (args.get(0).contains("-")){
-                    Collections.reverse(ListaNombres);
-                }
-                for (String Nombre : ListaNombres){
-                    ListaMostarNombres.append(Nombre).append("\n");
-
-                }
-                System.out.println(ListaMostarNombres);
-
-
-            }
-            else{
-                System.out.println("La lista tiene los siguientes elementos:");
-                for (String arg : args) {
-                    System.out.println(arg);
-                }
-                System.out.println("Por favor verifique los argumentos ingresados.");
-            }
+        }catch (Exception e){
+            System.out.println("Error desconocido, intentelo nuevamente.");
         }
     }
 
@@ -829,9 +917,14 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
     @Override
     public void format(String Letra, String Nombre) {
         Drive_20964708_RiquelmeOlguin DriveFormat = buscarDrivePorLetra(Letra);
+        if (DriveFormat == null){
+            System.out.println("El drive especificado no existe, o no fue encontrado.");
+        }else {
 
-        DriveFormat.getContenido().clear();
-        DriveFormat.setNombre(Nombre);
+            DriveFormat.getContenido().clear();
+            DriveFormat.setNombre(Nombre);
+            System.out.println("Formateando la unidad" + Letra+ ", NUEVO NOMBRE: "+Nombre);
+        }
     }
 
     /**
@@ -842,24 +935,29 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
     @Override
     public void encrypt(String Contrasena, String NombreFolder) {
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        String RutaActual = getRutaActual();
-        String[] RutaActualSplit = RutaActual.split("/");
-        Folder_20964708_RiquelmeOlguin FolderEncrypt;
-        if (RutaActualSplit.length == 1) {
-            FolderEncrypt = buscarFolder(DriveActual.getContenido(), NombreFolder);
-        }else{
-            Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaActualSplit,DriveActual);
-            FolderEncrypt = buscarFolder(FolderActual.getContenido(),NombreFolder);
-        }
+        try {
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            String RutaActual = getRutaActual();
+            String[] RutaActualSplit = RutaActual.split("/");
+            Folder_20964708_RiquelmeOlguin FolderEncrypt;
+            if (RutaActualSplit.length == 1) {
+                FolderEncrypt = buscarFolder(DriveActual.getContenido(), NombreFolder);
+            } else {
+                Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaActualSplit, DriveActual);
+                FolderEncrypt = buscarFolder(FolderActual.getContenido(), NombreFolder);
+            }
 
-        if (FolderEncrypt != null && FolderEncrypt.getContrasenaString().equals(Contrasena)) {
-            int modValue = calcularModulo5(FolderEncrypt.getContrasena());
-            String NuevoNombre = sumarValorAModulo(FolderEncrypt.getNombre(),modValue);
-            FolderEncrypt.setNombre(NuevoNombre);
-            aplicarModuloAFolder(FolderEncrypt, modValue);
-        } else {
-            System.out.println("No se encontró el folder o la contraseña no coincide.");
+            if (FolderEncrypt != null && FolderEncrypt.getContrasenaString().equals(Contrasena)) {
+                int modValue = calcularModulo5(FolderEncrypt.getContrasena());
+                String NuevoNombre = sumarValorAModulo(FolderEncrypt.getNombre(), modValue);
+                FolderEncrypt.setNombre(NuevoNombre);
+                aplicarModuloAFolder(FolderEncrypt, modValue);
+                System.out.println("Contenido encryptado.");
+            } else {
+                System.out.println("No se encontró el folder o la contraseña no coincide.");
+            }
+        }catch (Exception e){
+            System.out.println("Error desconocido, porfavor intentelo nuevamente");
         }
     }
 
@@ -871,24 +969,29 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
 
 
     public void decrypt(String Contrasena, String NombreFolder) {
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        String RutaActual = getRutaActual();
-        String[] RutaActualSplit = RutaActual.split("/");
-        Folder_20964708_RiquelmeOlguin FolderDecrypt;
-        if (RutaActualSplit.length == 1) {
-            FolderDecrypt = buscarFolderDecrypt(DriveActual.getContenido(), NombreFolder, Contrasena);
-        } else {
-            Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaActualSplit,DriveActual);
-            FolderDecrypt = buscarFolderDecrypt(FolderActual.getContenido(), NombreFolder, Contrasena);
-        }
+        try {
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            String RutaActual = getRutaActual();
+            String[] RutaActualSplit = RutaActual.split("/");
+            Folder_20964708_RiquelmeOlguin FolderDecrypt;
+            if (RutaActualSplit.length == 1) {
+                FolderDecrypt = buscarFolderDecrypt(DriveActual.getContenido(), NombreFolder, Contrasena);
+            } else {
+                Folder_20964708_RiquelmeOlguin FolderActual = buscarContenido(RutaActualSplit, DriveActual);
+                FolderDecrypt = buscarFolderDecrypt(FolderActual.getContenido(), NombreFolder, Contrasena);
+            }
 
-        if (FolderDecrypt != null && FolderDecrypt.getContrasenaString().equals(Contrasena)) {
-            int modValue = calcularModulo5(FolderDecrypt.getContrasena());
-            String NuevoNombre = restarValorAModulo(FolderDecrypt.getNombre(),modValue);
-            FolderDecrypt.setNombre(NuevoNombre);
-            aplicarInversoModuloAFolder(FolderDecrypt, modValue);
-        } else {
-            System.out.println("No se encontró el folder o la contraseña no coincide.");
+            if (FolderDecrypt != null && FolderDecrypt.getContrasenaString().equals(Contrasena)) {
+                int modValue = calcularModulo5(FolderDecrypt.getContrasena());
+                String NuevoNombre = restarValorAModulo(FolderDecrypt.getNombre(), modValue);
+                FolderDecrypt.setNombre(NuevoNombre);
+                aplicarInversoModuloAFolder(FolderDecrypt, modValue);
+                System.out.println("Contenido decryptado.");
+            } else {
+                System.out.println("No se encontró el folder o la contraseña no coincide.");
+            }
+        }catch (Exception e){
+            System.out.println("Error desconocido, por favor intentelo nuevamente");
         }
     }
 
@@ -1097,135 +1200,139 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      */
     @Override
     public void crearFile(String Nombre) {
-        Random random = new Random();
-        Scanner entrada = new Scanner(System.in);
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        if (DriveActual == null){
-            System.out.println("Ningun drive seleccionado. Porfavor seleccione uno!");
+        try {
+            Random random = new Random();
+            Scanner entrada = new Scanner(System.in);
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            if (DriveActual == null) {
+                System.out.println("Ningun drive seleccionado. Porfavor seleccione uno!");
+                return;
+            } else if (usuarioActual == null) {
+                System.out.println("Ningun Usuario registrado. Porfavor Registre uno!");
+                return;
+            }
+
+            System.out.println("CREANDO UN FILE");
+            System.out.println("INGRESE EL TIPO DE ARCHIVO A CREAR:");
+            System.out.println("1.- Tipo Text.(.txt / .md)");
+            System.out.println("2.- Tipo Documento. (.docx / .pdf)");
+            System.out.println("3.- Tipo Codigo. (.java / .py / .rkt)");
+            int eleccion = entrada.nextInt();
+            entrada.nextLine();
+            Date fechaCreacion = new Date();
+            Date fechaModif = new Date();
+            String UserActual = getUsuarioActual();
+            AtributosSeguridad_20964708_RiquelmeOlguin seguridad;
+            String contenido;
+            String formato;
+            long tamano = random.nextInt(10000); //genera un numero random del 0 al 9999 para el tamaño
+            char[] contrasena;
+
+            switch (eleccion) {
+                case 1:
+                    System.out.println("TIPO DE Extensión");
+                    System.out.println("1.- .txt");
+                    System.out.println("2.- .md");
+                    int eleccion2 = entrada.nextInt();
+                    entrada.nextLine();
+
+                    seguridad = crearSeguridad();
+                    switch (eleccion2) {
+                        case 1:
+                            formato = ".TXT";
+                            System.out.println("Ingrese el Contenido texto del archivo.");
+                            contenido = entrada.nextLine();
+                            contrasena = CrearContrasena();
+                            TextFile_20964708_RiquelmeOlguin newfile = new TextFile_20964708_RiquelmeOlguin(Nombre, fechaCreacion, fechaModif, UserActual, seguridad, contenido, formato, tamano, contrasena);
+                            addFile(newfile);
+                            break;
+
+                        case 2:
+                            formato = ".MD";
+                            System.out.println("Ingrese el Contenido texto del archivo.");
+                            contenido = entrada.nextLine();
+                            contrasena = CrearContrasena();
+                            TextFile_20964708_RiquelmeOlguin newfile2 = new TextFile_20964708_RiquelmeOlguin(Nombre, fechaCreacion, fechaModif, UserActual, seguridad, contenido, formato, tamano, contrasena);
+                            addFile(newfile2);
+                            break;
+                    }
+                    break;
+                case 2:
+
+                    System.out.println("TIPO DE Extensión");
+                    System.out.println("1.- .docx");
+                    System.out.println("2.- .pdf");
+                    int eleccion3 = entrada.nextInt();
+                    entrada.nextLine();
+
+                    seguridad = crearSeguridad();
+                    switch (eleccion3) {
+                        case 1:
+                            formato = ".DOCX";
+                            System.out.println("Ingrese el contenido del DOCUMENTO");
+                            contenido = entrada.nextLine();
+                            contrasena = CrearContrasena();
+                            DocumentFile_20964708_RiquelmeOlguin newfile3 = new DocumentFile_20964708_RiquelmeOlguin(Nombre, fechaCreacion, fechaModif, UserActual, seguridad, contenido, formato, tamano, contrasena);
+                            addFile(newfile3);
+                            break;
+
+                        case 2:
+                            formato = ".PDF";
+                            System.out.println("Ingrese el contenido del DOCUMENTO");
+                            contenido = entrada.nextLine();
+                            contrasena = CrearContrasena();
+                            DocumentFile_20964708_RiquelmeOlguin newfile4 = new DocumentFile_20964708_RiquelmeOlguin(Nombre, fechaCreacion, fechaModif, UserActual, seguridad, contenido, formato, tamano, contrasena);
+                            addFile(newfile4);
+                            break;
+                    }
+                    break;
+                case 3:
+                    System.out.println("TIPO DE Extensión");
+                    System.out.println("1.- .java");
+                    System.out.println("2.- .py");
+                    System.out.println("3.- .rkt");
+                    int eleccion4 = entrada.nextInt();
+                    entrada.nextLine();
+
+                    seguridad = crearSeguridad();
+                    switch (eleccion4) {
+                        case 1:
+                            formato = ".JAVA";
+                            System.out.println("Ingrese CODIGO del archivo");
+                            contenido = entrada.nextLine();
+                            contrasena = CrearContrasena();
+                            CodeFile_20964708_RiquelmeOlguin newfile5 = new CodeFile_20964708_RiquelmeOlguin(Nombre, fechaCreacion, fechaModif, UserActual, seguridad, contenido, formato, tamano, contrasena);
+                            addFile(newfile5);
+                            break;
+
+                        case 2:
+                            formato = ".PY";
+                            System.out.println("Ingrese CODIGO del archivo");
+                            contenido = entrada.nextLine();
+                            contrasena = CrearContrasena();
+                            CodeFile_20964708_RiquelmeOlguin newfile6 = new CodeFile_20964708_RiquelmeOlguin(Nombre, fechaCreacion, fechaModif, UserActual, seguridad, contenido, formato, tamano, contrasena);
+                            addFile(newfile6);
+                            break;
+                        case 3:
+                            formato = ".RKT";
+                            System.out.println("Ingrese CODIGO del archivo");
+                            contenido = entrada.nextLine();
+                            contrasena = CrearContrasena();
+                            CodeFile_20964708_RiquelmeOlguin newfile7 = new CodeFile_20964708_RiquelmeOlguin(Nombre, fechaCreacion, fechaModif, UserActual, seguridad, contenido, formato, tamano, contrasena);
+                            addFile(newfile7);
+                            break;
+                    }
+                    break;
+                default:
+                    System.out.println("La elección no es válida.");
+                    break;
+            }
+
+
             return;
-        }else if (usuarioActual == null){
-            System.out.println("Ningun Usuario registrado. Porfavor Registre uno!");
-            return;
+        }catch (Exception e){
+            System.out.println("Error desconocido, por favor intentelo nuevamente");
         }
-
-        System.out.println("CREANDO UN FILE");
-        System.out.println("INGRESE EL TIPO DE ARCHIVO A CREAR:");
-        System.out.println("1.- Tipo Text.(.txt / .md)");
-        System.out.println("2.- Tipo Documento. (.docx / .pdf)");
-        System.out.println("3.- Tipo Codigo. (.java / .py / .rkt)");
-        int eleccion = entrada.nextInt();
-        entrada.nextLine();
-        Date fechaCreacion = new Date();
-        Date fechaModif = new Date();
-        String UserActual = getUsuarioActual();
-        AtributosSeguridad_20964708_RiquelmeOlguin seguridad;
-        String contenido;
-        String formato;
-        long tamano = random.nextInt(10000); //genera un numero random del 0 al 9999 para el tamaño
-        char[] contrasena;
-
-        switch(eleccion) {
-            case 1:
-                System.out.println("TIPO DE Extensión");
-                System.out.println("1.- .txt");
-                System.out.println("2.- .md");
-                int eleccion2 = entrada.nextInt();
-                entrada.nextLine();
-
-                seguridad = crearSeguridad();
-                switch (eleccion2){
-                    case 1:
-                        formato = ".TXT";
-                        System.out.println("Ingrese el Contenido texto del archivo.");
-                        contenido = entrada.nextLine();
-                        contrasena = CrearContrasena();
-                        TextFile_20964708_RiquelmeOlguin newfile = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
-                        addFile(newfile);
-                        break;
-
-                    case 2:
-                        formato = ".MD";
-                        System.out.println("Ingrese el Contenido texto del archivo.");
-                        contenido = entrada.nextLine();
-                        contrasena = CrearContrasena();
-                        TextFile_20964708_RiquelmeOlguin newfile2 = new TextFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
-                        addFile(newfile2);
-                        break;
-                }
-                break;
-            case 2:
-
-                System.out.println("TIPO DE Extensión");
-                System.out.println("1.- .docx");
-                System.out.println("2.- .pdf");
-                int eleccion3 = entrada.nextInt();
-                entrada.nextLine();
-
-                seguridad = crearSeguridad();
-                switch (eleccion3){
-                    case 1:
-                        formato = ".DOCX";
-                        System.out.println("Ingrese el contenido del DOCUMENTO");
-                        contenido = entrada.nextLine();
-                        contrasena = CrearContrasena();
-                        DocumentFile_20964708_RiquelmeOlguin newfile3 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
-                        addFile(newfile3);
-                        break;
-
-                    case 2:
-                        formato = ".PDF";
-                        System.out.println("Ingrese el contenido del DOCUMENTO");
-                        contenido = entrada.nextLine();
-                        contrasena = CrearContrasena();
-                        DocumentFile_20964708_RiquelmeOlguin newfile4 = new DocumentFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
-                        addFile(newfile4);
-                        break;
-                }
-                break;
-            case 3:
-                System.out.println("TIPO DE Extensión");
-                System.out.println("1.- .java");
-                System.out.println("2.- .py");
-                System.out.println("3.- .rkt");
-                int eleccion4 = entrada.nextInt();
-                entrada.nextLine();
-
-                seguridad = crearSeguridad();
-                switch (eleccion4){
-                    case 1:
-                        formato = ".JAVA";
-                        System.out.println("Ingrese CODIGO del archivo");
-                        contenido = entrada.nextLine();
-                        contrasena = CrearContrasena();
-                        CodeFile_20964708_RiquelmeOlguin newfile5 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
-                        addFile(newfile5);
-                        break;
-
-                    case 2:
-                        formato = ".PY";
-                        System.out.println("Ingrese CODIGO del archivo");
-                        contenido = entrada.nextLine();
-                        contrasena = CrearContrasena();
-                        CodeFile_20964708_RiquelmeOlguin newfile6 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
-                        addFile(newfile6);
-                        break;
-                    case 3:
-                        formato = ".RKT";
-                        System.out.println("Ingrese CODIGO del archivo");
-                        contenido = entrada.nextLine();
-                        contrasena = CrearContrasena();
-                        CodeFile_20964708_RiquelmeOlguin newfile7 = new CodeFile_20964708_RiquelmeOlguin(Nombre,fechaCreacion,fechaModif,UserActual,seguridad,contenido,formato,tamano,contrasena);
-                        addFile(newfile7);
-                        break;
-                }
-                break;
-            default:
-                System.out.println("La elección no es válida.");
-                break;
-        }
-
-
-        return;
     }
 
     /**
@@ -1233,32 +1340,34 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      * @return
      */
 
-    public AtributosSeguridad_20964708_RiquelmeOlguin crearSeguridad(){
-        Scanner entrada = new Scanner(System.in);
-        int Valor1;
-        int Valor2;
-        boolean Lectura = false;
-        boolean Oculto = false;
-        System.out.println("Ingrese Los atributos de seguridad");
-        System.out.println("###ATRIBUTO SOLO LECTURA### \n");
-        System.out.println("1.SI");
-        System.out.println("2.NO");
-        Valor1 = entrada.nextInt();
-        entrada.nextLine();
-        if (Valor1 == 1) {
-            Lectura = true;
-        }
-        System.out.println("###ATRIBUTO OCULTO### \n");
-        System.out.println("1.SI");
-        System.out.println("2.NO");
-        Valor2 = entrada.nextInt();
-        entrada.nextLine();
-        if (Valor2 == 1) {
-            Oculto = true;
-        }
-        AtributosSeguridad_20964708_RiquelmeOlguin seguridad = new AtributosSeguridad_20964708_RiquelmeOlguin(Lectura,Oculto);
+    public AtributosSeguridad_20964708_RiquelmeOlguin crearSeguridad() {
 
-        return seguridad;
+            Scanner entrada = new Scanner(System.in);
+            int Valor1;
+            int Valor2;
+            boolean Lectura = false;
+            boolean Oculto = false;
+            System.out.println("Ingrese Los atributos de seguridad");
+            System.out.println("###ATRIBUTO SOLO LECTURA### \n");
+            System.out.println("1.SI");
+            System.out.println("2.NO");
+            Valor1 = entrada.nextInt();
+            entrada.nextLine();
+            if (Valor1 == 1) {
+                Lectura = true;
+            }
+            System.out.println("###ATRIBUTO OCULTO### \n");
+            System.out.println("1.SI");
+            System.out.println("2.NO");
+            Valor2 = entrada.nextInt();
+            entrada.nextLine();
+            if (Valor2 == 1) {
+                Oculto = true;
+            }
+            AtributosSeguridad_20964708_RiquelmeOlguin seguridad = new AtributosSeguridad_20964708_RiquelmeOlguin(Lectura, Oculto);
+
+            return seguridad;
+
 
     }
 
@@ -1318,11 +1427,12 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
      */
 
     public void delAux(String Nombre) {
-        String RutaActual = getRutaActual();
-        String[] RutaSplit = RutaActual.split("/");
-        Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
-        Folder_20964708_RiquelmeOlguin FolderActual;
-        List<String> NombresContenido;
+        try {
+            String RutaActual = getRutaActual();
+            String[] RutaSplit = RutaActual.split("/");
+            Drive_20964708_RiquelmeOlguin DriveActual = buscarDriveActual();
+            Folder_20964708_RiquelmeOlguin FolderActual;
+            List<String> NombresContenido;
             if (RutaSplit.length == 1) {
                 NombresContenido = getContenidoNombres(DriveActual.getContenido());
                 if (!Nombre.contains(".")) { //Si no contiene un punto, es un folder
@@ -1359,7 +1469,10 @@ public class Filesystem_20964708_RiquelmeOlguin implements Interfaz_Filesystem_2
                     }
                 }
             }
+        }catch (Exception e ){
+            System.out.println("Error desconocido, intente nuevamente");
         }
+    }
 
     /**
      * Metodo para obtener todos los nombres de una lista de contenido. (solamente contenido visible)
